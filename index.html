@@ -10,6 +10,7 @@
       --ink: #152b40;
       --muted: #56697a;
       --paper: #f2f5f8;
+      --line: #d9e2e9;
     }
     body {
       margin: 0;
@@ -24,9 +25,24 @@
     }
     header strong { font-size: 1.3rem; letter-spacing: -0.03em; }
     header p { margin: 0.25rem 0 0; color: #c4d6e2; }
-    main { max-width: 40rem; margin: auto; padding: 2rem; }
-    h1 { font-size: 1.7rem; letter-spacing: -0.03em; margin: 0 0 0.5rem; }
-    p { color: var(--muted); }
+    main { max-width: 44rem; margin: auto; padding: 1.5rem 2rem 2.5rem; }
+    h1 { font-size: 1.7rem; letter-spacing: -0.03em; margin: 0 0 0.4rem; }
+    .lede { color: var(--muted); margin-top: 0; }
+    .topic {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 4px solid #116f76;
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+    }
+    .topic h2 { margin: 0.2rem 0; letter-spacing: -0.03em; }
+    .topic p { color: var(--muted); }
+    ul { list-style: none; padding: 0; margin: 1.25rem 0 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+    li { padding: 0.9rem 1rem; border-bottom: 1px solid #e4ebf0; }
+    li:last-child { border-bottom: 0; }
+    .symbol { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 800; margin-right: 0.5rem; }
+    .name { font-weight: 600; }
+    .desc { display: block; color: var(--muted); font-size: 0.875rem; margin-top: 0.15rem; }
   </style>
 </head>
 <body>
@@ -36,7 +52,18 @@
   </header>
   <main>
     <h1>Start with what moves the market.</h1>
-    <p>Choose a theme, then look up the tickers connected to it.</p>
+    <p class="lede">First pass: gold, hardcoded, so the layout is easy to judge.</p>
+    <section class="topic">
+      <h2>Gold</h2>
+      <p>Research the metal itself or the businesses that mine it. A miner is not the same bet as a bullion trust.</p>
+    </section>
+    <ul>
+      <li><span class="symbol">GLD</span><span class="name">SPDR Gold Shares</span><span class="desc">A trust holding physical gold.</span></li>
+      <li><span class="symbol">IAU</span><span class="name">iShares Gold Trust</span><span class="desc">Another physically backed gold trust. Compare fees and trading costs.</span></li>
+      <li><span class="symbol">GDX</span><span class="name">VanEck Gold Miners ETF</span><span class="desc">A basket of gold-mining companies.</span></li>
+      <li><span class="symbol">NEM</span><span class="name">Newmont</span><span class="desc">A gold-producing business. Costs and output matter, not just the metal.</span></li>
+      <li><span class="symbol">B</span><span class="name">Barrick Mining</span><span class="desc">A gold and copper producer. Its former NYSE ticker was GOLD.</span></li>
+    </ul>
   </main>
 </body>
 </html>
