@@ -3,111 +3,369 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Market Forces</title>
+  <meta name="description" content="Explore economic themes, understand common stock and fund tickers, and open the research you need in one place.">
+  <meta name="theme-color" content="#102438">
+  <title>Market Forces · Ticker research for beginners</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23102438'/%3E%3Cpath d='M7 23V14h4v9m3 0V8h4v15m3 0V4h4v19' stroke='%2373d4d0' stroke-width='3'/%3E%3C/svg%3E">
   <style>
-    :root {
-      --navy: #102438;
-      --ink: #152b40;
-      --muted: #56697a;
-      --paper: #f2f5f8;
-      --line: #d9e2e9;
-      --accent: #116f76;
-    }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font: 1rem/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    a { color: var(--accent); }
-    header {
-      background: var(--navy);
-      color: #fff;
-      padding: 1.25rem 2rem;
-    }
-    header strong { font-size: 1.3rem; letter-spacing: -0.03em; }
-    header p { margin: 0.25rem 0 0; color: #c4d6e2; }
-    main { max-width: 60rem; margin: auto; padding: 1.5rem 2rem 2.5rem; }
-    h1 { font-size: 1.7rem; letter-spacing: -0.03em; margin: 0 0 0.4rem; }
-    .lede { color: var(--muted); margin-top: 0; }
-    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 18rem; gap: 1.25rem; align-items: start; }
-    .topic {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-left: 4px solid var(--accent);
-      border-radius: 12px;
-      padding: 1.25rem 1.4rem;
-    }
-    .topic h2 { margin: 0.2rem 0; letter-spacing: -0.03em; }
-    .topic p { color: var(--muted); }
-    ul { list-style: none; padding: 0; margin: 1.25rem 0 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
-    li { padding: 0.9rem 1rem; border-bottom: 1px solid #e4ebf0; }
-    li:last-child { border-bottom: 0; }
-    li.selected { background: #e8f5f4; box-shadow: inset 3px 0 var(--accent); }
-    .symbol { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 800; margin-right: 0.5rem; }
-    .name { font-weight: 600; }
-    .desc { display: block; color: var(--muted); font-size: 0.875rem; margin-top: 0.15rem; }
-    aside {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 1.1rem 1.15rem 1.2rem;
-    }
-    aside h2 { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; margin: 0.2rem 0; }
-    aside p { color: var(--muted); font-size: 0.875rem; }
-    aside ul { margin: 0.5rem 0 0; }
-    aside li { padding: 0.45rem 0; border: 0; }
-    details { margin-top: 1.4rem; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem 1.1rem 1rem; }
-    summary { font-weight: 700; cursor: pointer; }
-    details ol { margin: 0.6rem 0 0; padding-left: 1.2rem; }
-    details li { margin: 0.55rem 0; border: 0; padding: 0; }
-    footer { max-width: 60rem; margin: auto; padding: 0 2rem 2rem; color: var(--muted); font-size: 0.8125rem; }
+    :root{--navy:#102438;--ink:#152b40;--muted:#56697a;--border:#d9e2e9;--paper:#f2f5f8;--white:#fff;--accent:#116f76;--accent-soft:#e8f5f4;--gold:#9a6a11;--focus:#126bb1}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:var(--accent);text-underline-offset:3px}
+    button,input,select{font:inherit}
+    button,a,input,select,summary{-webkit-tap-highlight-color:transparent}
+    button{cursor:pointer}
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    button:disabled{cursor:default}
+    .skip{position:fixed;left:1rem;top:-5rem;background:#fff;padding:.7rem 1rem;z-index:10}
+    .skip:focus{top:1rem}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    [hidden]{display:none!important}
+    .masthead{background:var(--navy);color:#fff;border-bottom:3px solid #65c8c3}
+    .masthead-inner{max-width:1512px;margin:auto;padding:1.15rem 2rem;display:flex;align-items:center;gap:1rem}
+    .brandmark{display:grid;place-items:center;width:44px;height:44px;border:1px solid #70b4be;border-radius:11px;color:#8fe0da;font-size:.875rem;font-weight:800;letter-spacing:.05em;flex-shrink:0}
+    .brand-name{font-size:1.3rem;font-weight:750;letter-spacing:-.035em}
+    .brand-sub{color:#c4d6e2;font-size:.875rem}
+    .masthead-meta{margin-left:auto;color:#c4d6e2;font-size:.875rem;text-align:right}
+    .shell{max-width:1512px;padding:1.65rem 2rem 2rem;margin:auto}
+    .topline{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:1.1rem}
+    h1{font-size:1.7rem;line-height:1.25;letter-spacing:-.035em;margin:0}
+    .topline p{color:var(--muted);margin:.4rem 0 0}
+    .guide-link{font-size:.875rem;white-space:nowrap;font-weight:650}
+    .searchbar{display:flex;align-items:end;gap:.75rem;margin-bottom:1.5rem}
+    .search-field{flex:1;min-width:0}
+    label{display:block;font-size:.875rem;font-weight:650;margin-bottom:.4rem}
+    .inputwrap{position:relative}
+    .search-icon{position:absolute;left:1rem;top:.95rem;color:var(--muted);pointer-events:none}
+    input[type=search]{width:100%;min-height:52px;border:1px solid #a8bac9;background:#fff;border-radius:9px;padding:.8rem 1rem .8rem 3rem;color:var(--ink);box-shadow:0 2px 4px #142d4005}
+    input::placeholder{color:#617384;opacity:1}
+    select{min-height:52px;border:1px solid #a8bac9;background:#fff;border-radius:9px;padding:.75rem 2.5rem .75rem .9rem;color:var(--ink);max-width:100%}
+    .workspace{display:grid;grid-template-columns:218px minmax(310px,1fr) minmax(320px,372px);gap:1.25rem;align-items:start}
+    .sidebar{position:sticky;top:1rem}
+    .nav-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:750;margin:1.1rem .75rem .45rem}
+    .theme-nav{display:flex;flex-direction:column;gap:3px}
+    .theme-button{border:0;background:transparent;color:var(--ink);text-align:left;display:flex;gap:.6rem;align-items:center;padding:.65rem .8rem;border-radius:7px;font-size:.875rem;min-height:44px;font-weight:550;width:100%}
+    .theme-button:hover{background:#e3ebf0}
+    .theme-button[aria-pressed=true]{background:var(--navy);color:#fff}
+    .theme-mark{width:25px;height:25px;display:grid;place-items:center;border:1px solid #ccd7e0;border-radius:6px;font-size:.75rem;font-weight:700;flex-shrink:0}
+    .theme-button[aria-pressed=true] .theme-mark{border-color:#577084;color:#99e2dc}
+    .theme-count{margin-left:auto;opacity:.75;font-size:.75rem}
+    .sidebar-foot{font-size:.8125rem;color:var(--muted);border-top:1px solid var(--border);padding-top:1rem;margin:1.2rem .7rem}
+    .topic{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;position:relative;overflow:hidden}
+    .topic:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+    .eyebrow{font-size:.75rem;font-weight:750;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin:0 0 .5rem}
+    .topic h2{font-size:1.65rem;line-height:1.2;letter-spacing:-.03em;margin:0}
+    .topic p:not(.eyebrow){color:var(--muted);font-size:1rem;margin:.8rem 0 0}
+    .topic .connection{font-size:.875rem!important;color:#3f5569!important;padding-top:.85rem;margin-top:.85rem!important;border-top:1px solid var(--border)}
+    .macro-links{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+    .macro-links a{font-size:.875rem;text-decoration:none;border:1px solid var(--border);padding:.3rem .6rem;border-radius:5px;font-weight:650;display:inline-block}
+    .macro-links a:hover{background:var(--accent-soft)}
+    .results-head{display:flex;align-items:baseline;justify-content:space-between;gap:.8rem;margin:1.4rem 0 .6rem}
+    .results-head h3{font-size:.875rem;margin:0}
+    .results-head span{font-size:.8125rem;color:var(--muted)}
+    .ticker-list{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+    .ticker-row{padding:1rem;display:flex;gap:.75rem;align-items:center;border-bottom:1px solid #e4ebf0;position:relative}
+    .ticker-row:last-child{border-bottom:0}
+    .ticker-row.selected{background:var(--accent-soft);box-shadow:inset 3px 0 var(--accent)}
+    .ticker-select{align-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:.25rem;text-align:left;flex:1;min-width:0;padding:0;border:0;background:none;color:inherit;overflow-wrap:anywhere}
+    .ticker-title{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap}
+    .symbol{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:1.125rem;letter-spacing:-.03em;font-weight:800;color:var(--ink)}
+    .ticker-name{font-weight:600;font-size:.875rem}
+    .ticker-desc{font-size:.875rem;color:var(--muted);line-height:1.45}
+    .row-meta{display:flex;gap:.35rem;align-items:center;margin-top:.3rem;flex-wrap:wrap}
+    .badge{display:inline-block;font-size:.75rem;font-weight:650;line-height:1.3;padding:.23rem .45rem;border-radius:4px;background:#eef2f6;color:#455e73}
+    .badge.stock{background:#ebf0fb;color:#355586}
+    .badge.futures{background:#fff1d8;color:#835500}
+    .quick-link{border:1px solid #b9cad6;border-radius:6px;padding:.42rem .6rem;font-size:.875rem;white-space:nowrap;font-weight:650;text-decoration:none;background:#fff;flex-shrink:0}
+    .quick-link:hover{border-color:var(--accent);background:#f6fafb}
+    .search-themes{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:1rem}
+    .search-themes button{border:1px solid #a9c5c9;color:var(--accent);background:#fff;border-radius:5px;padding:.35rem .6rem;font-size:.875rem}
+    .empty{padding:2.2rem 1.25rem;background:#fff;border:1px dashed #b9c9d5;border-radius:10px;text-align:center}
+    .empty h3{margin:0 0 .4rem}
+    .empty p{color:var(--muted);margin:0 0 1rem}
+    .reset-button{background:var(--navy);color:#fff;border:0;border-radius:6px;padding:.7rem 1rem}
+    .research{position:sticky;top:1rem;border:1px solid var(--border);border-radius:12px;background:#fff;overflow:hidden;scroll-margin-top:1rem}
+    .research-head{padding:1.25rem 1.25rem 1rem;border-bottom:1px solid var(--border);background:#fafcfe}
+    .research-title{display:flex;gap:.8rem;align-items:baseline;margin:.25rem 0}
+    .research-title h2{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:2rem;letter-spacing:-.05em;line-height:1.2;margin:0}
+    .research-name{font-weight:650;margin:.5rem 0;font-size:1rem;line-height:1.4}
+    .research-head .note{color:var(--muted);font-size:.875rem;margin:.65rem 0 0}
+    .research-groups{padding:.3rem 1.25rem 1rem}
+    .resource-group{margin-top:1rem}
+    .resource-group h3{font-size:.75rem;font-weight:750;text-transform:uppercase;letter-spacing:.075em;color:var(--muted);margin:0 0 .6rem}
+    .resource-links{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+    .resource-link{display:block;background:#f1f5f8;border:1px solid transparent;border-radius:6px;padding:.6rem .65rem;text-decoration:none;font-size:.875rem;font-weight:650;line-height:1.35;color:#1d4f65;min-width:0;overflow-wrap:anywhere}
+    .resource-link:hover{background:#e8f5f4;border-color:#a1cbc8}
+    .resource-link.featured{background:var(--navy);color:#fff}
+    .resource-link small{display:block;font-size:.75rem;line-height:1.35;font-weight:400;color:#526779;margin-top:.25rem}
+    .resource-link.featured small{color:#c9e0e9}
+    .resource-note{font-size:.8125rem;color:var(--muted);margin:.65rem 0 0}
+    .risk-note{margin:.9rem 1.25rem 1.25rem;font-size:.875rem;line-height:1.5;padding:.7rem .85rem;border:1px solid #ebd5a6;border-radius:6px;background:#fff7e7;color:#70541d}
+    .research-placeholder{padding:1.5rem;color:var(--muted)}
+    .learn{margin-top:1.4rem;border:1px solid var(--border);border-radius:10px;background:#fff;scroll-margin-top:1rem}
+    .learn summary{font-size:.875rem;font-weight:700;padding:1rem;cursor:pointer}
+    .learn-body{padding:0 1.15rem 1.15rem;font-size:.875rem;color:var(--muted)}
+    .learn-body ol{padding-left:1.25rem;margin:0}
+    .learn-body li{margin-bottom:.65rem}
+    .learn-body strong{color:var(--ink)}
+    .learn-body p{margin:.75rem 0 0}
+    footer{max-width:1512px;margin:auto;padding:0 2rem 1.8rem;display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.8125rem}
+    footer p{margin:0}
+    .footer-link{white-space:nowrap}
   </style>
 </head>
 <body>
-  <header>
-    <strong>Market Forces</strong>
-    <p>A starting point for ticker research</p>
-  </header>
-  <main>
-    <h1>Start with what moves the market.</h1>
-    <p class="lede">Gold is still hardcoded. The side panel is where research for the selected ticker will live.</p>
-    <div class="layout">
-      <div>
-        <section class="topic">
-          <h2>Gold</h2>
-          <p>Research the metal itself or the businesses that mine it. A miner is not the same bet as a bullion trust.</p>
-        </section>
-        <ul>
-          <li class="selected"><span class="symbol">GLD</span><span class="name">SPDR Gold Shares</span><span class="desc">A trust holding physical gold.</span></li>
-          <li><span class="symbol">IAU</span><span class="name">iShares Gold Trust</span><span class="desc">Another physically backed gold trust. Compare fees and trading costs.</span></li>
-          <li><span class="symbol">GDX</span><span class="name">VanEck Gold Miners ETF</span><span class="desc">A basket of gold-mining companies.</span></li>
-          <li><span class="symbol">NEM</span><span class="name">Newmont</span><span class="desc">A gold-producing business. Costs and output matter, not just the metal.</span></li>
-          <li><span class="symbol">B</span><span class="name">Barrick Mining</span><span class="desc">A gold and copper producer. Its former NYSE ticker was GOLD.</span></li>
-        </ul>
-      </div>
-      <aside>
-        <p>Selected ticker</p>
-        <h2>GLD</h2>
-        <p>SPDR Gold Shares. A trust holding physical gold, after expenses.</p>
-        <ul>
-          <li><a href="https://stockanalysis.com/etf/gld/">Stock Analysis</a></li>
-          <li><a href="https://finviz.com/quote.ashx?t=GLD">Finviz</a></li>
-          <li><a href="https://finance.yahoo.com/quote/GLD/chart/">Yahoo chart</a></li>
-          <li><a href="https://www.spdrgoldshares.com/usa/gld/">Fund issuer</a></li>
-        </ul>
-      </aside>
+  <a class="skip" href="#main-content">Skip to ticker results</a>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brandmark" aria-hidden="true">MF</div>
+      <div><div class="brand-name">Market Forces</div><div class="brand-sub">A starting point for ticker research</div></div>
+      <div class="masthead-meta">U.S.-listed stocks &amp; funds<br><span id="catalog-count"></span> · October 2026 directory</div>
     </div>
-    <details>
-      <summary>Before you trade: a simple research checklist</summary>
-      <ol>
-        <li><strong>Know what you own.</strong> A stock is a business. A bullion trust and a futures fund are not.</li>
-        <li><strong>Check the business or fund.</strong> Revenue and debt for a company. Holdings, fees, and the prospectus for a fund.</li>
-        <li><strong>Look for the next catalyst.</strong> Earnings, inflation reports, inventories, and supply changes. Separate an announced event from a rumor.</li>
-        <li><strong>Define your downside.</strong> Decide how much loss you can tolerate before choosing a position size.</li>
-      </ol>
-    </details>
-  </main>
-  <footer>No live prices on this page. Research opens on the other site.</footer>
+  </header>
+  <div class="shell">
+    <div class="topline">
+      <div><h1>Start with what moves the market.</h1><p>Choose a theme, explore its tickers, then open your research.</p></div>
+      <a class="guide-link" href="#research-guide" id="guide-link">New to researching a ticker?</a>
+    </div>
+    <form class="searchbar" role="search" id="search-form">
+      <div class="search-field">
+        <label for="search">Find a theme, company, or ticker</label>
+        <div class="inputwrap">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+          <input id="search" type="search" placeholder="Try gold, fertilizer, inflation, or NTR" autocomplete="off" aria-controls="ticker-results" spellcheck="false">
+        </div>
+      </div>
+      <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
+    </form>
+    <div class="workspace">
+      <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Economic themes and assets"></nav><p class="sidebar-foot">A theme suggests a connection, not a guaranteed price direction. Each ticker gives you a different kind of exposure.</p></aside>
+      <main class="content" id="main-content" tabindex="-1">
+        <section class="topic" id="topic" aria-labelledby="topic-title"></section>
+        <div class="results-head"><h3 id="results-heading">Common tickers</h3><span id="result-count"></span></div>
+        <div id="ticker-results"></div>
+        <details class="learn" id="research-guide">
+          <summary>Before you trade: a simple research checklist</summary>
+          <div class="learn-body">
+            <ol>
+              <li><strong>Know what you own.</strong> A stock is a business. A stock ETF holds a basket of businesses. Bullion trusts and futures funds have different structures and risks.</li>
+              <li><strong>Check the business or fund.</strong> For a company, read revenue, profit, debt, cash flow, and management guidance. For a fund, check its issuer, holdings, fees, index, concentration, and prospectus.</li>
+              <li><strong>Look for the next catalyst.</strong> Earnings, inflation reports, central-bank decisions, inventory reports, and supply changes can matter. Separate an announced event from speculation.</li>
+              <li><strong>Check the market price.</strong> Valuation, trading volume, the bid–ask spread, and past price swings help you understand what a trade may cost. A good story can already be priced in.</li>
+              <li><strong>Cross-check the conversation.</strong> Social sentiment reflects the people posting, not every investor. Compare claims with filings and primary sources.</li>
+              <li><strong>Define your downside.</strong> Decide how much loss you can tolerate before choosing a position size. Understand your order type and any tax consequences.</li>
+            </ol>
+            <p>ETF = exchange-traded fund. A ticker is the short symbol used to identify a security on an exchange. The examples here are research starting points, not buy or sell recommendations.</p>
+          </div>
+        </details>
+      </main>
+      <aside class="research" id="research" tabindex="-1" aria-label="Selected ticker research"></aside>
+    </div>
+    <p class="sr-only" role="status" id="status" aria-live="polite" aria-atomic="true"></p>
+  </div>
+  <footer><p>No live prices on this page. Research opens in a new tab; some services require sign-in or a subscription.</p><p><a href="https://www.investor.gov/introduction-investing" class="footer-link" target="_blank" rel="noopener noreferrer">Investor.gov beginner resources<span class="sr-only"> (opens in a new tab)</span></a></p></footer>
+  <noscript><p style="padding:1rem">Enable JavaScript to search this directory. You can still visit <a href="https://stockanalysis.com/">Stock Analysis</a> or <a href="https://finviz.com/">Finviz</a> directly.</p></noscript>
+  <script>
+  'use strict';
+  // All catalog data and link builders live in this file. No API key or server is needed.
+  // Add a stock/fund below and include its symbol in a theme's "symbols" list.
+  const stock = (symbol,name,exposure,description,official='') => ({symbol,name,kind:'stock',exposure,description,official});
+  const fund = (symbol,name,exposure,description,issuer,official='') => ({symbol,name,kind:'fund',exposure,description,issuer,official});
+  const instruments = [
+    fund('GLD','SPDR Gold Shares','Bullion','A trust holding physical gold; exposure to gold prices after expenses.','State Street','https://www.spdrgoldshares.com/usa/gld/'),
+    fund('IAU','iShares Gold Trust','Bullion','A physically backed gold trust. Compare expenses and trading costs with other gold funds.','iShares'),
+    fund('GDX','VanEck Gold Miners ETF','Mining stocks','A basket of gold-mining companies, with business risks as well as gold exposure.','VanEck','https://www.vaneck.com/us/en/investments/gold-miners-etf-gdx/'),
+    stock('NEM','Newmont','Gold miner','A gold-producing business. Costs, output, and execution affect its shares.'),
+    stock('B','Barrick Mining','Gold & copper miner','A gold and copper producer. Its former NYSE ticker was GOLD.','https://www.barrick.com/English/investors/default.aspx'),
+    fund('SLV','iShares Silver Trust','Bullion','A trust holding physical silver, less expenses.','iShares'),
+    fund('SIVR','abrdn Physical Silver Shares ETF','Bullion','Physically backed silver exposure; compare fees and liquidity.','Aberdeen','https://www.aberdeeninvestments.com/en-us/investor/funds/view-all-funds/abrdn-physical-silver-shares-etf-us0032641088'),
+    fund('SIL','Global X Silver Miners ETF','Mining stocks','A basket of silver-mining businesses rather than physical silver.','Global X'),
+    stock('PAAS','Pan American Silver','Silver & gold miner','A precious-metals producer exposed to silver, gold, operating costs, and local conditions.'),
+    fund('USO','United States Oil Fund','Commodity futures','An oil-futures commodity pool; its returns can differ materially from spot crude oil.','USCF','https://www.uscfinvestments.com/uso'),
+    fund('BNO','United States Brent Oil Fund','Commodity futures','Brent crude oil futures exposure. Contract rolls and fund costs affect returns.','USCF'),
+    fund('XLE','Energy Select Sector SPDR ETF','Energy stocks','U.S. large-cap energy businesses. Its holdings can be concentrated in major producers.','State Street'),
+    stock('XOM','Exxon Mobil','Integrated energy','Oil and gas production, refining, and other energy operations.'),
+    stock('CVX','Chevron','Integrated energy','Oil and gas production and refining; profits depend on more than crude prices.'),
+  ];
+  const bySymbol = Object.fromEntries(instruments.map(item => [item.symbol,item]));
+  const themes = [
+    {id:'gold',name:'Gold',mark:'Au',group:'Assets',symbols:['GLD','IAU','GDX','NEM','B'],tags:'precious metals bullion safe haven gold miners GOLD Barrick',description:'Research the metal itself or the businesses that mine it.',connection:'Watch real interest rates, the dollar, central-bank demand, and risk sentiment. Gold miners also face business and operating risks.',links:[['Gold fund & bullion','https://www.spdrgoldshares.com/usa/gld/'],['Real yields · FRED','https://fred.stlouisfed.org/series/DFII10']]},
+    {id:'silver',name:'Silver',mark:'Ag',group:'Assets',symbols:['SLV','SIVR','SIL','PAAS'],tags:'precious metals bullion solar industrial demand',description:'Silver combines precious-metal demand with industrial uses.',connection:'Bullion funds and silver miners give different exposure. Industrial demand and gold-market sentiment can both matter.',links:[['Commodity data · World Bank','https://www.worldbank.org/en/research/commodity-markets']]},
+    {id:'oil',name:'Oil & energy',mark:'O',group:'Assets',symbols:['USO','BNO','XLE','XOM','CVX'],tags:'crude petroleum brent wti opec gasoline supply geopolitics war',description:'Explore crude oil futures and the companies that produce and process energy.',connection:'Supply, OPEC decisions, inventories, and global demand can affect oil. An oil company or stock ETF is not a direct crude-price tracker.',links:[['Oil inventories · EIA','https://www.eia.gov/petroleum/supply/weekly/'],['Oil fund documents','https://www.uscfinvestments.com/uso']]},
+  ];
+  const $ = id => document.getElementById(id);
+  const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const google = query => 'https://www.google.com/search?q=' + encodeURIComponent(query);
+  const googleNews = query => 'https://www.google.com/search?tbm=nws&q=' + encodeURIComponent(query);
+  const externalAttrs = ' target="_blank" rel="noopener noreferrer"';
+  const link = (title,url,description='',featured=false) => '<a class="resource-link' + (featured?' featured':'') + '" href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + (description?'<small>' + escapeHTML(description) + '</small>':'') + '<span class="sr-only"> (opens in a new tab)</span></a>';
+  const fundUsesFutures = item => item.exposure.includes('futures');
+  const stockAnalysisURL = item => 'https://stockanalysis.com/' + (item.kind==='stock'?'stocks/':'etf/') + item.symbol.toLowerCase() + '/';
+  const relatedThemes = item => themes.filter(theme => theme.symbols.includes(item.symbol));
+  function researchLinks(item) {
+    const s = item.symbol;
+    const root = stockAnalysisURL(item);
+    const newsQuery = s + ' ' + item.name;
+    const official = item.official || google(item.name + ' ' + s + (item.kind==='stock'?' official investor relations': ' ' + item.issuer + ' official fund holdings fees prospectus'));
+    const groups = [
+      {title:'Overview & analysis',links:[
+        ['Stock Analysis',root,'Overview & key facts',true],
+        ['Finviz','https://finviz.com/quote.ashx?t=' + encodeURIComponent(s),'Chart, stats & headlines'],
+        ['Yahoo chart','https://finance.yahoo.com/quote/' + encodeURIComponent(s) + '/chart/','Price history & volume'],
+        ['Analyst views',item.kind==='stock'?root+'forecast/':'https://seekingalpha.com/symbol/'+s,'Estimates & opinion']
+      ]}
+    ];
+    if(item.kind==='stock') {
+      groups.push({title:'Financials & primary sources',links:[
+        ['Income statement',root+'financials/','Revenue & profit'],
+        ['Balance sheet',root+'financials/balance-sheet/','Assets, debt & equity'],
+        ['Cash flow',root+'financials/cash-flow-statement/','Cash in & cash out'],
+        ['SEC filings','https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK='+encodeURIComponent(s)+'&owner=exclude&count=40','Official reports'],
+        [item.official?'Investor relations':'Find investor relations',official,item.official?'Company source':'Google search'],
+        ['Earnings & guidance',google(item.name+' '+s+' next earnings date investor relations guidance'),'Google search']
+      ]});
+      groups.push({title:'Valuation & distributions',links:[
+        ['Valuation & ratios',root+'statistics/','Multiples & key metrics'],
+        ['Dividend history',root+'dividend/','Past payouts, if any']
+      ]});
+    } else {
+      const useIssuerForHoldings = item.exposure==='Bullion' || item.exposure==='Currency trust' || fundUsesFutures(item);
+      const holdingsURL = useIssuerForHoldings ? official : root+'holdings/';
+      groups.push({title:'Fund holdings & documents',links:[
+        [item.official?'Fund issuer':'Find fund issuer',official,item.official?'Official source':'Google search'],
+        ['Holdings & exposure',holdingsURL,useIssuerForHoldings?'Issuer details':'What the fund owns'],
+        ['Fees & structure',root,'Expense ratio & fund facts'],
+        ['Reports & prospectus',google(item.name+' '+s+' '+item.issuer+' official annual report prospectus'),'Google search']
+      ]});
+    }
+    groups.push({title:'News & the next catalyst',links:[
+      ['Google News',googleNews(newsQuery),'Ticker + name news search'],
+      ['Press releases',google(item.name+' '+s+' official press releases'),'Google search']
+    ]});
+    groups.push({title:'Sentiment & investor discussions',links:[
+      ['Stocktwits','https://stocktwits.com/symbol/'+encodeURIComponent(s),'Ticker feed & sentiment'],
+      ['Reddit search','https://www.reddit.com/search/?q='+encodeURIComponent(s+' '+item.name)+'&sort=new','Recent ticker discussions'],
+      ['X cashtag search','https://x.com/search?q='+encodeURIComponent('$'+s+' '+(s.length<3?item.name:''))+'&src=typed_query&f=live','Recent posts · sign-in may apply'],
+      ['Seeking Alpha','https://seekingalpha.com/symbol/'+encodeURIComponent(s),'Analysis & comments']
+    ]});
+    return groups;
+  }
+  let state = {theme:'gold',query:'',kind:'all',selected:'GLD'};
+  function matchingThemes(query) {
+    const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+    return themes.filter(theme => {
+      const text = (theme.name+' '+theme.tags).toLowerCase();
+      return words.every(word => text.includes(word));
+    });
+  }
+  function visibleInstruments() {
+    let pool;
+    const query = state.query.trim().toLowerCase();
+    if(query) {
+      const matchedSymbols = new Set(matchingThemes(query).flatMap(theme=>theme.symbols));
+      const words = query.split(/\s+/).filter(Boolean);
+      pool = instruments.filter(item => {
+        const text = (item.symbol+' '+item.name+' '+item.exposure+' '+item.description+' '+(item.issuer||'')).toLowerCase();
+        return matchedSymbols.has(item.symbol) || words.every(word => text.includes(word));
+      });
+      pool.sort((a,b) => Number(b.symbol.toLowerCase()===query)-Number(a.symbol.toLowerCase()===query));
+    } else {
+      pool = state.theme==='all'?instruments:themes.find(theme=>theme.id===state.theme).symbols.map(symbol=>bySymbol[symbol]);
+    }
+    return pool.filter(item=>state.kind==='all'||item.kind===state.kind);
+  }
+  function renderNav() {
+    const button = (id,name,mark,count) => '<button type="button" class="theme-button" data-theme="' + id + '" aria-pressed="' + (!state.query && state.theme===id) + '"><span class="theme-mark" aria-hidden="true">' + escapeHTML(mark) + '</span><span>' + escapeHTML(name) + '</span><span class="theme-count" aria-hidden="true">' + count + '</span></button>';
+    let html = button('all','All tickers','All',instruments.length);
+    let previousGroup = '';
+    for(const theme of themes) {
+      if(theme.group!==previousGroup) {html+='<div class="nav-label">'+escapeHTML(theme.group)+'</div>';previousGroup=theme.group;}
+      html += button(theme.id,theme.name,theme.mark,theme.symbols.length);
+    }
+    $('theme-nav').innerHTML=html;
+  }
+  function renderTopic() {
+    if(state.query) {
+      const matches=matchingThemes(state.query);
+      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, assets, and economic themes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
+      return;
+    }
+    if(state.theme==='all') {
+      $('topic').innerHTML='<p class="eyebrow">Full directory</p><h2 id="topic-title">All common tickers</h2><p>Browse '+instruments.length+' stocks and funds, or choose an asset or economic force to narrow your starting point.</p><p class="connection">A stock is a business; a fund may hold stocks, bonds, bullion, currencies, or futures. Check the exposure label before comparing tickers.</p>';
+      return;
+    }
+    const theme=themes.find(item=>item.id===state.theme);
+    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(theme.group)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+escapeHTML(theme.description)+'</p><p class="connection"><strong>The connection: </strong>'+escapeHTML(theme.connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>';
+  }
+  function renderResults(pool) {
+    $('result-count').textContent=pool.length+' '+(pool.length===1?'ticker':'tickers');
+    $('results-heading').textContent=state.query?'Matching tickers':'Common tickers';
+    if(!pool.length) {
+      $('ticker-results').innerHTML='<div class="empty"><h3>No matching tickers</h3><p>Try a shorter term, a symbol like GLD, or switch to stocks &amp; funds.</p><button type="button" class="reset-button" id="reset-search">Reset search &amp; filter</button></div>';
+      return;
+    }
+    $('ticker-results').innerHTML='<div class="ticker-list">'+pool.map(item => {
+      const selected=item.symbol===state.selected;
+      return '<div class="ticker-row'+(selected?' selected':'')+'"><button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span></span><span class="sr-only">Select '+item.symbol+' for research links</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
+    }).join('')+'</div>';
+  }
+  function renderResearch() {
+    const item=bySymbol[state.selected];
+    if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
+    const groups=researchLinks(item);
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p><p class="note">'+escapeHTML(item.description)+'</p></div><div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'');
+  }
+  function render(announce=true) {
+    const focusedTheme=document.activeElement?.dataset?.theme;
+    const pool=visibleInstruments();
+    if(!pool.some(item=>item.symbol===state.selected)) state.selected=pool[0]?.symbol||null;
+    renderNav();renderTopic();renderResults(pool);renderResearch();
+    if(focusedTheme) document.querySelector('.theme-button[data-theme="'+focusedTheme+'"]')?.focus({preventScroll:true});
+    if(announce) $('status').textContent=pool.length+' matching tickers.'+(state.selected?' Research links shown for '+state.selected+'.':'');
+  }
+  function chooseTheme(id) {
+    if(id!=='all'&&!themes.some(theme=>theme.id===id)) throw new Error('Unknown theme.');
+    state.theme=id;state.query='';$('search').value='';render();
+  }
+  function chooseSymbol(symbol,moveFocus=false) {
+    const item=bySymbol[symbol];
+    if(!item) throw new Error('Unknown ticker.');
+    if(!visibleInstruments().some(current=>current.symbol===symbol)) {
+      state.query=symbol;state.kind='all';$('search').value=symbol;$('kind-filter').value='all';
+    }
+    state.selected=symbol;
+    const pool=visibleInstruments();
+    renderNav();renderTopic();
+    // Keep the clicked button in the DOM so keyboard focus is preserved.
+    if(document.querySelector('.ticker-select[data-symbol="'+symbol+'"]')) {
+      for(const button of document.querySelectorAll('.ticker-select')) {
+        const selected=button.dataset.symbol===symbol;
+        button.setAttribute('aria-pressed',String(selected));
+        button.closest('.ticker-row').classList.toggle('selected',selected);
+      }
+    } else {renderResults(pool);}
+    renderResearch();
+    $('status').textContent='Research links shown for '+symbol+'.';
+    if(moveFocus&&window.matchMedia('(max-width:1180px)').matches) {
+      $('research').focus({preventScroll:true});
+      $('research').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});
+    }
+    return {symbol:item.symbol,name:item.name,kind:item.kind,exposure:item.exposure,links:researchLinks(item)};
+  }
+  $('search-form').addEventListener('submit',event=>event.preventDefault());
+  $('search').addEventListener('input',event=>{state.query=event.target.value.trim();render();});
+  $('kind-filter').addEventListener('change',event=>{state.kind=event.target.value;render();});
+  document.addEventListener('click',event=>{
+    const themeButton=event.target.closest('[data-theme]');
+    if(themeButton){chooseTheme(themeButton.dataset.theme);return;}
+    const tickerButton=event.target.closest('[data-symbol]');
+    if(tickerButton){chooseSymbol(tickerButton.dataset.symbol,true);return;}
+    if(event.target.closest('#reset-search')){state.query='';state.kind='all';$('search').value='';$('kind-filter').value='all';render();$('search').focus();}
+  });
+  $('guide-link').addEventListener('click',()=>{$('research-guide').open=true;});
+  $('catalog-count').textContent=instruments.length+' tickers';
+  render(false);
+  </script>
 </body>
 </html>
