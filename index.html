@@ -434,6 +434,23 @@
   $('guide-link').addEventListener('click',()=>{$('research-guide').open=true;});
   $('catalog-count').textContent=instruments.length+' tickers';
   render(false);
+  // Optional WebMCP integration. Search and selection use the same visible app state.
+  if(document.modelContext?.registerTool) {
+    const lifecycle=new AbortController();
+    const tools=[
+      {name:'search_ticker_directory',title:'Search ticker directory',description:'Search economic themes, company names, and ticker symbols; update the visible results. Does not open external websites.',inputSchema:{type:'object',properties:{query:{type:'string',maxLength:200},kind:{type:'string',enum:['all','stock','fund']}},required:['query'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){
+        if(!input||typeof input.query!=='string'||input.query.length>200||Object.keys(input).some(key=>!['query','kind'].includes(key))||(input.kind!==undefined&&!['all','stock','fund'].includes(input.kind)))throw new Error('Provide a query string and a valid kind.');
+        state.query=input.query.trim();state.kind=input.kind||'all';$('search').value=state.query;$('kind-filter').value=state.kind;render();
+        return {tickers:visibleInstruments().map(({symbol,name,kind,exposure})=>({symbol,name,kind,exposure})),themes:matchingThemes(state.query).map(({id,name})=>({id,name}))};
+      }},
+      {name:'select_ticker_for_research',title:'Select ticker for research',description:'Select a ticker from this directory and return its research links. Does not open external websites.',inputSchema:{type:'object',properties:{symbol:{type:'string'}},required:['symbol'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){
+        if(!input||typeof input.symbol!=='string'||Object.keys(input).some(key=>key!=='symbol'))throw new Error('Provide a ticker symbol.');
+        return chooseSymbol(input.symbol.trim().toUpperCase());
+      }}
+    ];
+    for(const tool of tools){try{Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}}
+    window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
+  }
   </script>
 </body>
 </html>
