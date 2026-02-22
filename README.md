@@ -8,3 +8,9 @@ By Weng (Weng Fei Fung)
 <a target="_blank" href="https://www.youtube.com/@WengTeachesCode/" rel="nofollow"><img src="https://img.shields.io/badge/Youtube-red?style=flat&logo=youtube&labelColor=red" alt="Youtube" data-canonical-src="https://img.shields.io/badge/Youtube-red?style=flat&amp;logo=youtube&amp;labelColor=red" style="max-width:10ch;"></a>
 
 Beginner’s directory of common stocks and funds, grouped by economic theme, with research links for each ticker.
+
+![Gold theme with research links for the GLD fund](screenshots/directory.png)
+
+![Research links for the Newmont stock, including financials and filings](screenshots/stock-research.png)
+
+<img src="screenshots/phone.png" alt="Market Forces on a phone" width="320">
