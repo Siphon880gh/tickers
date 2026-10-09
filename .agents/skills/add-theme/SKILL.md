@@ -15,14 +15,14 @@ If they already named it, restate that topic in one line and continue.
 
 ## Where the catalog lives
 
-Everything is in `index.html`. There is no server and no separate data file.
+The catalog is `data/catalog.json`. `index.html` is the page. `js/app.js` builds links and renders the directory. There is no server.
 
-- `stock(symbol, name, exposure, description, official)`
-- `fund(symbol, name, exposure, description, issuer, official)`
+- A stock object has `symbol`, `name`, `kind` (`stock`), `exposure`, `description`, and optional `official`
+- A fund object has the same fields, `kind` (`fund`), and `issuer`
 - Each theme is `{id, name, mark, group, symbols, tags, description, connection, links}`
 - `group` is `Assets` or `Economic forces`
 - `links` is `[[title, url], ...]` for the theme's macro sources, not per-ticker links
-- `researchLinks(item)` builds every ticker's research links from `kind`, `exposure`, `issuer`, and `official`
+- `researchLinks(item)` in `js/app.js` builds every ticker's research links from `kind`, `exposure`, `issuer`, and `official`
 
 A ticker's research links are not a hand-written list. Set the fields `researchLinks` already reads. Put `futures` in `exposure` when the fund holds commodity or currency futures. Use `Bullion` or `Currency trust` when holdings must come from the issuer page instead of Stock Analysis.
 
@@ -39,6 +39,6 @@ A ticker's research links are not a hand-written list. Set the fields `researchL
 
 Show the theme fields and each new or reused ticker. For each ticker, list the research-link groups `researchLinks` will produce (overview, financials or fund documents, news, sentiment).
 
-Edit `index.html` only after the user accepts the proposal. Add new instruments beside related entries, and include every new symbol in the theme's `symbols` array. A theme symbol must exist in `instruments`.
+Edit `data/catalog.json` only after the user accepts the proposal. Add new instruments beside related entries, and include every new symbol in the theme's `symbols` array. A theme symbol must exist in `instruments`.
 
-Change `researchLinks` only when a new exposure type needs a different holdings or filings rule. Say why.
+Change `researchLinks` in `js/app.js` only when a new exposure type needs a different holdings or filings rule. Say why.

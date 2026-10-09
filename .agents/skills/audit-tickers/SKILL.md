@@ -9,13 +9,13 @@ description: >-
 
 # Audit the ticker catalog
 
-Check the catalog as it is today. Do not treat the copy in `index.html` as proof that a symbol, name, or fund structure is still right.
+Check the catalog as it is today. Do not treat the copy in `data/catalog.json` as proof that a symbol, name, or fund structure is still right.
 
 ## Read the catalog
 
-`index.html` holds `instruments` and `themes`. Every theme `symbols` entry must match an instrument `symbol`. Note orphans both ways: a symbol in a theme that is not in `instruments`, and an instrument that no theme lists.
+`data/catalog.json` holds `instruments` and `themes`. Every theme `symbols` entry must match an instrument `symbol`. Note orphans both ways: a symbol in a theme that is not in `instruments`, and an instrument that no theme lists.
 
-`researchLinks(item)` builds research links from `kind`, `exposure`, `issuer`, and `official`. An audit of those links means checking those fields, not a stored URL list.
+`researchLinks(item)` in `js/app.js` builds research links from `kind`, `exposure`, `issuer`, and `official`. An audit of those links means checking those fields, not a stored URL list.
 
 ## Check each ticker
 
@@ -45,4 +45,4 @@ Lead with the findings:
 - **Add** — symbol, name, kind, exposure, and which existing theme it belongs on
 - **Keep** — only mention a ticker here if you checked it and it is accurate; do not list the whole catalog as a keep list
 
-Do not edit `index.html` until the user says which findings to apply. When applying, update `instruments` and every theme `symbols` list together so the two stay in sync.
+Do not edit `data/catalog.json` until the user says which findings to apply. When applying, update `instruments` and every theme `symbols` list together so the two stay in sync.

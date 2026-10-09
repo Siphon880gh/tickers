@@ -1,0 +1,946 @@
+{
+  "updated": "2026-10-09",
+  "instruments": [
+    {
+      "symbol": "GLD",
+      "name": "SPDR Gold Shares",
+      "kind": "fund",
+      "exposure": "Bullion",
+      "description": "A trust holding physical gold; exposure to gold prices after expenses.",
+      "issuer": "State Street",
+      "official": "https://www.spdrgoldshares.com/usa/gld/"
+    },
+    {
+      "symbol": "IAU",
+      "name": "iShares Gold Trust",
+      "kind": "fund",
+      "exposure": "Bullion",
+      "description": "A physically backed gold trust. Compare expenses and trading costs with other gold funds.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "GDX",
+      "name": "VanEck Gold Miners ETF",
+      "kind": "fund",
+      "exposure": "Mining stocks",
+      "description": "A basket of gold-mining companies, with business risks as well as gold exposure.",
+      "issuer": "VanEck",
+      "official": "https://www.vaneck.com/us/en/investments/gold-miners-etf-gdx/"
+    },
+    {
+      "symbol": "NEM",
+      "name": "Newmont",
+      "kind": "stock",
+      "exposure": "Gold miner",
+      "description": "A gold-producing business. Costs, output, and execution affect its shares.",
+      "official": ""
+    },
+    {
+      "symbol": "B",
+      "name": "Barrick Mining",
+      "kind": "stock",
+      "exposure": "Gold & copper miner",
+      "description": "A gold and copper producer. Its former NYSE ticker was GOLD.",
+      "official": "https://www.barrick.com/English/investors/default.aspx"
+    },
+    {
+      "symbol": "SLV",
+      "name": "iShares Silver Trust",
+      "kind": "fund",
+      "exposure": "Bullion",
+      "description": "A trust holding physical silver, less expenses.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "SIVR",
+      "name": "abrdn Physical Silver Shares ETF",
+      "kind": "fund",
+      "exposure": "Bullion",
+      "description": "Physically backed silver exposure; compare fees and liquidity.",
+      "issuer": "Aberdeen",
+      "official": "https://www.aberdeeninvestments.com/en-us/investor/funds/view-all-funds/abrdn-physical-silver-shares-etf-us0032641088"
+    },
+    {
+      "symbol": "SIL",
+      "name": "Global X Silver Miners ETF",
+      "kind": "fund",
+      "exposure": "Mining stocks",
+      "description": "A basket of silver-mining businesses rather than physical silver.",
+      "issuer": "Global X",
+      "official": ""
+    },
+    {
+      "symbol": "PAAS",
+      "name": "Pan American Silver",
+      "kind": "stock",
+      "exposure": "Silver & gold miner",
+      "description": "A precious-metals producer exposed to silver, gold, operating costs, and local conditions.",
+      "official": ""
+    },
+    {
+      "symbol": "USO",
+      "name": "United States Oil Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "An oil-futures commodity pool; its returns can differ materially from spot crude oil.",
+      "issuer": "USCF",
+      "official": "https://www.uscfinvestments.com/uso"
+    },
+    {
+      "symbol": "BNO",
+      "name": "United States Brent Oil Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "Brent crude oil futures exposure. Contract rolls and fund costs affect returns.",
+      "issuer": "USCF",
+      "official": ""
+    },
+    {
+      "symbol": "XLE",
+      "name": "Energy Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Energy stocks",
+      "description": "U.S. large-cap energy businesses. Its holdings can be concentrated in major producers.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "XOM",
+      "name": "Exxon Mobil",
+      "kind": "stock",
+      "exposure": "Integrated energy",
+      "description": "Oil and gas production, refining, and other energy operations.",
+      "official": ""
+    },
+    {
+      "symbol": "CVX",
+      "name": "Chevron",
+      "kind": "stock",
+      "exposure": "Integrated energy",
+      "description": "Oil and gas production and refining; profits depend on more than crude prices.",
+      "official": ""
+    },
+    {
+      "symbol": "UNG",
+      "name": "United States Natural Gas Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "Natural-gas futures exposure; weather and contract rolls can create large price swings.",
+      "issuer": "USCF",
+      "official": ""
+    },
+    {
+      "symbol": "FCG",
+      "name": "First Trust Natural Gas ETF",
+      "kind": "fund",
+      "exposure": "Energy stocks",
+      "description": "A basket of natural-gas-related companies; it does not hold physical gas.",
+      "issuer": "First Trust",
+      "official": ""
+    },
+    {
+      "symbol": "EQT",
+      "name": "EQT Corporation",
+      "kind": "stock",
+      "exposure": "Natural-gas producer",
+      "description": "A U.S. natural-gas producer exposed to gas prices, output, and production costs.",
+      "official": ""
+    },
+    {
+      "symbol": "LNG",
+      "name": "Cheniere Energy",
+      "kind": "stock",
+      "exposure": "LNG export business",
+      "description": "Liquefied natural gas infrastructure and exports. Contract terms shape its exposure.",
+      "official": ""
+    },
+    {
+      "symbol": "NTR",
+      "name": "Nutrien",
+      "kind": "stock",
+      "exposure": "Fertilizer producer",
+      "description": "Potash, nitrogen, and agricultural retail. Crop economics and input prices affect demand.",
+      "official": "https://www.nutrien.com/investors"
+    },
+    {
+      "symbol": "MOS",
+      "name": "The Mosaic Company",
+      "kind": "stock",
+      "exposure": "Fertilizer producer",
+      "description": "A producer of phosphate and potash fertilizers.",
+      "official": "https://investors.mosaicco.com/home/"
+    },
+    {
+      "symbol": "CF",
+      "name": "CF Industries",
+      "kind": "stock",
+      "exposure": "Nitrogen fertilizer",
+      "description": "A nitrogen and ammonia producer. Natural gas is an important production input.",
+      "official": ""
+    },
+    {
+      "symbol": "CPER",
+      "name": "United States Copper Index Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "Copper futures exposure, with contract-roll and fund-cost effects.",
+      "issuer": "USCF",
+      "official": ""
+    },
+    {
+      "symbol": "COPX",
+      "name": "Global X Copper Miners ETF",
+      "kind": "fund",
+      "exposure": "Mining stocks",
+      "description": "A basket of copper miners. Shares also reflect operating and country risks.",
+      "issuer": "Global X",
+      "official": "https://www.globalxetfs.com/funds/COPX"
+    },
+    {
+      "symbol": "FCX",
+      "name": "Freeport-McMoRan",
+      "kind": "stock",
+      "exposure": "Copper & gold miner",
+      "description": "A copper-focused miner with additional gold exposure.",
+      "official": ""
+    },
+    {
+      "symbol": "SCCO",
+      "name": "Southern Copper",
+      "kind": "stock",
+      "exposure": "Copper miner",
+      "description": "A copper producer with significant Latin American operations.",
+      "official": ""
+    },
+    {
+      "symbol": "URA",
+      "name": "Global X Uranium ETF",
+      "kind": "fund",
+      "exposure": "Nuclear industry stocks",
+      "description": "Uranium and nuclear-component companies; a basket of businesses, not a spot uranium fund.",
+      "issuer": "Global X",
+      "official": "https://www.globalxetfs.com/funds/ura"
+    },
+    {
+      "symbol": "URNM",
+      "name": "Sprott Uranium Miners ETF",
+      "kind": "fund",
+      "exposure": "Uranium industry",
+      "description": "Uranium-related equities and physical-uranium vehicles. Check current holdings.",
+      "issuer": "Sprott",
+      "official": ""
+    },
+    {
+      "symbol": "CCJ",
+      "name": "Cameco",
+      "kind": "stock",
+      "exposure": "Uranium & nuclear fuel",
+      "description": "A uranium and nuclear-fuel business affected by contracting, supply, and production.",
+      "official": ""
+    },
+    {
+      "symbol": "DBA",
+      "name": "Invesco DB Agriculture Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "A basket of agricultural futures; its results differ from owning food businesses.",
+      "issuer": "Invesco",
+      "official": ""
+    },
+    {
+      "symbol": "CORN",
+      "name": "Teucrium Corn Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "Corn futures across contract maturities, with roll and expense effects.",
+      "issuer": "Teucrium",
+      "official": ""
+    },
+    {
+      "symbol": "WEAT",
+      "name": "Teucrium Wheat Fund",
+      "kind": "fund",
+      "exposure": "Commodity futures",
+      "description": "Wheat futures exposure. Weather, supply, and trade policy can matter.",
+      "issuer": "Teucrium",
+      "official": ""
+    },
+    {
+      "symbol": "DE",
+      "name": "Deere & Company",
+      "kind": "stock",
+      "exposure": "Farm equipment",
+      "description": "Agricultural and construction equipment. Farm income affects buying decisions.",
+      "official": ""
+    },
+    {
+      "symbol": "TIP",
+      "name": "iShares TIPS Bond ETF",
+      "kind": "fund",
+      "exposure": "Inflation-linked bonds",
+      "description": "U.S. inflation-protected Treasury bonds. Market prices also react to real interest rates.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "TLT",
+      "name": "iShares 20+ Year Treasury Bond ETF",
+      "kind": "fund",
+      "exposure": "Long-term bonds",
+      "description": "Long-duration U.S. Treasury bonds; prices are sensitive to changing yields.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "IEF",
+      "name": "iShares 7–10 Year Treasury Bond ETF",
+      "kind": "fund",
+      "exposure": "Intermediate bonds",
+      "description": "Intermediate-term U.S. Treasury bonds with interest-rate exposure.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "SHY",
+      "name": "iShares 1–3 Year Treasury Bond ETF",
+      "kind": "fund",
+      "exposure": "Short-term bonds",
+      "description": "Shorter-term U.S. Treasuries; generally less rate-sensitive than long-duration bonds.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "SGOV",
+      "name": "iShares 0–3 Month Treasury Bond ETF",
+      "kind": "fund",
+      "exposure": "Treasury bills",
+      "description": "Very short-term U.S. Treasury bills. Distributions change as short-term rates change.",
+      "issuer": "iShares",
+      "official": ""
+    },
+    {
+      "symbol": "UUP",
+      "name": "Invesco DB US Dollar Index Bullish Fund",
+      "kind": "fund",
+      "exposure": "Currency futures",
+      "description": "Long U.S. dollar exposure versus a specified currency basket, using futures.",
+      "issuer": "Invesco",
+      "official": ""
+    },
+    {
+      "symbol": "FXE",
+      "name": "Invesco CurrencyShares Euro Trust",
+      "kind": "fund",
+      "exposure": "Currency trust",
+      "description": "Euro exposure relative to the U.S. dollar, less expenses.",
+      "issuer": "Invesco",
+      "official": ""
+    },
+    {
+      "symbol": "FXY",
+      "name": "Invesco CurrencyShares Japanese Yen Trust",
+      "kind": "fund",
+      "exposure": "Currency trust",
+      "description": "Japanese yen exposure relative to the U.S. dollar, less expenses.",
+      "issuer": "Invesco",
+      "official": ""
+    },
+    {
+      "symbol": "SPY",
+      "name": "SPDR S&P 500 ETF Trust",
+      "kind": "fund",
+      "exposure": "Broad stock market",
+      "description": "A basket tracking the S&P 500, focused on large U.S. companies.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "kind": "fund",
+      "exposure": "Broad stock market",
+      "description": "Broad U.S. stock exposure across large, mid-sized, and smaller companies.",
+      "issuer": "Vanguard",
+      "official": ""
+    },
+    {
+      "symbol": "QQQ",
+      "name": "Invesco QQQ",
+      "kind": "fund",
+      "exposure": "Nasdaq-100 stocks",
+      "description": "Large non-financial Nasdaq companies; significant technology and growth exposure.",
+      "issuer": "Invesco",
+      "official": ""
+    },
+    {
+      "symbol": "XLY",
+      "name": "Consumer Discretionary Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Consumer stocks",
+      "description": "Businesses tied to discretionary spending, with concentration in major holdings.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "SMH",
+      "name": "VanEck Semiconductor ETF",
+      "kind": "fund",
+      "exposure": "Semiconductor stocks",
+      "description": "A basket of semiconductor businesses. Check its concentration and geographic exposure.",
+      "issuer": "VanEck",
+      "official": ""
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "kind": "stock",
+      "exposure": "Semiconductors",
+      "description": "GPUs, accelerated computing, and related technology; valuation and competition also matter.",
+      "official": ""
+    },
+    {
+      "symbol": "AMD",
+      "name": "Advanced Micro Devices",
+      "kind": "stock",
+      "exposure": "Semiconductors",
+      "description": "Processors and graphics chips for computing and data centers.",
+      "official": ""
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "kind": "stock",
+      "exposure": "Chips & software",
+      "description": "Semiconductors and infrastructure software; business lines have different drivers.",
+      "official": ""
+    },
+    {
+      "symbol": "XLI",
+      "name": "Industrial Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Industrial stocks",
+      "description": "Large U.S. industrial businesses across several industries.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "PAVE",
+      "name": "Global X U.S. Infrastructure Development ETF",
+      "kind": "fund",
+      "exposure": "Infrastructure stocks",
+      "description": "Businesses connected to U.S. infrastructure spending, including materials and equipment.",
+      "issuer": "Global X",
+      "official": ""
+    },
+    {
+      "symbol": "CAT",
+      "name": "Caterpillar",
+      "kind": "stock",
+      "exposure": "Industrial equipment",
+      "description": "Construction and mining equipment exposed to spending and economic cycles.",
+      "official": ""
+    },
+    {
+      "symbol": "NUE",
+      "name": "Nucor",
+      "kind": "stock",
+      "exposure": "Steel producer",
+      "description": "A U.S. steel producer affected by demand, input costs, capacity, and trade policy.",
+      "official": ""
+    },
+    {
+      "symbol": "VNQ",
+      "name": "Vanguard Real Estate ETF",
+      "kind": "fund",
+      "exposure": "Real estate stocks",
+      "description": "U.S. real-estate businesses and REITs. Property income and financing conditions matter.",
+      "issuer": "Vanguard",
+      "official": ""
+    },
+    {
+      "symbol": "XLRE",
+      "name": "Real Estate Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Real estate stocks",
+      "description": "Large U.S. real-estate businesses and REITs, with sector concentration.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "XLP",
+      "name": "Consumer Staples Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Consumer staples",
+      "description": "Businesses selling everyday essentials. Defensive demand does not eliminate market risk.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "XLU",
+      "name": "Utilities Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Utility stocks",
+      "description": "U.S. utility businesses; rates, regulation, and infrastructure spending can matter.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "XLV",
+      "name": "Health Care Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Health-care stocks",
+      "description": "U.S. health-care businesses with regulatory, product, and company risks.",
+      "issuer": "State Street",
+      "official": ""
+    },
+    {
+      "symbol": "PG",
+      "name": "Procter & Gamble",
+      "kind": "stock",
+      "exposure": "Consumer staples",
+      "description": "Everyday consumer products. Margins depend on pricing, costs, and demand.",
+      "official": ""
+    },
+    {
+      "symbol": "JNJ",
+      "name": "Johnson & Johnson",
+      "kind": "stock",
+      "exposure": "Health care",
+      "description": "Pharmaceuticals and medical technology, with product and regulatory exposure.",
+      "official": ""
+    },
+    {
+      "symbol": "ICLN",
+      "name": "iShares Global Clean Energy ETF",
+      "kind": "fund",
+      "exposure": "Clean energy stocks",
+      "description": "Global clean-energy businesses; check the current index and holdings.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239738/ishares-global-clean-energy-etf"
+    },
+    {
+      "symbol": "TAN",
+      "name": "Invesco Solar ETF",
+      "kind": "fund",
+      "exposure": "Solar stocks",
+      "description": "Solar-related businesses. Policy, financing, and competition affect returns.",
+      "issuer": "Invesco",
+      "official": ""
+    },
+    {
+      "symbol": "FSLR",
+      "name": "First Solar",
+      "kind": "stock",
+      "exposure": "Solar manufacturing",
+      "description": "A solar-module manufacturer exposed to project demand, policy, and execution.",
+      "official": ""
+    }
+  ],
+  "themes": [
+    {
+      "id": "gold",
+      "name": "Gold",
+      "mark": "Au",
+      "group": "Assets",
+      "symbols": [
+        "GLD",
+        "IAU",
+        "GDX",
+        "NEM",
+        "B"
+      ],
+      "tags": "precious metals bullion safe haven gold miners GOLD Barrick",
+      "description": "Research the metal itself or the businesses that mine it.",
+      "connection": "Watch real interest rates, the dollar, central-bank demand, and risk sentiment. Gold miners also face business and operating risks.",
+      "links": [
+        [
+          "Gold fund & bullion",
+          "https://www.spdrgoldshares.com/usa/gld/"
+        ],
+        [
+          "Real yields · FRED",
+          "https://fred.stlouisfed.org/series/DFII10"
+        ]
+      ]
+    },
+    {
+      "id": "silver",
+      "name": "Silver",
+      "mark": "Ag",
+      "group": "Assets",
+      "symbols": [
+        "SLV",
+        "SIVR",
+        "SIL",
+        "PAAS"
+      ],
+      "tags": "precious metals bullion solar industrial demand",
+      "description": "Silver combines precious-metal demand with industrial uses.",
+      "connection": "Bullion funds and silver miners give different exposure. Industrial demand and gold-market sentiment can both matter.",
+      "links": [
+        [
+          "Commodity data · World Bank",
+          "https://www.worldbank.org/en/research/commodity-markets"
+        ]
+      ]
+    },
+    {
+      "id": "oil",
+      "name": "Oil & energy",
+      "mark": "O",
+      "group": "Assets",
+      "symbols": [
+        "USO",
+        "BNO",
+        "XLE",
+        "XOM",
+        "CVX"
+      ],
+      "tags": "crude petroleum brent wti opec gasoline supply geopolitics war",
+      "description": "Explore crude oil futures and the companies that produce and process energy.",
+      "connection": "Supply, OPEC decisions, inventories, and global demand can affect oil. An oil company or stock ETF is not a direct crude-price tracker.",
+      "links": [
+        [
+          "Oil inventories · EIA",
+          "https://www.eia.gov/petroleum/supply/weekly/"
+        ],
+        [
+          "Oil fund documents",
+          "https://www.uscfinvestments.com/uso"
+        ]
+      ]
+    },
+    {
+      "id": "gas",
+      "name": "Natural gas",
+      "mark": "NG",
+      "group": "Assets",
+      "symbols": [
+        "UNG",
+        "FCG",
+        "EQT",
+        "LNG"
+      ],
+      "tags": "gas lng liquefied heating electricity weather storage",
+      "description": "Explore gas futures, gas producers, and LNG exports.",
+      "connection": "Weather, storage, electricity demand, and export capacity can influence gas. Exporters and producers can have different sensitivities.",
+      "links": [
+        [
+          "Gas storage · EIA",
+          "https://www.eia.gov/naturalgas/storage/"
+        ]
+      ]
+    },
+    {
+      "id": "fertilizer",
+      "name": "Fertilizer",
+      "mark": "N",
+      "group": "Assets",
+      "symbols": [
+        "NTR",
+        "MOS",
+        "CF"
+      ],
+      "tags": "fertiliser potash phosphate nitrogen ammonia agriculture farming crop food supply",
+      "description": "Companies behind the nutrients used to grow crops.",
+      "connection": "Crop prices, farm budgets, export restrictions, and fertilizer supply matter. Gas costs are especially important for nitrogen producers.",
+      "links": [
+        [
+          "Crop outlook · USDA",
+          "https://www.usda.gov/oce/commodity/wasde"
+        ],
+        [
+          "Commodity data · World Bank",
+          "https://www.worldbank.org/en/research/commodity-markets"
+        ]
+      ]
+    },
+    {
+      "id": "copper",
+      "name": "Copper",
+      "mark": "Cu",
+      "group": "Assets",
+      "symbols": [
+        "CPER",
+        "COPX",
+        "FCX",
+        "SCCO"
+      ],
+      "tags": "industrial metal electrification china mining electric vehicles ev",
+      "description": "Research copper futures or the businesses extracting the metal.",
+      "connection": "Construction, electrification, Chinese demand, and mine supply can matter. A mining company adds operating and country risks.",
+      "links": [
+        [
+          "Commodity data · World Bank",
+          "https://www.worldbank.org/en/research/commodity-markets"
+        ],
+        [
+          "Copper miners fund",
+          "https://www.globalxetfs.com/funds/COPX"
+        ]
+      ]
+    },
+    {
+      "id": "uranium",
+      "name": "Uranium & nuclear",
+      "mark": "U",
+      "group": "Assets",
+      "symbols": [
+        "URA",
+        "URNM",
+        "CCJ"
+      ],
+      "tags": "nuclear fuel reactors baseload electricity power uranium mining",
+      "description": "Uranium producers and businesses connected to nuclear power.",
+      "connection": "Reactor demand, long-term fuel contracts, policy, and production influence this market. Read fund holdings to see how much exposure is actually uranium.",
+      "links": [
+        [
+          "Nuclear energy · EIA",
+          "https://www.eia.gov/energyexplained/nuclear/"
+        ],
+        [
+          "Uranium fund holdings",
+          "https://www.globalxetfs.com/funds/ura"
+        ]
+      ]
+    },
+    {
+      "id": "agriculture",
+      "name": "Agriculture & crops",
+      "mark": "Agri",
+      "group": "Assets",
+      "symbols": [
+        "DBA",
+        "CORN",
+        "WEAT",
+        "DE"
+      ],
+      "tags": "food farming crops grain wheat corn drought harvest weather",
+      "description": "Agricultural commodities and the equipment businesses supporting farming.",
+      "connection": "Weather, harvests, trade policy, and farm income matter. Crop-futures funds and an equipment maker have very different economics.",
+      "links": [
+        [
+          "Crop outlook · USDA",
+          "https://www.usda.gov/oce/commodity/wasde"
+        ]
+      ]
+    },
+    {
+      "id": "property",
+      "name": "Real estate",
+      "mark": "RE",
+      "group": "Assets",
+      "symbols": [
+        "VNQ",
+        "XLRE"
+      ],
+      "tags": "housing property buildings reit rent commercial mortgage",
+      "description": "Funds holding listed property businesses and real-estate investment trusts.",
+      "connection": "Rents, occupancy, property type, borrowing costs, and economic conditions can affect returns. These funds are not direct house-price trackers.",
+      "links": [
+        [
+          "Home prices · FRED",
+          "https://fred.stlouisfed.org/series/CSUSHPINSA"
+        ],
+        [
+          "Treasury yield · FRED",
+          "https://fred.stlouisfed.org/series/DGS10"
+        ]
+      ]
+    },
+    {
+      "id": "inflation",
+      "name": "Inflation",
+      "mark": "CPI",
+      "group": "Economic forces",
+      "symbols": [
+        "TIP",
+        "GLD",
+        "DBA",
+        "USO",
+        "XLE"
+      ],
+      "tags": "inflation prices cpi purchasing power cost of living hedge",
+      "description": "Different ways investors research rising prices and inflation expectations.",
+      "connection": "Inflation-linked bonds, commodities, and businesses respond differently. None is a guaranteed short-term inflation hedge; starting prices and interest rates still matter.",
+      "links": [
+        [
+          "Consumer prices · BLS",
+          "https://www.bls.gov/cpi/"
+        ],
+        [
+          "Inflation expectations · FRED",
+          "https://fred.stlouisfed.org/series/T10YIE"
+        ]
+      ]
+    },
+    {
+      "id": "rates",
+      "name": "Interest rates",
+      "mark": "%",
+      "group": "Economic forces",
+      "symbols": [
+        "TLT",
+        "IEF",
+        "SHY",
+        "SGOV",
+        "TIP",
+        "VNQ"
+      ],
+      "tags": "fed fomc interest rates rate cuts hikes bonds treasury duration yields monetary policy",
+      "description": "Compare long-term bonds, short-term bonds, and rate-sensitive property stocks.",
+      "connection": "Bond prices generally move opposite to yields. Longer duration means more sensitivity. A rate cut does not guarantee that every bond or property fund rises.",
+      "links": [
+        [
+          "Fed meetings & decisions",
+          "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
+        ],
+        [
+          "10-year yield · FRED",
+          "https://fred.stlouisfed.org/series/DGS10"
+        ]
+      ]
+    },
+    {
+      "id": "dollar",
+      "name": "U.S. dollar",
+      "mark": "USD",
+      "group": "Economic forces",
+      "symbols": [
+        "UUP",
+        "FXE",
+        "FXY",
+        "GLD"
+      ],
+      "tags": "dollar usd strong weak forex currencies dxy euro yen exchange rates",
+      "description": "Currency exposure and assets often researched alongside dollar moves.",
+      "connection": "Interest-rate differences, growth expectations, and risk appetite affect currencies. UUP uses a specific basket, not every global currency.",
+      "links": [
+        [
+          "Broad dollar index · FRED",
+          "https://fred.stlouisfed.org/series/DTWEXBGS"
+        ]
+      ]
+    },
+    {
+      "id": "growth",
+      "name": "Economic growth",
+      "mark": "GDP",
+      "group": "Economic forces",
+      "symbols": [
+        "SPY",
+        "VTI",
+        "QQQ",
+        "XLY",
+        "XLI"
+      ],
+      "tags": "gdp growth economy expansion recession broad market stocks consumer spending risk appetite",
+      "description": "Broad markets and industries connected to business activity and consumer spending.",
+      "connection": "Investors weigh future earnings against valuations. Strong economic data can also lift interest-rate expectations, so good news does not always mean rising stocks.",
+      "links": [
+        [
+          "GDP · BEA",
+          "https://www.bea.gov/data/gdp/gross-domestic-product"
+        ],
+        [
+          "Employment · BLS",
+          "https://www.bls.gov/news.release/empsit.toc.htm"
+        ]
+      ]
+    },
+    {
+      "id": "ai",
+      "name": "AI & chip demand",
+      "mark": "AI",
+      "group": "Economic forces",
+      "symbols": [
+        "SMH",
+        "NVDA",
+        "AMD",
+        "AVGO"
+      ],
+      "tags": "ai artificial intelligence technology tech semiconductor chips gpu data center computing",
+      "description": "Semiconductor businesses connected to computing and AI infrastructure.",
+      "connection": "Capital spending, chip demand, competition, supply constraints, and valuations matter. An AI theme alone does not establish a company’s future profit.",
+      "links": [
+        [
+          "Industrial production · FRED",
+          "https://fred.stlouisfed.org/series/INDPRO"
+        ]
+      ]
+    },
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure spending",
+      "mark": "Build",
+      "group": "Economic forces",
+      "symbols": [
+        "PAVE",
+        "XLI",
+        "CAT",
+        "NUE",
+        "COPX"
+      ],
+      "tags": "infrastructure construction industrial factories steel roads spending stimulus fiscal policy",
+      "description": "Equipment, materials, and businesses tied to building and investment.",
+      "connection": "Government and private spending can influence orders, but timing, margins, capacity, and borrowing costs determine how that becomes profit.",
+      "links": [
+        [
+          "Construction spending · Census",
+          "https://www.census.gov/construction/c30/"
+        ]
+      ]
+    },
+    {
+      "id": "slowdown",
+      "name": "Economic slowdown",
+      "mark": "Def",
+      "group": "Economic forces",
+      "symbols": [
+        "XLP",
+        "XLU",
+        "XLV",
+        "PG",
+        "JNJ",
+        "IEF"
+      ],
+      "tags": "recession defensive slowdown essentials consumer staples health care utilities safe haven",
+      "description": "Essential services, everyday products, and bonds often researched during a slowdown.",
+      "connection": "Relatively steady demand does not make a stock safe from losses. A sector fund can still fall because of valuations, yields, regulation, or company problems.",
+      "links": [
+        [
+          "Unemployment · FRED",
+          "https://fred.stlouisfed.org/series/UNRATE"
+        ],
+        [
+          "GDP · BEA",
+          "https://www.bea.gov/data/gdp/gross-domestic-product"
+        ]
+      ]
+    },
+    {
+      "id": "transition",
+      "name": "Energy transition",
+      "mark": "E",
+      "group": "Economic forces",
+      "symbols": [
+        "ICLN",
+        "TAN",
+        "FSLR",
+        "COPX",
+        "URA"
+      ],
+      "tags": "renewables green energy clean energy solar decarbonization climate nuclear electrification",
+      "description": "Solar, clean-energy businesses, copper miners, and nuclear-related companies.",
+      "connection": "Policy, financing costs, project demand, competition, and input prices affect these businesses. Each part of the energy transition has different risks.",
+      "links": [
+        [
+          "Energy outlook · EIA",
+          "https://www.eia.gov/outlooks/steo/"
+        ]
+      ]
+    }
+  ]
+}
