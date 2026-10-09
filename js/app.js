@@ -25,6 +25,11 @@ async function loadJSON(path) {
   const link = (title,url,description='',featured=false) => '<a class="resource-link' + (featured?' featured':'') + '" href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + (description?'<small>' + escapeHTML(description) + '</small>':'') + '<span class="sr-only"> (opens in a new tab)</span></a>';
   const fundUsesFutures = item => item.exposure.includes('futures');
   const stockAnalysisURL = item => 'https://stockanalysis.com/' + (item.kind==='stock'?'stocks/':'etf/') + item.symbol.toLowerCase() + '/';
+  function redditSearchQuery(item) {
+    const words = (item.symbol + ' ' + item.name).split(/[^A-Za-z0-9]+/).filter(word => word.length > 0 && word.length <= 5);
+    words.push('stocks');
+    return words.join(' ');
+  }
   const relatedThemes = item => themes.filter(theme => theme.symbols.includes(item.symbol));
   function researchLinks(item) {
     const s = item.symbol;
@@ -41,7 +46,8 @@ async function loadJSON(path) {
     ];
     if(item.kind==='stock') {
       groups.push({title:'Financials & primary sources',links:[
-        ['Income statement',root+'financials/','Revenue & profit'],
+        ['Financials overview',root+'financials/','All statements'],
+        ['Income statement',root+'financials/income-statement/','Revenue & profit'],
         ['Balance sheet',root+'financials/balance-sheet/','Assets, debt & equity'],
         ['Cash flow',root+'financials/cash-flow-statement/','Cash in & cash out'],
         ['SEC filings','https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK='+encodeURIComponent(s)+'&owner=exclude&count=40','Official reports'],
@@ -68,7 +74,7 @@ async function loadJSON(path) {
     ]});
     groups.push({title:'Sentiment & investor discussions',links:[
       ['Stocktwits','https://stocktwits.com/symbol/'+encodeURIComponent(s),'Ticker feed & sentiment'],
-      ['Reddit search','https://www.reddit.com/search/?q='+encodeURIComponent(s+' '+item.name)+'&sort=new','Recent ticker discussions'],
+      ['Reddit search','https://www.reddit.com/search/?q='+encodeURIComponent(redditSearchQuery(item))+'&sort=new','Recent ticker discussions'],
       ['X cashtag search','https://x.com/search?q='+encodeURIComponent('$'+s+' '+(s.length<3?item.name:''))+'&src=typed_query&f=live','Recent posts · sign-in may apply'],
       ['Seeking Alpha','https://seekingalpha.com/symbol/'+encodeURIComponent(s),'Analysis & comments']
     ]});
