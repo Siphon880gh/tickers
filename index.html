@@ -41,6 +41,24 @@
     input[type=search]{width:100%;min-height:52px;border:1px solid #a8bac9;background:#fff;border-radius:9px;padding:.8rem 1rem .8rem 3rem;color:var(--ink);box-shadow:0 2px 4px #142d4005}
     input::placeholder{color:#617384;opacity:1}
     select{min-height:52px;border:1px solid #a8bac9;background:#fff;border-radius:9px;padding:.75rem 2.5rem .75rem .9rem;color:var(--ink);max-width:100%}
+    .mode-toggle{min-height:52px;border:1px solid #a8bac9;background:#fff;border-radius:9px;padding:.75rem .9rem;font-weight:650;color:var(--ink);white-space:nowrap}
+    .mode-toggle[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .index-check{display:flex;align-items:center;flex-shrink:0}
+    .index-check input{width:1.15rem;height:1.15rem;accent-color:var(--accent)}
+    .weight-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.65rem}
+    .weight-ticker{margin-top:1rem}
+    .weight-ticker h3{margin:0 0 .55rem;font-size:1rem}
+    .weight-row{border:1px solid var(--border);border-radius:8px;padding:.7rem .75rem;background:#fff}
+    .weight-top{display:flex;justify-content:space-between;gap:.75rem;align-items:baseline}
+    .weight-name{font-weight:700}
+    .weight-pct{font-variant-numeric:tabular-nums;font-weight:750}
+    .weight-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.35rem;color:var(--muted);font-size:.8125rem}
+    .weight-note{margin:.4rem 0 0;color:#3f5569;font-size:.8125rem}
+    .badge.estimate{background:#fff1d8;color:#835500}
+    .limits{margin:.4rem 1.25rem 1.25rem;font-size:.875rem;color:#3f5569}
+    .limits h3{font-size:.75rem;font-weight:750;text-transform:uppercase;letter-spacing:.075em;color:var(--muted);margin:1rem 0 .4rem}
+    .limits ul{margin:0;padding-left:1.1rem}
+    .limits li{margin:.35rem 0}
     .workspace{display:grid;grid-template-columns:218px minmax(310px,1fr) minmax(320px,372px);gap:1.25rem;align-items:start}
     .sidebar{position:sticky;top:1rem}
     .nav-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:750;margin:1.1rem .75rem .45rem}
@@ -116,7 +134,7 @@
     .footer-link{white-space:nowrap}
     @media(min-width:1181px){.sidebar{max-height:calc(100vh - 2rem);overflow:auto}.research{max-height:calc(100vh - 2rem);overflow-y:auto}}
     @media(max-width:1180px){.workspace{grid-template-columns:202px minmax(0,1fr)}.research{grid-column:2;position:static}.resource-links{grid-template-columns:repeat(3,minmax(0,1fr))}.sidebar{grid-column:1;grid-row:1 / span 2}.content{grid-column:2}.shell{padding:1.5rem}.masthead-inner{padding:1.1rem 1.5rem}}
-    @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
+    @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.mode-toggle{min-height:44px}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
     @media(max-width:480px){.ticker-row{flex-direction:column;align-items:stretch;gap:.75rem}.quick-link{align-self:flex-start}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
     @media print{.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
@@ -145,6 +163,7 @@
         </div>
       </div>
       <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option><option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
+      <button type="button" id="index-mode" class="mode-toggle" aria-pressed="false" aria-controls="research">Index weights</button>
     </form>
     <div class="workspace">
       <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Themes, industries, and markets"></nav><p class="sidebar-foot">A theme suggests a connection, not a guaranteed price direction. Each ticker gives you a different kind of exposure.</p></aside>

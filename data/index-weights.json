@@ -1,0 +1,167 @@
+{
+  "updated": "2026-10-09",
+  "indices": [
+    {
+      "id": "sp500",
+      "name": "S&P 500",
+      "quality": "etf-estimate",
+      "qualityLabel": "ETF-based estimate",
+      "snapshotDate": "2026-10-08",
+      "sourceName": "State Street SPY fund holdings",
+      "sourceUrl": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy",
+      "note": "ETF-based estimate from SPY fund holdings. State Street also publishes index top holdings separately. Official S&P 500 weights require a license. Dual-class shares, such as GOOGL and GOOG, are separate lines.",
+      "weights": {
+        "NVDA": 8.34,
+        "AAPL": 7.43,
+        "MSFT": 5.8,
+        "AMZN": 3.73,
+        "GOOGL": 3.05,
+        "AVGO": 2.56,
+        "META": 2.38,
+        "AMD": 1.51,
+        "LLY": 1.4,
+        "JPM": 1.32,
+        "XOM": 1.04,
+        "V": 0.96,
+        "JNJ": 0.92,
+        "WMT": 0.74,
+        "CVX": 0.62,
+        "CAT": 0.55,
+        "PG": 0.52,
+        "UNH": 0.5,
+        "DE": 0.25,
+        "NEE": 0.24,
+        "NEM": 0.18,
+        "FCX": 0.15,
+        "NUE": 0.08,
+        "EQT": 0.05,
+        "CF": 0.03,
+        "FSLR": 0.03,
+        "MOS": 0.01
+      }
+    },
+    {
+      "id": "djia",
+      "name": "Dow Jones Industrial Average",
+      "quality": "etf-estimate",
+      "qualityLabel": "ETF-based estimate",
+      "snapshotDate": "2026-10-08",
+      "sourceName": "State Street DIA fund holdings",
+      "sourceUrl": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-dow-jones-industrial-average-etf-trust-dia",
+      "note": "ETF-based estimate from DIA fund holdings. The Dow is price-weighted. Official DJIA weights require a license.",
+      "weights": {
+        "CAT": 9.23,
+        "MSFT": 6.06,
+        "V": 4.35,
+        "UNH": 4.3,
+        "GOOGL": 4.04,
+        "AAPL": 3.95,
+        "JPM": 3.84,
+        "JNJ": 2.97,
+        "AMZN": 2.95,
+        "NVDA": 2.67,
+        "CVX": 2.45,
+        "PG": 1.75,
+        "WMT": 1.28
+      }
+    },
+    {
+      "id": "ndx",
+      "name": "Nasdaq-100",
+      "quality": "etf-estimate",
+      "qualityLabel": "ETF-based estimate",
+      "snapshotDate": "2026-10-08",
+      "sourceName": "Invesco QQQ fund holdings",
+      "sourceUrl": "https://www.invesco.com/qqq-etf/en/about.html",
+      "note": "ETF-based estimate from QQQ fund holdings. Nasdaq\u2019s live full weight file requires login. These are not official capped index weights.",
+      "weights": {
+        "NVDA": 8.33,
+        "AAPL": 7.45,
+        "MSFT": 5.82,
+        "AMD": 4.2,
+        "AMZN": 4.11,
+        "META": 3.22,
+        "GOOGL": 3.07,
+        "AVGO": 2.57,
+        "WMT": 2.23
+      }
+    },
+    {
+      "id": "russell1000",
+      "name": "Russell 1000",
+      "quality": "etf-estimate",
+      "qualityLabel": "ETF-based estimate",
+      "snapshotDate": "2026-10-08",
+      "sourceName": "iShares Russell 1000 ETF (IWB) fund holdings",
+      "sourceUrl": "https://www.ishares.com/us/products/239707/ishares-russell-1000-etf",
+      "note": "ETF-based estimate from IWB fund holdings. Official Russell weights require a paid FTSE Russell subscription.",
+      "weights": {
+        "NVDA": 7.53,
+        "AAPL": 6.89,
+        "MSFT": 5.44,
+        "AMZN": 3.45,
+        "GOOGL": 2.84,
+        "AVGO": 2.35,
+        "META": 2.22,
+        "AMD": 1.41,
+        "LLY": 1.31,
+        "JPM": 1.24,
+        "XOM": 0.97,
+        "V": 0.89,
+        "JNJ": 0.87,
+        "WMT": 0.68,
+        "CVX": 0.55,
+        "CAT": 0.51,
+        "PG": 0.49,
+        "UNH": 0.47,
+        "DE": 0.23,
+        "NEE": 0.23,
+        "NEM": 0.17,
+        "FCX": 0.14,
+        "LNG": 0.08,
+        "NUE": 0.08,
+        "EQT": 0.04,
+        "FSLR": 0.03,
+        "SCCO": 0.03,
+        "CF": 0.02,
+        "MOS": 0.01
+      }
+    },
+    {
+      "id": "russell2000",
+      "name": "Russell 2000",
+      "quality": "etf-estimate",
+      "qualityLabel": "ETF-based estimate",
+      "snapshotDate": "2026-10-08",
+      "sourceName": "iShares Russell 2000 ETF (IWM) fund holdings",
+      "sourceUrl": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+      "note": "ETF-based estimate from IWM fund holdings. Official Russell weights require a paid FTSE Russell subscription.",
+      "weights": {}
+    },
+    {
+      "id": "sp400",
+      "name": "S&P MidCap 400",
+      "quality": "etf-estimate",
+      "qualityLabel": "ETF-based estimate",
+      "snapshotDate": "2026-10-08",
+      "sourceName": "iShares Core S&P Mid-Cap ETF (IJH) fund holdings",
+      "sourceUrl": "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf",
+      "note": "ETF-based estimate from IJH fund holdings. Official S&P MidCap 400 weights require a license.",
+      "weights": {}
+    }
+  ],
+  "limits": [
+    {
+      "name": "S&P official constituent weights",
+      "reason": "S&P Dow Jones Indices licenses the full constituent file. The S&P figures above are ETF-based estimates."
+    },
+    {
+      "name": "Nasdaq-100 official live weights",
+      "reason": "Nasdaq\u2019s weighting page requires login for the full list. A public PDF dated May 1, 2026 is too old for this snapshot, so the Nasdaq-100 line uses QQQ holdings."
+    },
+    {
+      "name": "FTSE Russell official weights",
+      "reason": "Russell 1000 and Russell 2000 constituent weights require a paid subscription. The Russell lines above are iShares fund holdings."
+    }
+  ]
+}
