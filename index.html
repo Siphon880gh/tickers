@@ -54,7 +54,21 @@
     .weight-pct{font-variant-numeric:tabular-nums;font-weight:750}
     .weight-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-top:.35rem;color:var(--muted);font-size:.8125rem}
     .weight-note{margin:.4rem 0 0;color:#3f5569;font-size:.8125rem}
-    .badge.estimate{background:#fff1d8;color:#835500}
+    .badge.estimate,.badge.notes{background:#fff1d8;color:#835500}
+    .notes-badge{display:inline-grid;place-items:center;min-width:1.25rem;height:1.25rem;margin-left:.35rem;padding:0 .3rem;border-radius:999px;background:#9a6a11;color:#fff;font-size:.7rem;font-weight:750;text-transform:none}
+    .theme-button[aria-pressed=true] .notes-badge{background:#e7c27a;color:var(--navy)}
+    .nav-label .sr-only,.nav-sublabel .sr-only{text-transform:none}
+    .notes-filter{display:flex;align-items:center;gap:.4rem;min-height:52px;font-size:.875rem;font-weight:650}
+    .notes-filter input{width:1.1rem;height:1.1rem;accent-color:var(--accent)}
+    .notes-panel{margin:0 1.25rem 1.25rem}
+    .notes-panel h3{font-size:.75rem;font-weight:750;text-transform:uppercase;letter-spacing:.075em;color:var(--muted);margin:0 0 .6rem}
+    .notes-panel textarea{width:100%;min-height:4.5rem;border:1px solid #a8bac9;border-radius:8px;padding:.6rem;resize:vertical;color:var(--ink)}
+    .notes-panel .add-note{margin-top:.5rem;background:var(--navy);color:#fff;border:0;border-radius:6px;padding:.55rem .8rem;font-weight:650}
+    .note-list{list-style:none;margin:.8rem 0 0;padding:0;display:flex;flex-direction:column;gap:.55rem}
+    .note-item{border:1px solid var(--border);border-radius:8px;padding:.65rem .7rem}
+    .note-item p{margin:0;white-space:pre-wrap}
+    .note-item time{display:block;color:var(--muted);font-size:.75rem;margin:.3rem 0 .45rem}
+    .note-delete{background:#fff;color:#70541d;border:1px solid #ebd5a6;border-radius:6px;padding:.35rem .6rem;font-weight:650}
     .limits{margin:.4rem 1.25rem 1.25rem;font-size:.875rem;color:#3f5569}
     .limits h3{font-size:.75rem;font-weight:750;text-transform:uppercase;letter-spacing:.075em;color:var(--muted);margin:1rem 0 .4rem}
     .limits ul{margin:0;padding-left:1.1rem}
@@ -164,6 +178,7 @@
       </div>
       <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option><option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
       <button type="button" id="index-mode" class="mode-toggle" aria-pressed="false" aria-controls="research">Index weights</button>
+      <label class="notes-filter" for="notes-only"><input id="notes-only" type="checkbox"> Has notes</label>
     </form>
     <div class="workspace">
       <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Themes, industries, and markets"></nav><p class="sidebar-foot">A theme suggests a connection, not a guaranteed price direction. Each ticker gives you a different kind of exposure.</p></aside>

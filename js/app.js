@@ -81,7 +81,39 @@ async function loadJSON(path) {
     ]});
     return groups;
   }
-  let state = {theme:'gold',query:'',kind:'all',selected:'GLD',indexMode:false,indexPicks:[]};
+  let state = {theme:'gold',query:'',kind:'all',notesOnly:false,selected:'GLD',indexMode:false,indexPicks:[]};
+  let notes = {};
+  const NOTES_KEY = 'market-forces-notes';
+  function loadNotes() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+      notes = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+    } catch { notes = {}; }
+  }
+  function saveNotes() {
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+  }
+  function notesFor(symbol) {
+    const list = notes[symbol];
+    return Array.isArray(list) ? list.filter(note => note && typeof note.text === 'string' && note.text.trim() && note.id) : [];
+  }
+  function noteCount(symbols) {
+    return symbols.reduce((sum, symbol) => sum + notesFor(symbol).length, 0);
+  }
+  function noteBadge(total) {
+    if (!total) return '';
+    return '<span class="notes-badge" aria-hidden="true">' + total + '</span><span class="sr-only">, ' + total + (total === 1 ? ' note' : ' notes') + '</span>';
+  }
+  function formatNoteTime(iso) {
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return '';
+    return new Intl.DateTimeFormat('en-US', {month:'short', day:'numeric', year:'numeric'}).format(date);
+  }
+  function notesMarkup(item) {
+    const list = notesFor(item.symbol);
+    const items = list.map(note => '<li class="note-item"><p>' + escapeHTML(note.text) + '</p><time datetime="' + escapeHTML(note.at || '') + '">' + escapeHTML(formatNoteTime(note.at)) + '</time><button type="button" class="note-delete" data-delete-note="' + escapeHTML(note.id) + '">Delete</button></li>').join('');
+    return '<section class="notes-panel"><h3>Notes</h3><form id="note-form"><label for="note-text">Note for ' + item.symbol + '</label><textarea id="note-text" maxlength="2000" rows="3"></textarea><button type="submit" class="add-note">Add note</button></form>' + (items ? '<ul class="note-list">' + items + '</ul>' : '') + '<p class="resource-note">Notes stay in this browser.</p></section>';
+  }
   function matchingThemes(query) {
     const words = query.toLowerCase().split(/\s+/).filter(Boolean);
     return themes.filter(theme => {
@@ -103,24 +135,26 @@ async function loadJSON(path) {
     } else {
       pool = state.theme==='all'?instruments:themes.find(theme=>theme.id===state.theme).symbols.map(symbol=>bySymbol[symbol]);
     }
-    return pool.filter(item=>state.kind==='all'||item.kind===state.kind);
+    return pool.filter(item=>(state.kind==='all'||item.kind===state.kind)&&(!state.notesOnly||notesFor(item.symbol).length));
   }
   function renderNav() {
-    const button = (id,name,mark,count) => '<button type="button" class="theme-button" data-theme="' + id + '" aria-pressed="' + (!state.query && state.theme===id) + '"><span class="theme-mark" aria-hidden="true">' + escapeHTML(mark) + '</span><span>' + escapeHTML(name) + '</span><span class="theme-count" aria-hidden="true">' + count + '</span></button>';
-    let html = button('all','All tickers','All',instruments.length);
+    const button = (id,name,mark,count,noteTotal) => '<button type="button" class="theme-button" data-theme="' + id + '" aria-pressed="' + (!state.query && state.theme===id) + '"><span class="theme-mark" aria-hidden="true">' + escapeHTML(mark) + '</span><span>' + escapeHTML(name) + '</span><span class="theme-count" aria-hidden="true">' + count + '</span>' + noteBadge(noteTotal) + '</button>';
+    let html = button('all','All tickers','All',instruments.length,noteCount(instruments.map(item=>item.symbol)));
     let previousGroup = '';
     let previousCategory = '';
     for(const theme of themes) {
       if(theme.group!==previousGroup) {
-        html+='<div class="nav-label">'+escapeHTML(theme.group)+'</div>';
+        const symbols=[...new Set(themes.filter(item=>item.group===theme.group).flatMap(item=>item.symbols))];
+        html+='<div class="nav-label">'+escapeHTML(theme.group)+noteBadge(noteCount(symbols))+'</div>';
         previousGroup=theme.group;
         previousCategory='';
       }
       if(theme.category && theme.category!==previousCategory) {
-        html+='<div class="nav-sublabel">'+escapeHTML(theme.category)+'</div>';
+        const symbols=[...new Set(themes.filter(item=>item.group===theme.group&&item.category===theme.category).flatMap(item=>item.symbols))];
+        html+='<div class="nav-sublabel">'+escapeHTML(theme.category)+noteBadge(noteCount(symbols))+'</div>';
         previousCategory=theme.category;
       }
-      html += button(theme.id,theme.name,theme.mark,theme.symbols.length);
+      html += button(theme.id,theme.name,theme.mark,theme.symbols.length,noteCount(theme.symbols));
     }
     $('theme-nav').innerHTML=html;
   }
@@ -149,8 +183,10 @@ async function loadJSON(path) {
       const picked=state.indexPicks.includes(item.symbol);
       const selected=state.indexMode?picked:item.symbol===state.selected;
       const check=state.indexMode?'<label class="index-check"><input type="checkbox" data-index-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Include '+item.symbol+' in index weights"></label>':'';
+      const noteTotal=notesFor(item.symbol).length;
+      const noteChip=noteTotal?'<span class="badge notes">'+noteTotal+(noteTotal===1?' note':' notes')+'</span>':'';
       const action=state.indexMode?'Include or remove '+item.symbol+' from index weights':'Select '+item.symbol+' for research links';
-      return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span></span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
+      return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
     }).join('')+'</div>';
   }
   function formatSnapshot(iso) {
@@ -196,7 +232,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p><p class="note">'+escapeHTML(item.description)+'</p></div><div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'');
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p><p class="note">'+escapeHTML(item.description)+'</p></div><div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -245,6 +281,7 @@ async function init() {
     themes = catalog.themes;
     bySymbol = Object.fromEntries(instruments.map(item => [item.symbol, item]));
     indexData = await loadJSON('data/index-weights.json').catch(() => null);
+    loadNotes();
   } catch (error) {
     $('ticker-results').innerHTML = '<div class="empty"><h3>The directory did not load</h3><p>' + escapeHTML(error.message) + '</p></div>';
     $('status').textContent = 'The directory did not load.';
@@ -259,6 +296,18 @@ async function init() {
     if (state.indexMode && !state.indexPicks.length && state.selected) state.indexPicks = [state.selected];
     render();
   });
+  $('notes-only').addEventListener('change', event => { state.notesOnly = event.target.checked; render(); });
+  document.addEventListener('submit', event => {
+    if (event.target.id !== 'note-form') return;
+    event.preventDefault();
+    const text = $('note-text').value.trim().slice(0, 2000);
+    if (!text || !state.selected) return;
+    const entry = {id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())), text, at: new Date().toISOString()};
+    notes[state.selected] = [entry, ...notesFor(state.selected)];
+    saveNotes();
+    render();
+    $('note-text')?.focus();
+  });
   document.addEventListener('change', event => {
     const box = event.target.closest('[data-index-pick]');
     if (!box) return;
@@ -270,6 +319,14 @@ async function init() {
     document.querySelector('[data-index-pick="'+symbol+'"]')?.focus();
   });
   document.addEventListener('click', event => {
+    const deleteNote = event.target.closest('[data-delete-note]');
+    if (deleteNote && state.selected) {
+      notes[state.selected] = notesFor(state.selected).filter(note => note.id !== deleteNote.dataset.deleteNote);
+      if (!notes[state.selected].length) delete notes[state.selected];
+      saveNotes();
+      render();
+      return;
+    }
     const themeButton = event.target.closest('[data-theme]');
     if (themeButton) { chooseTheme(themeButton.dataset.theme); return; }
     if (event.target.closest('[data-index-pick]')) return;
@@ -279,7 +336,7 @@ async function init() {
       chooseSymbol(tickerButton.dataset.symbol, true);
       return;
     }
-    if (event.target.closest('#reset-search')) { state.query = ''; state.kind = 'all'; $('search').value = ''; $('kind-filter').value = 'all'; render(); $('search').focus(); }
+    if (event.target.closest('#reset-search')) { state.query = ''; state.kind = 'all'; state.notesOnly = false; $('search').value = ''; $('kind-filter').value = 'all'; $('notes-only').checked = false; render(); $('search').focus(); }
   });
   $('guide-link').addEventListener('click', () => { $('research-guide').open = true; });
   render(false);
