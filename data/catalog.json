@@ -536,6 +536,193 @@
       "exposure": "Solar manufacturing",
       "description": "A solar-module manufacturer exposed to project demand, policy, and execution.",
       "official": ""
+    },
+    {
+      "symbol": "XLK",
+      "name": "State Street Technology Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Technology stocks",
+      "description": "Large U.S. technology businesses. Holdings can be concentrated in the biggest companies.",
+      "issuer": "State Street",
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-technology-select-sector-spdr-etf-xlk"
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple",
+      "kind": "stock",
+      "exposure": "Technology",
+      "description": "Consumer devices, software, and services. Product cycles and the price investors pay both matter.",
+      "official": ""
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "kind": "stock",
+      "exposure": "Software",
+      "description": "Software, cloud computing, and business subscriptions.",
+      "official": ""
+    },
+    {
+      "symbol": "XLC",
+      "name": "State Street Communication Services Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Communication stocks",
+      "description": "Media, entertainment, and interactive-media businesses from the S&P 500.",
+      "issuer": "State Street",
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-communication-services-select-sector-spdr-etf-xlc"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet",
+      "kind": "stock",
+      "exposure": "Internet platforms",
+      "description": "Search, advertising, cloud, and other internet businesses. Class A shares.",
+      "official": ""
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms",
+      "kind": "stock",
+      "exposure": "Social platforms",
+      "description": "Social apps and advertising. Spending on new products can move the shares.",
+      "official": ""
+    },
+    {
+      "symbol": "XLF",
+      "name": "State Street Financial Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Financial stocks",
+      "description": "Large U.S. banks, insurers, and other financial businesses.",
+      "issuer": "State Street",
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf"
+    },
+    {
+      "symbol": "JPM",
+      "name": "JPMorgan Chase",
+      "kind": "stock",
+      "exposure": "Bank",
+      "description": "A large bank. Credit, rates, and markets businesses do not all move together.",
+      "official": ""
+    },
+    {
+      "symbol": "V",
+      "name": "Visa",
+      "kind": "stock",
+      "exposure": "Payments",
+      "description": "A payments network. It earns fees on activity; it is not a bank lender.",
+      "official": ""
+    },
+    {
+      "symbol": "LLY",
+      "name": "Eli Lilly",
+      "kind": "stock",
+      "exposure": "Pharmaceuticals",
+      "description": "A drug company. Product demand, patents, and trial results matter.",
+      "official": ""
+    },
+    {
+      "symbol": "UNH",
+      "name": "UnitedHealth",
+      "kind": "stock",
+      "exposure": "Health insurance",
+      "description": "Health insurance and health services. Enrollment and medical costs affect results.",
+      "official": ""
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "kind": "stock",
+      "exposure": "Online retail",
+      "description": "Online retail, cloud computing, and advertising. The businesses have different drivers.",
+      "official": ""
+    },
+    {
+      "symbol": "WMT",
+      "name": "Walmart",
+      "kind": "stock",
+      "exposure": "Retail",
+      "description": "A large retailer of everyday goods. Costs, traffic, and pricing affect margins.",
+      "official": ""
+    },
+    {
+      "symbol": "NEE",
+      "name": "NextEra Energy",
+      "kind": "stock",
+      "exposure": "Electric utility",
+      "description": "An electric utility with a large renewable-generation business. Regulation and rates matter.",
+      "official": ""
+    },
+    {
+      "symbol": "XLB",
+      "name": "State Street Materials Select Sector SPDR ETF",
+      "kind": "fund",
+      "exposure": "Materials stocks",
+      "description": "Chemicals, metals, and other materials businesses from the S&P 500.",
+      "issuer": "State Street",
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-materials-select-sector-spdr-etf-xlb"
+    },
+    {
+      "symbol": "IJH",
+      "name": "iShares Core S&P Mid-Cap ETF",
+      "kind": "fund",
+      "exposure": "Mid-cap stocks",
+      "description": "A basket of medium-sized U.S. companies in the S&P MidCap 400.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf"
+    },
+    {
+      "symbol": "IWM",
+      "name": "iShares Russell 2000 ETF",
+      "kind": "fund",
+      "exposure": "Small-cap stocks",
+      "description": "A basket of smaller U.S. companies tracking the Russell 2000.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf"
+    },
+    {
+      "symbol": "VUG",
+      "name": "Vanguard Morningstar Growth ETF",
+      "kind": "fund",
+      "exposure": "Growth stocks",
+      "description": "U.S. companies classified as growth. Technology is often a large part of the fund.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vug"
+    },
+    {
+      "symbol": "VTV",
+      "name": "Vanguard Morningstar Value ETF",
+      "kind": "fund",
+      "exposure": "Value stocks",
+      "description": "U.S. companies classified as value under the fund’s index rules.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vtv"
+    },
+    {
+      "symbol": "VEA",
+      "name": "Vanguard FTSE Developed Markets ETF",
+      "kind": "fund",
+      "exposure": "International stocks",
+      "description": "Stocks in developed markets outside the United States.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vea"
+    },
+    {
+      "symbol": "VWO",
+      "name": "Vanguard FTSE Emerging Markets ETF",
+      "kind": "fund",
+      "exposure": "Emerging-market stocks",
+      "description": "Stocks in emerging-market countries. Country and currency weights change.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vwo"
+    },
+    {
+      "symbol": "SCHD",
+      "name": "Schwab US Dividend Equity ETF",
+      "kind": "fund",
+      "exposure": "Dividend stocks",
+      "description": "About 100 U.S. companies screened for dividends and financial strength.",
+      "issuer": "Schwab",
+      "official": "https://www.schwab.com/research/etfs/quotes/summary/schd"
     }
   ],
   "themes": [
@@ -747,6 +934,498 @@
         [
           "Treasury yield · FRED",
           "https://fred.stlouisfed.org/series/DGS10"
+        ]
+      ]
+    },
+    {
+      "id": "technology",
+      "name": "Technology",
+      "mark": "Tech",
+      "group": "Industries",
+      "symbols": [
+        "XLK",
+        "AAPL",
+        "MSFT",
+        "NVDA",
+        "AVGO"
+      ],
+      "tags": "technology tech software hardware information technology apple microsoft",
+      "description": "Research the sector fund or a few large technology businesses.",
+      "connection": "A sector fund spreads company risk across the industry. One business still depends on its products, competition, and the price investors already pay.",
+      "links": [
+        [
+          "Technology sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-technology-select-sector-spdr-etf-xlk"
+        ]
+      ]
+    },
+    {
+      "id": "semiconductors",
+      "name": "Semiconductors",
+      "mark": "Chip",
+      "group": "Industries",
+      "symbols": [
+        "SMH",
+        "NVDA",
+        "AMD",
+        "AVGO"
+      ],
+      "tags": "semiconductors chips gpu foundry equipment",
+      "description": "Chip designers and a fund that holds a basket of semiconductor businesses.",
+      "connection": "Equipment demand, supply limits, and competition can move this industry. One chip company is not the same exposure as the basket.",
+      "links": [
+        [
+          "Semiconductor fund",
+          "https://www.vaneck.com/us/en/investments/semiconductor-etf-smh"
+        ]
+      ]
+    },
+    {
+      "id": "communication",
+      "name": "Communication services",
+      "mark": "Com",
+      "group": "Industries",
+      "symbols": [
+        "XLC",
+        "GOOGL",
+        "META"
+      ],
+      "tags": "communication media internet advertising social platforms alphabet google meta",
+      "description": "Platforms and media businesses, plus the sector fund that groups them.",
+      "connection": "Advertising, user growth, and regulation can matter more here than a broad economic statistic.",
+      "links": [
+        [
+          "Communication sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-communication-services-select-sector-spdr-etf-xlc"
+        ]
+      ]
+    },
+    {
+      "id": "financials",
+      "name": "Financials",
+      "mark": "Fin",
+      "group": "Industries",
+      "symbols": [
+        "XLF",
+        "JPM",
+        "V"
+      ],
+      "tags": "financials banks payments insurance credit",
+      "description": "Banks, payment networks, and the fund that tracks large financial businesses.",
+      "connection": "Interest rates, credit losses, and regulation affect financial companies in different ways. A bank and a payment network are not the same business.",
+      "links": [
+        [
+          "Financial sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf"
+        ]
+      ]
+    },
+    {
+      "id": "health-care",
+      "name": "Health care",
+      "mark": "Hlth",
+      "group": "Industries",
+      "symbols": [
+        "XLV",
+        "JNJ",
+        "LLY",
+        "UNH"
+      ],
+      "tags": "health care healthcare pharma pharmaceuticals insurance medical",
+      "description": "Medicines, medical products, health insurance, and the sector fund.",
+      "connection": "Product cycles, patents, enrollment, and regulation can matter as much as the broad economy.",
+      "links": [
+        [
+          "Health care sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-health-care-select-sector-spdr-etf-xlv"
+        ]
+      ]
+    },
+    {
+      "id": "energy",
+      "name": "Energy",
+      "mark": "En",
+      "group": "Industries",
+      "symbols": [
+        "XLE",
+        "XOM",
+        "CVX"
+      ],
+      "tags": "energy sector oil gas producers integrated majors",
+      "description": "Large energy businesses and the sector fund that holds them.",
+      "connection": "Oil and gas prices are only one input. Refining, production costs, and project spending also affect these companies.",
+      "links": [
+        [
+          "Energy sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-energy-select-sector-spdr-etf-xle"
+        ]
+      ]
+    },
+    {
+      "id": "industrials",
+      "name": "Industrials",
+      "mark": "Ind",
+      "group": "Industries",
+      "symbols": [
+        "XLI",
+        "CAT",
+        "DE"
+      ],
+      "tags": "industrials manufacturing equipment machinery construction",
+      "description": "Equipment makers and the fund covering large industrial businesses.",
+      "connection": "Orders follow construction, freight, and business investment, but margins and backlogs decide how that becomes profit.",
+      "links": [
+        [
+          "Industrial sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-industrial-select-sector-spdr-etf-xli"
+        ]
+      ]
+    },
+    {
+      "id": "materials",
+      "name": "Materials",
+      "mark": "Mat",
+      "group": "Industries",
+      "symbols": [
+        "XLB",
+        "FCX",
+        "NEM",
+        "NUE"
+      ],
+      "tags": "materials chemicals metals mining steel",
+      "description": "Miners, steel, and other materials businesses, plus the sector fund.",
+      "connection": "Commodity prices, mine supply, and construction demand can matter. A materials fund mixes businesses with different cost structures.",
+      "links": [
+        [
+          "Materials sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-materials-select-sector-spdr-etf-xlb"
+        ]
+      ]
+    },
+    {
+      "id": "discretionary",
+      "name": "Consumer discretionary",
+      "mark": "Disc",
+      "group": "Industries",
+      "symbols": [
+        "XLY",
+        "AMZN"
+      ],
+      "tags": "consumer discretionary retail ecommerce amazon shopping",
+      "description": "Businesses that depend on discretionary spending, and the sector fund.",
+      "connection": "Household spending and financing conditions can lift or slow these businesses. A fund can be concentrated in a few very large holdings.",
+      "links": [
+        [
+          "Consumer discretionary fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-consumer-discretionary-select-sector-spdr-etf-xly"
+        ]
+      ]
+    },
+    {
+      "id": "staples",
+      "name": "Consumer staples",
+      "mark": "Stpl",
+      "group": "Industries",
+      "symbols": [
+        "XLP",
+        "PG",
+        "WMT"
+      ],
+      "tags": "consumer staples groceries household products retail walmart",
+      "description": "Everyday products and retailers, plus the sector fund.",
+      "connection": "Steadier demand does not make the shares immune to costs, competition, or a high starting price.",
+      "links": [
+        [
+          "Consumer staples fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-consumer-staples-select-sector-spdr-etf-xlp"
+        ]
+      ]
+    },
+    {
+      "id": "utilities",
+      "name": "Utilities",
+      "mark": "Utl",
+      "group": "Industries",
+      "symbols": [
+        "XLU",
+        "NEE"
+      ],
+      "tags": "utilities electricity power grid regulated renewable",
+      "description": "Electric and other utility businesses, and the sector fund.",
+      "connection": "Regulation, fuel costs, and grid spending can matter. Utility shares can also move with bond yields.",
+      "links": [
+        [
+          "Utilities sector fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-utilities-select-sector-spdr-etf-xlu"
+        ]
+      ]
+    },
+    {
+      "id": "real-estate",
+      "name": "Real estate",
+      "mark": "Prop",
+      "group": "Industries",
+      "symbols": [
+        "VNQ",
+        "XLRE"
+      ],
+      "tags": "real estate reit property sector industry",
+      "description": "Listed property businesses and real-estate investment trusts.",
+      "connection": "Rents, occupancy, property type, and borrowing costs affect these funds. They are not a direct tracker of house prices.",
+      "links": [
+        [
+          "Real estate fund",
+          "https://investor.vanguard.com/investment-products/etfs/profile/vnq"
+        ]
+      ]
+    },
+    {
+      "id": "large-cap",
+      "name": "U.S. large cap",
+      "mark": "Lg",
+      "group": "Markets",
+      "category": "Size",
+      "symbols": [
+        "SPY",
+        "AAPL",
+        "MSFT",
+        "JPM",
+        "XOM"
+      ],
+      "tags": "large cap big stocks sp500 s&p 500 mega cap",
+      "description": "The large-company stock market, through an S&P 500 fund and a few major businesses.",
+      "connection": "Large-cap funds are dominated by their biggest holdings. A rising index can still leave many companies behind.",
+      "links": [
+        [
+          "S&P 500 fund",
+          "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy"
+        ]
+      ]
+    },
+    {
+      "id": "mid-cap",
+      "name": "U.S. mid cap",
+      "mark": "Md",
+      "group": "Markets",
+      "category": "Size",
+      "symbols": [
+        "IJH"
+      ],
+      "tags": "mid cap midcap medium companies s&p 400",
+      "description": "Medium-sized U.S. companies, through a fund tracking the S&P MidCap 400.",
+      "connection": "Mid-sized companies can be more sensitive to the U.S. economy than the largest firms. Read the current holdings before treating the fund as one industry.",
+      "links": [
+        [
+          "Mid-cap fund",
+          "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf"
+        ]
+      ]
+    },
+    {
+      "id": "small-cap",
+      "name": "U.S. small cap",
+      "mark": "Sm",
+      "group": "Markets",
+      "category": "Size",
+      "symbols": [
+        "IWM"
+      ],
+      "tags": "small cap russell 2000 smaller companies",
+      "description": "Smaller U.S. companies, through a fund tracking the Russell 2000.",
+      "connection": "Smaller companies can swing more than the large-cap market. The basket includes many businesses with thin coverage.",
+      "links": [
+        [
+          "Small-cap fund",
+          "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf"
+        ]
+      ]
+    },
+    {
+      "id": "total-market",
+      "name": "U.S. total market",
+      "mark": "Mkt",
+      "group": "Markets",
+      "category": "Size",
+      "symbols": [
+        "VTI"
+      ],
+      "tags": "total market entire us stock market broad",
+      "description": "A broad fund covering large, mid-sized, and smaller U.S. companies.",
+      "connection": "Total-market funds are still weighted toward the largest companies. They are a wide net, not an equal bet on every stock.",
+      "links": [
+        [
+          "Total market fund",
+          "https://investor.vanguard.com/investment-products/etfs/profile/vti"
+        ]
+      ]
+    },
+    {
+      "id": "developed",
+      "name": "Developed markets",
+      "mark": "Intl",
+      "group": "Markets",
+      "category": "Region",
+      "symbols": [
+        "VEA"
+      ],
+      "tags": "international developed markets eafe foreign ex-us",
+      "description": "Stocks in developed markets outside the United States.",
+      "connection": "Currency moves, local economies, and the country mix all affect the result. This is not emerging-market exposure.",
+      "links": [
+        [
+          "Developed markets fund",
+          "https://investor.vanguard.com/investment-products/etfs/profile/vea"
+        ]
+      ]
+    },
+    {
+      "id": "emerging",
+      "name": "Emerging markets",
+      "mark": "EM",
+      "group": "Markets",
+      "category": "Region",
+      "symbols": [
+        "VWO"
+      ],
+      "tags": "emerging markets developing countries international",
+      "description": "Stocks in emerging-market countries.",
+      "connection": "Politics, currencies, and a heavy weight in a few countries can dominate the fund.",
+      "links": [
+        [
+          "Emerging markets fund",
+          "https://investor.vanguard.com/investment-products/etfs/profile/vwo"
+        ]
+      ]
+    },
+    {
+      "id": "growth-style",
+      "name": "Growth",
+      "mark": "Gr",
+      "group": "Markets",
+      "category": "Style",
+      "symbols": [
+        "VUG",
+        "QQQ",
+        "NVDA"
+      ],
+      "tags": "growth style future earnings",
+      "description": "Companies the growth funds classify as growth, including a large technology tilt.",
+      "connection": "A growth label follows index rules. The fund can fall hard when investors pay less for future profits.",
+      "links": [
+        [
+          "Growth fund",
+          "https://investor.vanguard.com/investment-products/etfs/profile/vug"
+        ]
+      ]
+    },
+    {
+      "id": "value",
+      "name": "Value",
+      "mark": "Val",
+      "group": "Markets",
+      "category": "Style",
+      "symbols": [
+        "VTV",
+        "XOM",
+        "JPM",
+        "JNJ"
+      ],
+      "tags": "value style low multiple",
+      "description": "Companies the value fund classifies as value, plus a few large businesses often put in that group.",
+      "connection": "A value label is a classification, not proof of a bargain. Earnings, rates, and company problems still apply.",
+      "links": [
+        [
+          "Value fund",
+          "https://investor.vanguard.com/investment-products/etfs/profile/vtv"
+        ]
+      ]
+    },
+    {
+      "id": "dividend",
+      "name": "Dividend",
+      "mark": "Div",
+      "group": "Markets",
+      "category": "Style",
+      "symbols": [
+        "SCHD",
+        "PG",
+        "JNJ",
+        "XOM"
+      ],
+      "tags": "dividend income yield payout shareholder",
+      "description": "Companies and a fund often researched for dividend income.",
+      "connection": "A dividend is not extra return by itself. The share price can fall by more than the payout, and the payout can be cut.",
+      "links": [
+        [
+          "Dividend fund",
+          "https://www.schwab.com/research/etfs/quotes/summary/schd"
+        ]
+      ]
+    },
+    {
+      "id": "bond-market",
+      "name": "Bond market",
+      "mark": "Bd",
+      "group": "Markets",
+      "category": "Asset class",
+      "symbols": [
+        "TLT",
+        "IEF",
+        "SHY",
+        "SGOV",
+        "TIP"
+      ],
+      "tags": "bonds fixed income treasury credit duration",
+      "description": "U.S. Treasury funds from very short bills to long-term bonds.",
+      "connection": "Bond prices generally move opposite to yields. Longer-term funds move more when yields change.",
+      "links": [
+        [
+          "10-year yield · FRED",
+          "https://fred.stlouisfed.org/series/DGS10"
+        ]
+      ]
+    },
+    {
+      "id": "commodity-market",
+      "name": "Commodity market",
+      "mark": "Cmd",
+      "group": "Markets",
+      "category": "Asset class",
+      "symbols": [
+        "GLD",
+        "SLV",
+        "USO",
+        "CPER",
+        "DBA"
+      ],
+      "tags": "commodities gold silver oil copper agriculture basket",
+      "description": "Funds tied to gold, silver, oil, copper, and agricultural markets.",
+      "connection": "Some of these funds hold metal. Others hold futures, and futures returns can differ from the spot price. Read each exposure label.",
+      "links": [
+        [
+          "Commodity data · World Bank",
+          "https://www.worldbank.org/en/research/commodity-markets"
+        ]
+      ]
+    },
+    {
+      "id": "currency-market",
+      "name": "Currency market",
+      "mark": "Fx",
+      "group": "Markets",
+      "category": "Asset class",
+      "symbols": [
+        "UUP",
+        "FXE",
+        "FXY"
+      ],
+      "tags": "currency forex dollar euro yen exchange rates",
+      "description": "The U.S. dollar against other currencies, through currency funds.",
+      "connection": "Rate differences and risk appetite move currencies. UUP tracks a defined basket. The euro and yen trusts are each one currency.",
+      "links": [
+        [
+          "Broad dollar index · FRED",
+          "https://fred.stlouisfed.org/series/DTWEXBGS"
         ]
       ]
     },

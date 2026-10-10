@@ -44,6 +44,7 @@
     .workspace{display:grid;grid-template-columns:218px minmax(310px,1fr) minmax(320px,372px);gap:1.25rem;align-items:start}
     .sidebar{position:sticky;top:1rem}
     .nav-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:750;margin:1.1rem .75rem .45rem}
+    .nav-sublabel{font-size:.75rem;color:var(--muted);font-weight:650;margin:.55rem .75rem .2rem}
     .theme-nav{display:flex;flex-direction:column;gap:3px}
     .theme-button{border:0;background:transparent;color:var(--ink);text-align:left;display:flex;gap:.6rem;align-items:center;padding:.65rem .8rem;border-radius:7px;font-size:.875rem;min-height:44px;font-weight:550;width:100%}
     .theme-button:hover{background:#e3ebf0}
@@ -113,9 +114,9 @@
     footer{max-width:1512px;margin:auto;padding:0 2rem 1.8rem;display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.8125rem}
     footer p{margin:0}
     .footer-link{white-space:nowrap}
-    @media(min-width:1181px){.research{max-height:calc(100vh - 2rem);overflow-y:auto}}
+    @media(min-width:1181px){.sidebar{max-height:calc(100vh - 2rem);overflow:auto}.research{max-height:calc(100vh - 2rem);overflow-y:auto}}
     @media(max-width:1180px){.workspace{grid-template-columns:202px minmax(0,1fr)}.research{grid-column:2;position:static}.resource-links{grid-template-columns:repeat(3,minmax(0,1fr))}.sidebar{grid-column:1;grid-row:1 / span 2}.content{grid-column:2}.shell{padding:1.5rem}.masthead-inner{padding:1.1rem 1.5rem}}
-    @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
+    @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
     @media(max-width:480px){.ticker-row{flex-direction:column;align-items:stretch;gap:.75rem}.quick-link{align-self:flex-start}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
     @media print{.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
@@ -132,7 +133,7 @@
   </header>
   <div class="shell">
     <div class="topline">
-      <div><h1>Start with what moves the market.</h1><p>Choose a theme, explore its tickers, then open your research.</p></div>
+      <div><h1>Start with what moves the market.</h1><p>Choose a theme, industry, or market, then open your research.</p></div>
       <a class="guide-link" href="#research-guide" id="guide-link">New to researching a ticker?</a>
     </div>
     <form class="searchbar" role="search" id="search-form">
@@ -140,13 +141,13 @@
         <label for="search">Find a theme, company, or ticker</label>
         <div class="inputwrap">
           <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
-          <input id="search" type="search" placeholder="Try gold, fertilizer, inflation, or NTR" autocomplete="off" aria-controls="ticker-results" spellcheck="false">
+          <input id="search" type="search" placeholder="Try gold, technology, large cap, or AAPL" autocomplete="off" aria-controls="ticker-results" spellcheck="false">
         </div>
       </div>
       <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option><option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
     </form>
     <div class="workspace">
-      <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Economic themes and assets"></nav><p class="sidebar-foot">A theme suggests a connection, not a guaranteed price direction. Each ticker gives you a different kind of exposure.</p></aside>
+      <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Themes, industries, and markets"></nav><p class="sidebar-foot">A theme suggests a connection, not a guaranteed price direction. Each ticker gives you a different kind of exposure.</p></aside>
       <main class="content" id="main-content" tabindex="-1">
         <section class="topic" id="topic" aria-labelledby="topic-title"></section>
         <div class="results-head"><h3 id="results-heading">Common tickers</h3><span id="result-count"></span></div>

@@ -108,8 +108,17 @@ async function loadJSON(path) {
     const button = (id,name,mark,count) => '<button type="button" class="theme-button" data-theme="' + id + '" aria-pressed="' + (!state.query && state.theme===id) + '"><span class="theme-mark" aria-hidden="true">' + escapeHTML(mark) + '</span><span>' + escapeHTML(name) + '</span><span class="theme-count" aria-hidden="true">' + count + '</span></button>';
     let html = button('all','All tickers','All',instruments.length);
     let previousGroup = '';
+    let previousCategory = '';
     for(const theme of themes) {
-      if(theme.group!==previousGroup) {html+='<div class="nav-label">'+escapeHTML(theme.group)+'</div>';previousGroup=theme.group;}
+      if(theme.group!==previousGroup) {
+        html+='<div class="nav-label">'+escapeHTML(theme.group)+'</div>';
+        previousGroup=theme.group;
+        previousCategory='';
+      }
+      if(theme.category && theme.category!==previousCategory) {
+        html+='<div class="nav-sublabel">'+escapeHTML(theme.category)+'</div>';
+        previousCategory=theme.category;
+      }
       html += button(theme.id,theme.name,theme.mark,theme.symbols.length);
     }
     $('theme-nav').innerHTML=html;
@@ -117,15 +126,16 @@ async function loadJSON(path) {
   function renderTopic() {
     if(state.query) {
       const matches=matchingThemes(state.query);
-      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, assets, and economic themes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
+      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, and economic themes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
       return;
     }
     if(state.theme==='all') {
-      $('topic').innerHTML='<p class="eyebrow">Full directory</p><h2 id="topic-title">All common tickers</h2><p>Browse '+instruments.length+' stocks and funds, or choose an asset or economic force to narrow your starting point.</p><p class="connection">A stock is a business; a fund may hold stocks, bonds, bullion, currencies, or futures. Check the exposure label before comparing tickers.</p>';
+      $('topic').innerHTML='<p class="eyebrow">Full directory</p><h2 id="topic-title">All common tickers</h2><p>Browse '+instruments.length+' stocks and funds, or choose an asset, industry, market, or economic force to narrow your starting point.</p><p class="connection">A stock is a business; a fund may hold stocks, bonds, bullion, currencies, or futures. Check the exposure label before comparing tickers.</p>';
       return;
     }
     const theme=themes.find(item=>item.id===state.theme);
-    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(theme.group)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+escapeHTML(theme.description)+'</p><p class="connection"><strong>The connection: </strong>'+escapeHTML(theme.connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>';
+    const eyebrow=theme.category?theme.group+' · '+theme.category:theme.group;
+    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(eyebrow)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+escapeHTML(theme.description)+'</p><p class="connection"><strong>The connection: </strong>'+escapeHTML(theme.connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>';
   }
   function renderResults(pool) {
     $('result-count').textContent=pool.length+' '+(pool.length===1?'ticker':'tickers');

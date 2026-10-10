@@ -20,7 +20,8 @@ The catalog is `data/catalog.json`. `index.html` is the page. `js/app.js` builds
 - A stock object has `symbol`, `name`, `kind` (`stock`), `exposure`, `description`, and optional `official`
 - A fund object has the same fields, `kind` (`fund`), and `issuer`
 - Each theme is `{id, name, mark, group, symbols, tags, description, connection, links}`
-- `group` is `Assets` or `Economic forces`
+- `group` is `Assets`, `Industries`, `Markets`, or `Economic forces`
+- Market themes also set `category` to `Size`, `Region`, `Style`, or `Asset class`
 - `links` is `[[title, url], ...]` for the theme's macro sources, not per-ticker links
 - `researchLinks(item)` in `js/app.js` builds every ticker's research links from `kind`, `exposure`, `issuer`, and `official`
 
