@@ -48,6 +48,8 @@
   }
 
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var ICON_COPY = '<svg class="hai-ico hai-ico--copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><svg class="hai-ico hai-ico--ok" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>';
+  var ICON_CLEAR = '<svg class="hai-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.5"/><path d="m15 9-6 6M9 9l6 6"/></svg>';
   function rich(s) { return esc(s).replace(/`([^`]+)`/g, '<code>$1</code>'); }
 
   var css = [
@@ -80,9 +82,12 @@
     '.hai-panel kbd{padding:0 5px;border:1px solid currentColor;border-radius:4px;}',
     '.hai-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:5px;}',
     '.hai-dir{padding:2px 8px;border:1px solid var(--hai-line);border-radius:6px;background:var(--hai-soft);font-weight:700;}',
-    '.hai-copy{min-height:30px;padding:2px 12px;border:1px solid var(--hai-line);border-radius:999px;background:var(--hai-bg);color:var(--hai-ink);font:inherit;font-size:12px;font-weight:600;cursor:pointer;}',
+    '.hai-copy{display:inline-flex;flex:none;align-items:center;gap:.35em;white-space:nowrap;min-height:30px;padding:2px 12px;border:1px solid var(--hai-line);border-radius:999px;background:var(--hai-bg);color:var(--hai-ink);font:inherit;font-size:12px;font-weight:600;cursor:pointer;}',
     '.hai-copy:hover{background:var(--hai-soft);}',
     '.hai-copy:disabled{opacity:.5;cursor:not-allowed;}',
+    '.hai-ico{flex:none;width:1em;height:1em;}',
+    '.hai-ico--ok,.hai-copy.is-copied .hai-ico--copy{display:none;}',
+    '.hai-copy.is-copied .hai-ico--ok{display:inline-block;}',
     '.hai-label{display:block;margin:4px 0 4px;font-weight:600;font-size:13px;}',
     '.hai-input{flex:1 1 180px;min-width:0;box-sizing:border-box;min-height:34px;padding:5px 8px;border:1px solid var(--hai-line);border-radius:6px;background:var(--hai-bg);color:var(--hai-ink);font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}',
     '.hai-switch-row{display:flex;align-items:center;gap:8px;margin:10px 0 4px;font-size:13px;}',
@@ -131,7 +136,7 @@
       '<p>' + esc(appName) + ' has no built-in AI, which keeps it free. Use the AI tool you already have, with your own tokens:</p>' +
       '<ol><li>Open system search (<kbd>&#8984;</kbd>&nbsp;<kbd>Space</kbd> for Spotlight on a Mac, or the Windows search box) and find the folder named:' +
       '<span class="hai-row"><code class="hai-dir">' + esc(folder) + '</code>' +
-      '<button type="button" class="hai-copy" data-hai-copy aria-label="Copy folder name ' + esc(folder) + '">Copy</button></span>' +
+      '<button type="button" class="hai-copy" data-hai-copy aria-label="Copy folder name ' + esc(folder) + '">' + ICON_COPY + '<span>Copy</span></button></span>' +
       (cfg.parent ? '<span class="hai-hint">It sits inside a folder named <code>' + esc(cfg.parent) + '</code>.</span>' : '') + '</li>' +
       '<li>Open that folder in <strong>Cursor</strong>, <strong>Claude Code</strong>, or your favorite AI harness.</li>' +
       '<li>' + rich(ask) + '</li></ol>' +
@@ -142,13 +147,13 @@
       '<p>We can remember your folder path for you here, so next time you can copy it, or a ready-made <code>cd</code> command, without searching. It stays in this browser only.</p>' +
       '<label class="hai-label" for="' + pid + '-in">Full path to your <code>' + esc(folder) + '</code> folder</label>' +
       '<span class="hai-row"><input class="hai-input" id="' + pid + '-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="/Users/you/\u2026/' + esc(folder) + '" data-hai-path>' +
-      '<button type="button" class="hai-copy" data-hai-clear aria-label="Clear saved folder path">Clear</button></span>' +
+      '<button type="button" class="hai-copy" data-hai-clear aria-label="Clear saved folder path">' + ICON_CLEAR + '<span>Clear</span></button></span>' +
       '<span class="hai-hint">Mac: right-click the folder in Finder, hold <kbd>Option</kbd>, choose <em>Copy \u2026 as Pathname</em>. Windows: <kbd>Shift</kbd> + right-click, <em>Copy as path</em>.</span>' +
       '<div class="hai-switch-row"><span data-hai-mode-label="path">Path</span>' +
       '<button type="button" class="hai-switch" role="switch" aria-checked="false" aria-label="Show as a cd command" data-hai-switch></button>' +
       '<span data-hai-mode-label="command">Command</span></div>' +
       '<span class="hai-row"><code class="hai-out" data-hai-out aria-live="polite"></code>' +
-      '<button type="button" class="hai-copy" data-hai-out-copy>Copy</button></span>' +
+      '<button type="button" class="hai-copy" data-hai-out-copy>' + ICON_COPY + '<span>Copy</span></button></span>' +
       '<p class="hai-hint" data-hai-out-hint>Paste the command into a terminal, or the path into your AI tool\u2019s Open Folder.</p></div>' +
       '</div>' +
       '<p class="hai-status" data-hai-status role="status" aria-live="polite"></p>';
@@ -272,8 +277,9 @@
       var ok = false; try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
       document.body.removeChild(ta); return ok;
     }
+    function flash(b) { b.classList.add('is-copied'); clearTimeout(b._haiT); b._haiT = setTimeout(function () { b.classList.remove('is-copied'); }, 1600); }
     function copy(text, what, back) {
-      function done(ok) { status.textContent = ok ? 'Copied ' + what + '.' : 'Copy failed. Select the text and copy it.'; if (back) back.focus(); }
+      function done(ok) { status.textContent = ok ? 'Copied ' + what + '.' : 'Copy failed. Select the text and copy it.'; if (back) { back.focus(); if (ok) flash(back); } }
       if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
       else done(fallbackCopy(text));
     }
