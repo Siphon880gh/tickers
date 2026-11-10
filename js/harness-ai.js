@@ -99,6 +99,10 @@
     '.hai-switch[aria-checked="true"]::after{transform:translateX(18px);background:var(--hai-accent-ink);}',
     '.hai-out{display:block;flex:1 1 180px;min-width:0;padding:6px 8px;border:1px dashed var(--hai-line);border-radius:6px;background:var(--hai-soft);white-space:pre-wrap;word-break:break-all;}',
     '.hai-out.is-empty{color:var(--hai-muted);font-style:italic;}',
+    '.hai-panel p.hai-role{margin:0 0 10px;padding:8px 10px;border-radius:8px;background:var(--hai-soft);font-weight:600;line-height:1.45;}',
+    '.hai-badge{display:inline-block;margin-right:4px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;vertical-align:1px;}',
+    '.hai-badge--primary{background:var(--hai-accent);color:var(--hai-accent-ink);}',
+    '.hai-badge--supplementary{border:1px dashed var(--hai-muted);color:var(--hai-ink);}',
     '.hai-hint{display:block;margin-top:4px;font-size:12px;color:var(--hai-muted);}',
     '.hai-status{margin:6px 0 0!important;font-size:12px;color:var(--hai-muted)!important;}',
     '.hai-status:empty{display:none;}',
@@ -116,6 +120,10 @@
     var title = cfg.title || 'Add or edit with AI';
     var label = cfg.label || 'Add / edit with AI';
     var ask = cfg.ask || 'Ask it to add, read, or edit this app\u2019s data.';
+    // data-role="primary|supplementary" + data-input="<what to enter>": says plainly what this panel feeds the app
+    var role = cfg.role === 'supplementary' ? 'supplementary' : (cfg.role === 'primary' ? 'primary' : '');
+    var roleHtml = role && cfg.input ? '<p class="hai-role"><span class="hai-badge hai-badge--' + role + '">' + (role === 'primary' ? 'Primary' : 'Supplementary') + '</span> ' +
+      (role === 'primary' ? 'This is where the app\u2019s main content comes from: ' + rich(cfg.input) + '.' : 'Optional extra: ' + rich(cfg.input) + ' the app can use to do more.') + '</p>' : '';
     var pid = 'hai-panel-' + appId.replace(/[^a-z0-9_-]/gi, '-');
     var chev = '<svg class="hai-acc__chev" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -132,7 +140,7 @@
       '<div class="hai-acc">' +
       '<h3 class="hai-acc__h"><button type="button" class="hai-acc__btn" id="' + pid + '-t-about" aria-expanded="false" aria-controls="' + pid + '-p-about" data-hai-tile="about">' +
       '<span>How to add or edit with AI</span>' + chev + '</button></h3>' +
-      '<div class="hai-acc__body" id="' + pid + '-p-about" role="region" aria-labelledby="' + pid + '-t-about" data-hai-body="about" hidden>' +
+      '<div class="hai-acc__body" id="' + pid + '-p-about" role="region" aria-labelledby="' + pid + '-t-about" data-hai-body="about" hidden>' + roleHtml +
       '<p>' + esc(appName) + ' has no built-in AI, which keeps it free. Use the AI tool you already have, with your own tokens:</p>' +
       '<ol><li>Open system search (<kbd>&#8984;</kbd>&nbsp;<kbd>Space</kbd> for Spotlight on a Mac, or the Windows search box) and find the folder named:' +
       '<span class="hai-row"><code class="hai-dir">' + esc(folder) + '</code>' +
