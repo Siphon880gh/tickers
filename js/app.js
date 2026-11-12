@@ -122,6 +122,24 @@ async function loadJSON(path) {
       notes = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
     } catch { notes = {}; }
   }
+  // Saved tickers live under their own key; the notes key above is unchanged.
+  const WATCHLIST_KEY = 'market-forces-watchlist';
+  let watchlist = [];
+  function loadWatchlist() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(WATCHLIST_KEY) || '[]');
+      watchlist = Array.isArray(parsed) ? [...new Set(parsed.filter(symbol => typeof symbol === 'string' && bySymbol[symbol]))] : [];
+    } catch { watchlist = []; }
+  }
+  function saveWatchlist() {
+    try { localStorage.setItem(WATCHLIST_KEY, JSON.stringify(watchlist)); } catch {}
+  }
+  const isSaved = symbol => watchlist.includes(symbol);
+  function toggleSaved(symbol) {
+    watchlist = isSaved(symbol) ? watchlist.filter(current => current !== symbol) : [...watchlist, symbol];
+    saveWatchlist();
+    return isSaved(symbol);
+  }
   function saveNotes() {
     localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
   }
@@ -165,13 +183,14 @@ async function loadJSON(path) {
       });
       pool.sort((a,b) => Number(b.symbol.toLowerCase()===query)-Number(a.symbol.toLowerCase()===query));
     } else {
-      pool = state.theme==='all'?instruments:themes.find(theme=>theme.id===state.theme).symbols.map(symbol=>bySymbol[symbol]);
+      pool = state.theme==='all'?instruments:state.theme==='saved'?watchlist.map(symbol=>bySymbol[symbol]).filter(Boolean):themes.find(theme=>theme.id===state.theme).symbols.map(symbol=>bySymbol[symbol]);
     }
     return pool.filter(item=>(state.kind==='all'||item.kind===state.kind)&&(!state.notesOnly||notesFor(item.symbol).length));
   }
   function renderNav() {
     const button = (id,name,mark,count,noteTotal) => '<button type="button" class="theme-button" data-theme="' + id + '" aria-pressed="' + (!state.query && state.theme===id) + '"><span class="theme-mark" aria-hidden="true">' + escapeHTML(mark) + '</span><span>' + escapeHTML(name) + '</span><span class="theme-count" aria-hidden="true">' + count + '</span>' + noteBadge(noteTotal) + '</button>';
     let html = button('all','All tickers','All',instruments.length,noteCount(instruments.map(item=>item.symbol)));
+    html += button('saved','Saved tickers','★',watchlist.length,noteCount(watchlist));
     let previousGroup = '';
     let previousCategory = '';
     for(const theme of themes) {
@@ -196,6 +215,10 @@ async function loadJSON(path) {
       $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, and economic themes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
       return;
     }
+    if(state.theme==='saved') {
+      $('topic').innerHTML='<p class="eyebrow">Your list</p><h2 id="topic-title">Saved tickers</h2><p>'+(watchlist.length?'The '+watchlist.length+(watchlist.length===1?' ticker':' tickers')+' you saved in this browser, in the order you saved them.':'Nothing saved yet. Open a ticker and choose <strong>Save</strong> on its research panel to keep it here.')+'</p><p class="connection">Saved tickers stay in this browser only. Use <strong>Back up</strong> in the research guide to keep a copy.</p>';
+      return;
+    }
     if(state.theme==='all') {
       $('topic').innerHTML='<p class="eyebrow">Full directory</p><h2 id="topic-title">All common tickers</h2><p>Browse '+instruments.length+' stocks and funds, or choose an asset, industry, market, or economic force to narrow your starting point.</p><p class="connection">A stock is a business; a fund may hold stocks, bonds, bullion, currencies, or futures. Check the exposure label before comparing tickers.</p>';
       return;
@@ -207,6 +230,10 @@ async function loadJSON(path) {
   function renderResults(pool) {
     $('result-count').textContent=pool.length+' '+(pool.length===1?'ticker':'tickers');
     $('results-heading').textContent=state.query?'Matching tickers':'Common tickers';
+    if(!pool.length&&state.theme==='saved'&&!state.query&&!watchlist.length) {
+      $('ticker-results').innerHTML='<div class="empty"><h3>No saved tickers yet</h3><p>Choose a theme, open a ticker, then press Save.</p><button type="button" class="reset-button" data-theme="all">Browse all tickers</button></div>';
+      return;
+    }
     if(!pool.length) {
       $('ticker-results').innerHTML='<div class="empty"><h3>No matching tickers</h3><p>Try a shorter term, a symbol like GLD, or switch to stocks &amp; funds.</p><button type="button" class="reset-button" id="reset-search">Reset search &amp; filter</button></div>';
       return;
@@ -217,7 +244,8 @@ async function loadJSON(path) {
       const selected=pickMode?picked:item.symbol===state.selected;
       const check=state.indexMode?'<label class="index-check"><input type="checkbox" data-index-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Include '+item.symbol+' in index weights"></label>':state.compareMode?'<label class="index-check"><input type="checkbox" data-compare-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Compare '+item.symbol+'"></label>':'';
       const noteTotal=notesFor(item.symbol).length;
-      const noteChip=noteTotal?'<span class="badge notes">'+noteTotal+(noteTotal===1?' note':' notes')+'</span>':'';
+      const savedChip=isSaved(item.symbol)?'<span class="badge saved">Saved</span>':'';
+      const noteChip=savedChip+(noteTotal?'<span class="badge notes">'+noteTotal+(noteTotal===1?' note':' notes')+'</span>':'');
       const action=state.indexMode?'Include or remove '+item.symbol+' from index weights':state.compareMode?'Add or remove '+item.symbol+' in the comparison':'Select '+item.symbol+' for research links';
       return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
     }).join('')+'</div>';
@@ -273,7 +301,8 @@ async function loadJSON(path) {
     return '<section class="theme-chips" aria-labelledby="chips-title"><h3 id="chips-title">'+item.symbol+' appears in '+list.length+(list.length===1?' theme':' themes')+'</h3><ul class="chip-list">'+list.map(theme=>'<li><button type="button" data-theme="'+theme.id+'"'+(theme.id===current?' aria-current="true"':'')+'>'+escapeHTML(theme.name)+' <span class="chip-group">· '+escapeHTML(theme.category||theme.group)+'</span></button></li>').join('')+'</ul></section>';
   }
   function researchActions(item) {
-    return '<div class="research-actions"><button type="button" class="action-button" data-copy-link>Copy link</button><button type="button" class="action-button" data-compare-add>'+(state.comparePicks.includes(item.symbol)?'Open comparison':'Add to compare')+(state.comparePicks.length?' ('+state.comparePicks.length+' picked)':'')+'</button></div>';
+    const saved=isSaved(item.symbol);
+    return '<div class="research-actions"><button type="button" class="action-button" data-save-ticker aria-pressed="'+saved+'">'+(saved?'★ Saved':'☆ Save')+'<span class="sr-only"> '+item.symbol+' to your saved tickers</span></button><button type="button" class="action-button" data-copy-link>Copy link</button><button type="button" class="action-button" data-compare-add>'+(state.comparePicks.includes(item.symbol)?'Open comparison':'Add to compare')+(state.comparePicks.length?' ('+state.comparePicks.length+' picked)':'')+'</button></div>';
   }
   async function copyLink(button) {
     const url=location.href;
@@ -361,7 +390,7 @@ async function loadJSON(path) {
     else if(announce) $('status').textContent=state.indexMode?state.indexPicks.length+' '+(state.indexPicks.length===1?'ticker':'tickers')+' selected for index weights.':pool.length+' matching tickers.'+(state.selected?' Research links shown for '+state.selected+'.':'');
   }
   function chooseTheme(id) {
-    if(id!=='all'&&!themes.some(theme=>theme.id===id)) throw new Error('Unknown theme.');
+    if(id!=='all'&&id!=='saved'&&!themes.some(theme=>theme.id===id)) throw new Error('Unknown theme.');
     state.theme=id;state.query='';$('search').value='';pushNext=true;render();
   }
   // Deep links: the hash holds theme, ticker, search text, and filter, e.g. #theme=gold&ticker=GLD or #q=copper&kind=fund.
@@ -392,7 +421,7 @@ async function loadJSON(path) {
     const query=(params.get('q')||'').trim().slice(0,200);
     const ticker=(params.get('ticker')||'').trim().toUpperCase();
     state.query=query;
-    state.theme=theme==='all'||themes.some(item=>item.id===theme)?theme:(query?state.theme:'gold');
+    state.theme=theme==='all'||theme==='saved'||themes.some(item=>item.id===theme)?theme:(query?state.theme:'gold');
     state.kind=['stock','fund'].includes(kind)?kind:'all';
     if(bySymbol[ticker]) state.selected=ticker;
     const compare=params.get('compare');
@@ -445,6 +474,7 @@ async function init() {
     indexData = await loadJSON('data/index-weights.json').catch(() => null);
     catalogUpdated = catalog.updated;
     loadNotes();
+    loadWatchlist();
   } catch (error) {
     $('ticker-results').innerHTML = '<div class="empty"><h3>The directory did not load</h3><p>' + escapeHTML(error.message) + '</p></div>';
     $('status').textContent = 'The directory did not load.';
@@ -496,6 +526,15 @@ async function init() {
     if (event.key === 'Escape' && target === $('search') && $('search').value) { event.preventDefault(); $('search').value = ''; state.query = ''; render(); $('status').textContent = 'Search cleared.'; }
   });
   document.addEventListener('click', event => {
+    const saveButton = event.target.closest('[data-save-ticker]');
+    if (saveButton && state.selected) {
+      const symbol = state.selected;
+      const saved = toggleSaved(symbol);
+      render(false);
+      $('status').textContent = symbol + (saved ? ' saved. ' : ' removed from saved tickers. ') + watchlist.length + ' saved.';
+      ($('research').querySelector('[data-save-ticker]') || $('research')).focus();
+      return;
+    }
     const copyButton = event.target.closest('[data-copy-link]');
     if (copyButton) { copyLink(copyButton); return; }
     const deleteNote = event.target.closest('[data-delete-note]');

@@ -54,7 +54,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 ### Epic 5 · Keep your research
 
-- [ ] **M5.1 Watchlist.** "Save" on the research panel adds a ticker to a watchlist kept in this browser (new key `market-forces-watchlist`; `market-forces-notes` unchanged). A "Saved tickers" nav item lists them and rows show a Saved badge.
+- [x] **M5.1 Watchlist.** "Save" on the research panel adds a ticker to a watchlist kept in this browser (new key `market-forces-watchlist`; `market-forces-notes` unchanged). A "Saved tickers" nav item lists them and rows show a Saved badge.
   - Acceptance: saving/removing updates nav count and badge immediately; survives refresh; an empty watchlist explains how to save.
 - [ ] **M5.2 Back up and restore.** Download notes and watchlist as one JSON file; restore merges a file back in without duplicating notes.
   - Acceptance: export → clear storage → import restores everything; importing the same file twice adds nothing; a bad file shows a plain error and changes nothing.
