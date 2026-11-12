@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-09",
+  "updated": "2026-11-12",
   "instruments": [
     {
       "symbol": "GLD",
@@ -179,6 +179,30 @@
       "exposure": "Nitrogen fertilizer",
       "description": "A nitrogen and ammonia producer. Natural gas is an important production input.",
       "official": ""
+    },
+    {
+      "symbol": "DOW",
+      "name": "Dow Inc.",
+      "kind": "stock",
+      "exposure": "Polyethylene & plastics",
+      "description": "A materials company that produces polyethylene and other plastics for packaging and industrial uses. Resin prices and feedstock costs affect results.",
+      "official": "https://investors.dow.com/"
+    },
+    {
+      "symbol": "LYB",
+      "name": "LyondellBasell Industries",
+      "kind": "stock",
+      "exposure": "Polyethylene & polypropylene",
+      "description": "A large producer of polyethylene and polypropylene, with related chemicals and polymer technologies.",
+      "official": "https://investors.lyondellbasell.com/"
+    },
+    {
+      "symbol": "WLK",
+      "name": "Westlake Corporation",
+      "kind": "stock",
+      "exposure": "Polyethylene & PVC",
+      "description": "Produces polyethylene and PVC resins, and also sells PVC building products used in construction.",
+      "official": "https://www.westlake.com/investor-relations"
     },
     {
       "symbol": "CPER",
@@ -837,6 +861,30 @@
         [
           "Crop outlook · USDA",
           "https://www.usda.gov/oce/commodity/wasde"
+        ],
+        [
+          "Commodity data · World Bank",
+          "https://www.worldbank.org/en/research/commodity-markets"
+        ]
+      ]
+    },
+    {
+      "id": "resin",
+      "name": "Plastic resins",
+      "mark": "PE",
+      "group": "Assets",
+      "symbols": [
+        "DOW",
+        "LYB",
+        "WLK"
+      ],
+      "tags": "resin plastic plastics polyethylene polypropylene pvc polymer petrochemical packaging construction",
+      "description": "Companies that make polyethylene, polypropylene, and PVC resins used in packaging and construction.",
+      "connection": "Resin prices, natural-gas and oil feedstock costs, plant operating rates, and packaging or construction demand can matter. These shares are not a direct resin-price tracker.",
+      "links": [
+        [
+          "Petrochemical feedstocks · EIA",
+          "https://www.eia.gov/energyexplained/hydrocarbon-gas-liquids/uses-of-hydrocarbon-gas-liquids.php"
         ],
         [
           "Commodity data · World Bank",
