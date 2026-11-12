@@ -11,6 +11,7 @@ let instruments = [];
 let themes = [];
 let bySymbol = {};
 let indexData = null;
+let catalogUpdated = '';
 
 async function loadJSON(path) {
   const response = await fetch(path + '?v=' + encodeURIComponent(CACHE_BUST));
@@ -189,6 +190,13 @@ async function loadJSON(path) {
       return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
     }).join('')+'</div>';
   }
+  function directoryDate(iso) {
+    const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||'');
+    if(!match) return '';
+    const date=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
+    if(Number.isNaN(date.getTime())||date.getMonth()!==Number(match[2])-1) return '';
+    return ' · '+new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric'}).format(date)+' directory';
+  }
   function formatSnapshot(iso) {
     const [year,month,day]=iso.split('-').map(Number);
     return new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric'}).format(new Date(year,month-1,day));
@@ -281,6 +289,7 @@ async function init() {
     themes = catalog.themes;
     bySymbol = Object.fromEntries(instruments.map(item => [item.symbol, item]));
     indexData = await loadJSON('data/index-weights.json').catch(() => null);
+    catalogUpdated = catalog.updated;
     loadNotes();
   } catch (error) {
     $('ticker-results').innerHTML = '<div class="empty"><h3>The directory did not load</h3><p>' + escapeHTML(error.message) + '</p></div>';
@@ -288,6 +297,7 @@ async function init() {
     return;
   }
   $('catalog-count').textContent = instruments.length + ' tickers';
+  $('catalog-date').textContent = directoryDate(catalogUpdated);
   $('search-form').addEventListener('submit', event => event.preventDefault());
   $('search').addEventListener('input', event => { state.query = event.target.value.trim(); render(); });
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });

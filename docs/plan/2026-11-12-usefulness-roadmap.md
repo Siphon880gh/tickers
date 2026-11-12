@@ -30,7 +30,7 @@ Ordered by value for effort. Each milestone is one commit.
   - Exits non-zero and names the problem when: JSON does not parse, a theme symbol is missing from `instruments`, a symbol is duplicated, a theme id is duplicated, a required field is missing, `kind` is not `stock`/`fund`, a fund has no `issuer`, `group`/`category` is outside the allowed list, or a link is not `https://`.
   - Warns (does not fail) on instruments no theme lists and index-weight symbols not in the catalog.
   - README gets a one-line "check the catalog" section; both local skills mention running it.
-- [ ] **M1.2 Directory date from data.** The masthead date comes from `catalog.updated` instead of hand-written text.
+- [x] **M1.2 Directory date from data.** The masthead date comes from `catalog.updated` instead of hand-written text.
   - Acceptance: changing `updated` changes the masthead; a missing or bad date hides the date instead of showing "Invalid Date".
 
 ### Epic 2 · Find your way back (links that remember)
