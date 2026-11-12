@@ -250,11 +250,52 @@ async function loadJSON(path) {
     if(focusedTheme) document.querySelector('.theme-button[data-theme="'+focusedTheme+'"]')?.focus({preventScroll:true});
     const modeButton=$('index-mode');
     if(modeButton) modeButton.setAttribute('aria-pressed',String(state.indexMode));
+    syncURL();
     if(announce) $('status').textContent=state.indexMode?state.indexPicks.length+' '+(state.indexPicks.length===1?'ticker':'tickers')+' selected for index weights.':pool.length+' matching tickers.'+(state.selected?' Research links shown for '+state.selected+'.':'');
   }
   function chooseTheme(id) {
     if(id!=='all'&&!themes.some(theme=>theme.id===id)) throw new Error('Unknown theme.');
-    state.theme=id;state.query='';$('search').value='';render();
+    state.theme=id;state.query='';$('search').value='';pushNext=true;render();
+  }
+  // Deep links: the hash holds theme, ticker, search text, and filter, e.g. #theme=gold&ticker=GLD or #q=copper&kind=fund.
+  let pushNext=false;
+  let appliedHash=null;
+  function stateHash() {
+    const params=new URLSearchParams();
+    if(state.query) params.set('q',state.query); else params.set('theme',state.theme);
+    if(state.kind!=='all') params.set('kind',state.kind);
+    if(state.selected) params.set('ticker',state.selected);
+    return '#'+params.toString();
+  }
+  function syncURL() {
+    const hash=stateHash();
+    const push=pushNext;
+    pushNext=false;
+    if(hash===location.hash) {appliedHash=hash;return;}
+    try { history[push&&appliedHash!==null?'pushState':'replaceState'](null,'',hash); } catch {}
+    appliedHash=hash;
+  }
+  function applyHash() {
+    const raw=location.hash.slice(1);
+    if(!raw.includes('=')) return false;
+    const params=new URLSearchParams(raw);
+    const theme=params.get('theme');
+    const kind=params.get('kind');
+    const query=(params.get('q')||'').trim().slice(0,200);
+    const ticker=(params.get('ticker')||'').trim().toUpperCase();
+    state.query=query;
+    state.theme=theme==='all'||themes.some(item=>item.id===theme)?theme:(query?state.theme:'gold');
+    state.kind=['stock','fund'].includes(kind)?kind:'all';
+    if(bySymbol[ticker]) state.selected=ticker;
+    $('search').value=state.query;
+    $('kind-filter').value=state.kind;
+    return true;
+  }
+  function onHistoryMove() {
+    if(location.hash===appliedHash) return;
+    if(!applyHash()) return;
+    appliedHash=location.hash;
+    render();
   }
   function chooseSymbol(symbol,moveFocus=false) {
     const item=bySymbol[symbol];
@@ -274,6 +315,8 @@ async function loadJSON(path) {
       }
     } else {renderResults(pool);}
     renderResearch();
+    pushNext=moveFocus;
+    syncURL();
     $('status').textContent='Research links shown for '+symbol+'.';
     if(moveFocus&&window.matchMedia('(max-width:1180px)').matches) {
       $('research').focus({preventScroll:true});
@@ -348,7 +391,12 @@ async function init() {
     }
     if (event.target.closest('#reset-search')) { state.query = ''; state.kind = 'all'; state.notesOnly = false; $('search').value = ''; $('kind-filter').value = 'all'; $('notes-only').checked = false; render(); $('search').focus(); }
   });
-  $('guide-link').addEventListener('click', () => { $('research-guide').open = true; });
+  // In-page anchors would replace the deep-link hash, so scroll to them instead.
+  $('guide-link').addEventListener('click', event => { event.preventDefault(); $('research-guide').open = true; $('research-guide').scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'}); $('research-guide').querySelector('summary').focus({preventScroll: true}); });
+  document.querySelector('.skip')?.addEventListener('click', event => { event.preventDefault(); $('main-content').focus(); });
+  window.addEventListener('popstate', onHistoryMove);
+  window.addEventListener('hashchange', onHistoryMove);
+  applyHash();
   render(false);
   if (document.modelContext?.registerTool) {
     const lifecycle = new AbortController();
