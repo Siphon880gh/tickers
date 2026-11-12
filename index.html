@@ -123,6 +123,11 @@
     .research-title{display:flex;gap:.8rem;align-items:baseline;margin:.25rem 0}
     .research-title h2{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:2rem;letter-spacing:-.05em;line-height:1.2;margin:0}
     .research-name{font-weight:650;margin:.5rem 0;font-size:1rem;line-height:1.4}
+    .research-actions{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;margin-top:.75rem}
+    .action-button{border:1px solid #b9cad6;border-radius:6px;padding:.42rem .65rem;font-size:.875rem;font-weight:650;background:#fff;color:var(--accent);min-height:36px}
+    .action-button:hover{border-color:var(--accent);background:#f6fafb}
+    .action-button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+    .copy-fallback{width:100%;margin-top:.5rem;border:1px solid #a8bac9;border-radius:6px;padding:.45rem .55rem;font-size:.8125rem;color:var(--ink)}
     .research-head .note{color:var(--muted);font-size:.875rem;margin:.65rem 0 0}
     .research-groups{padding:.3rem 1.25rem 1rem}
     .resource-group{margin-top:1rem}
@@ -151,7 +156,7 @@
     @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.mode-toggle{min-height:44px}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
     @media(max-width:480px){.ticker-row{flex-direction:column;align-items:stretch;gap:.75rem}.quick-link{align-self:flex-start}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-    @media print{.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
+    @media print{.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link,.research-actions,.notes-panel form{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
   </style>
 </head>
 <body>
@@ -173,7 +178,7 @@
         <label for="search">Find a theme, company, or ticker</label>
         <div class="inputwrap">
           <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
-          <input id="search" type="search" placeholder="Try gold, technology, large cap, or AAPL" autocomplete="off" aria-controls="ticker-results" spellcheck="false">
+          <input id="search" type="search" placeholder="Try gold, technology, large cap, or AAPL" aria-keyshortcuts="/" autocomplete="off" aria-controls="ticker-results" spellcheck="false">
         </div>
       </div>
       <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option><option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
@@ -197,6 +202,7 @@
               <li><strong>Cross-check the conversation.</strong> Social sentiment reflects the people posting, not every investor. Compare claims with filings and primary sources.</li>
               <li><strong>Define your downside.</strong> Decide how much loss you can tolerate before choosing a position size. Understand your order type and any tax consequences.</li>
             </ol>
+            <p>Shortcuts: press <kbd>/</kbd> to search and <kbd>Esc</kbd> to clear it. The address bar keeps your theme and ticker, so you can bookmark or share a view.</p>
             <p>ETF = exchange-traded fund. A ticker is the short symbol used to identify a security on an exchange. The examples here are research starting points, not buy or sell recommendations.</p>
           </div>
         </details>

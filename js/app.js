@@ -234,13 +234,25 @@ async function loadJSON(path) {
     const limits='<section class="limits"><h3>Not available as an official file</h3><ul>'+indexData.limits.map(limit=>'<li><strong>'+escapeHTML(limit.name)+'.</strong> '+escapeHTML(limit.reason)+'</li>').join('')+'</ul>'+(quiet.length?'<h3>Checked, with no directory match</h3><ul>'+quiet.map(index=>'<li><strong>'+escapeHTML(index.name)+'.</strong> '+escapeHTML(index.note)+' Snapshot '+escapeHTML(formatSnapshot(index.snapshotDate))+'. No ticker in this directory was in that file.</li>').join('')+'</ul>':'')+'</section>';
     $('research').innerHTML=head+body+limits;
   }
+  function researchActions(item) {
+    return '<div class="research-actions"><button type="button" class="action-button" data-copy-link>Copy link</button></div>';
+  }
+  async function copyLink(button) {
+    const url=location.href;
+    const done=()=>{$('status').textContent='Link to '+(state.selected||'this view')+' copied.';button.textContent='Link copied';setTimeout(()=>{if(button.isConnected)button.textContent='Copy link';},2000);};
+    try { await navigator.clipboard.writeText(url); done(); return; } catch {}
+    let field=button.parentElement.querySelector('.copy-fallback');
+    if(!field) { field=document.createElement('input'); field.className='copy-fallback'; field.readOnly=true; field.setAttribute('aria-label','Link to this view'); button.parentElement.appendChild(field); }
+    field.value=url; field.focus(); field.select();
+    $('status').textContent='Copying is blocked here. The link is selected; press Command+C or Ctrl+C.';
+  }
   function renderResearch() {
     if(state.indexMode) {renderIndexWeights();return;}
     $('research').setAttribute('aria-label','Selected ticker research');
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p><p class="note">'+escapeHTML(item.description)+'</p></div><div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div><div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -371,7 +383,15 @@ async function init() {
     render();
     document.querySelector('[data-index-pick="'+symbol+'"]')?.focus();
   });
+  document.addEventListener('keydown', event => {
+    const target = event.target;
+    const typing = target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+    if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey && !event.altKey) { event.preventDefault(); $('search').focus(); $('search').select(); return; }
+    if (event.key === 'Escape' && target === $('search') && $('search').value) { event.preventDefault(); $('search').value = ''; state.query = ''; render(); $('status').textContent = 'Search cleared.'; }
+  });
   document.addEventListener('click', event => {
+    const copyButton = event.target.closest('[data-copy-link]');
+    if (copyButton) { copyLink(copyButton); return; }
     const deleteNote = event.target.closest('[data-delete-note]');
     if (deleteNote && state.selected) {
       notes[state.selected] = notesFor(state.selected).filter(note => note.id !== deleteNote.dataset.deleteNote);

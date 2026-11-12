@@ -37,7 +37,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 - [x] **M2.1 Deep links.** The URL hash holds the theme, the selected ticker, the search text, and the stock/fund filter (`#theme=gold&ticker=GLD`, `#q=copper&kind=fund`).
   - Acceptance: refresh keeps the view; Back/Forward move between themes and tickers; a link with an unknown theme or ticker falls back to the default view without an error; typing in search does not flood history (replaceState while typing).
-- [ ] **M2.2 Copy link and keyboard shortcuts.** "Copy link" in the research panel copies the deep link and confirms through the live region. `/` focuses search; `Esc` in search clears it.
+- [x] **M2.2 Copy link and keyboard shortcuts.** "Copy link" in the research panel copies the deep link and confirms through the live region. `/` focuses search; `Esc` in search clears it.
   - Acceptance: works with keyboard only; falls back to selecting the URL text when the clipboard is blocked; `/` does nothing while typing in an input or textarea.
 
 ### Epic 3 · Understand what you are looking at
