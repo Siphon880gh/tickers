@@ -65,7 +65,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 - [x] **M6.1 Index-weight picks in the URL.** Index weights mode and its checked tickers go in the hash (`weights=NVDA,AAPL`), like Compare.
   - Acceptance: a shared index-weights link opens in that mode with those picks; unknown symbols are dropped; leaving the mode removes the parameter.
-- [ ] **M6.2 Agent tools and docs for the new features.** The page's `document.modelContext` tools gain a read-only `compare_tickers` tool, and the README lists what the page can do (deep links, compare, saved tickers, backup, shortcuts).
+- [x] **M6.2 Agent tools and docs for the new features.** The page's `document.modelContext` tools gain a read-only `compare_tickers` tool, and the README lists what the page can do (deep links, compare, saved tickers, backup, shortcuts).
   - Acceptance: the tool rejects unknown symbols and more than 3 symbols, and returns the same fields as the Compare table; README matches the page.
 
 ## Not in scope

@@ -397,14 +397,20 @@ async function loadJSON(path) {
     pushNext=true;
     render();
   }
-  function compareLinks(item) {
+  function compareLinkList(item) {
     const official=item.official||google(item.name+' '+item.symbol+(item.kind==='stock'?' official investor relations':' '+item.issuer+' official fund holdings fees prospectus'));
     const root=stockAnalysisURL(item);
     const rows=[['Stock Analysis',root]];
     if(item.kind==='stock') rows.push(['Financials',root+'financials/'],[item.official?'Investor relations':'Find investor relations',official]);
     else rows.push(['Holdings',(item.exposure==='Bullion'||item.exposure==='Currency trust'||fundUsesFutures(item))?official:root+'holdings/'],[item.official?'Fund issuer':'Find fund issuer',official]);
     rows.push(['Google News',googleNews(item.symbol+' '+item.name)]);
-    return '<ul>'+rows.map(([title,url])=>'<li><a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> for '+item.symbol+' (opens in a new tab)</span></a></li>').join('')+'</ul>';
+    return rows;
+  }
+  function compareSummary(item) {
+    return {symbol:item.symbol,name:item.name,kind:item.kind,owns:EXPOSURE_TYPES[exposureType(item)].label,exposure:item.exposure,issuer:item.kind==='fund'?item.issuer:null,themes:relatedThemes(item).map(theme=>theme.name),links:compareLinkList(item).map(([title,url])=>({title,url}))};
+  }
+  function compareLinks(item) {
+    return '<ul>'+compareLinkList(item).map(([title,url])=>'<li><a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> for '+item.symbol+' (opens in a new tab)</span></a></li>').join('')+'</ul>';
   }
   function renderCompare() {
     $('research').setAttribute('aria-label','Compare tickers');
@@ -653,6 +659,14 @@ async function init() {
         if(!input||typeof input.query!=='string'||input.query.length>200||Object.keys(input).some(key=>!['query','kind'].includes(key))||(input.kind!==undefined&&!['all','stock','fund'].includes(input.kind)))throw new Error('Provide a query string and a valid kind.');
         state.query=input.query.trim();state.kind=input.kind||'all';$('search').value=state.query;$('kind-filter').value=state.kind;render();
         return {tickers:visibleInstruments().map(({symbol,name,kind,exposure})=>({symbol,name,kind,exposure})),themes:matchingThemes(state.query).map(({id,name})=>({id,name}))};
+      }},
+      {name:'compare_tickers',title:'Compare tickers',description:'Compare up to 3 tickers from this directory by structure: type, what you would own, exposure, issuer, themes, and main research links. Read-only; does not change the page or open websites. Not performance data.',inputSchema:{type:'object',properties:{symbols:{type:'array',items:{type:'string'},minItems:1,maxItems:3}},required:['symbols'],additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute(input){
+        if(!input||!Array.isArray(input.symbols)||Object.keys(input).some(key=>key!=='symbols'))throw new Error('Provide a symbols list.');
+        const symbols=[...new Set(input.symbols.map(symbol=>String(symbol).trim().toUpperCase()))];
+        if(!symbols.length||symbols.length>COMPARE_MAX)throw new Error('Provide 1 to '+COMPARE_MAX+' symbols.');
+        const unknown=symbols.filter(symbol=>!bySymbol[symbol]);
+        if(unknown.length)throw new Error('Not in this directory: '+unknown.join(', ')+'.');
+        return {tickers:symbols.map(symbol=>compareSummary(bySymbol[symbol]))};
       }},
       {name:'select_ticker_for_research',title:'Select ticker for research',description:'Select a ticker from this directory and return its research links. Does not open external websites.',inputSchema:{type:'object',properties:{symbol:{type:'string'}},required:['symbol'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute(input){
         if(!input||typeof input.symbol!=='string'||Object.keys(input).some(key=>key!=='symbol'))throw new Error('Provide a ticker symbol.');
