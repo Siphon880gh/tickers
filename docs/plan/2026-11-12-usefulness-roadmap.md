@@ -26,7 +26,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 ### Epic 1 · Keep the catalog trustworthy
 
-- [ ] **M1.1 Catalog check script.** `tools/check-catalog.mjs` runs with plain `node` (no packages).
+- [x] **M1.1 Catalog check script.** `tools/check-catalog.mjs` runs with plain `node` (no packages).
   - Exits non-zero and names the problem when: JSON does not parse, a theme symbol is missing from `instruments`, a symbol is duplicated, a theme id is duplicated, a required field is missing, `kind` is not `stock`/`fund`, a fund has no `issuer`, `group`/`category` is outside the allowed list, or a link is not `https://`.
   - Warns (does not fail) on instruments no theme lists and index-weight symbols not in the catalog.
   - README gets a one-line "check the catalog" section; both local skills mention running it.

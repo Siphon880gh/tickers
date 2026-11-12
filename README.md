@@ -14,3 +14,7 @@ Beginner’s directory of common stocks and funds, grouped by economic theme, wi
 ![Research links for the Newmont stock, including financials and filings](screenshots/stock-research.png)
 
 <img src="screenshots/phone.png" alt="Market Forces on a phone" width="320">
+
+## Check the catalog
+
+After editing `data/catalog.json` or `data/index-weights.json`, run `node tools/check-catalog.mjs`. It needs no packages. It fails on a theme symbol missing from `instruments`, a duplicate symbol or theme id, a missing field, an unknown group or category, or a link that is not `https://`, and warns about tickers no theme lists.

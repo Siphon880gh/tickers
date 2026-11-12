@@ -13,7 +13,7 @@ Check the catalog as it is today. Do not treat the copy in `data/catalog.json` a
 
 ## Read the catalog
 
-`data/catalog.json` holds `instruments` and `themes`. Every theme `symbols` entry must match an instrument `symbol`. Note orphans both ways: a symbol in a theme that is not in `instruments`, and an instrument that no theme lists.
+`data/catalog.json` holds `instruments` and `themes`. Every theme `symbols` entry must match an instrument `symbol`. Run `node tools/check-catalog.mjs` first; it reports broken cross-references and orphans. Note orphans both ways: a symbol in a theme that is not in `instruments`, and an instrument that no theme lists.
 
 `researchLinks(item)` in `js/app.js` builds research links from `kind`, `exposure`, `issuer`, and `official`. An audit of those links means checking those fields, not a stored URL list.
 
@@ -45,4 +45,4 @@ Lead with the findings:
 - **Add** — symbol, name, kind, exposure, and which existing theme it belongs on
 - **Keep** — only mention a ticker here if you checked it and it is accurate; do not list the whole catalog as a keep list
 
-Do not edit `data/catalog.json` until the user says which findings to apply. When applying, update `instruments` and every theme `symbols` list together so the two stay in sync.
+Do not edit `data/catalog.json` until the user says which findings to apply. When applying, update `instruments` and every theme `symbols` list together so the two stay in sync. Then run `node tools/check-catalog.mjs`; it must pass.
