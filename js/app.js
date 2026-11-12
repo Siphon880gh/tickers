@@ -234,6 +234,12 @@ async function loadJSON(path) {
     const limits='<section class="limits"><h3>Not available as an official file</h3><ul>'+indexData.limits.map(limit=>'<li><strong>'+escapeHTML(limit.name)+'.</strong> '+escapeHTML(limit.reason)+'</li>').join('')+'</ul>'+(quiet.length?'<h3>Checked, with no directory match</h3><ul>'+quiet.map(index=>'<li><strong>'+escapeHTML(index.name)+'.</strong> '+escapeHTML(index.note)+' Snapshot '+escapeHTML(formatSnapshot(index.snapshotDate))+'. No ticker in this directory was in that file.</li>').join('')+'</ul>':'')+'</section>';
     $('research').innerHTML=head+body+limits;
   }
+  function themeChips(item) {
+    const list=relatedThemes(item);
+    if(!list.length) return '';
+    const current=state.query?'':state.theme;
+    return '<section class="theme-chips" aria-labelledby="chips-title"><h3 id="chips-title">'+item.symbol+' appears in '+list.length+(list.length===1?' theme':' themes')+'</h3><ul class="chip-list">'+list.map(theme=>'<li><button type="button" data-theme="'+theme.id+'"'+(theme.id===current?' aria-current="true"':'')+'>'+escapeHTML(theme.name)+' <span class="chip-group">· '+escapeHTML(theme.category||theme.group)+'</span></button></li>').join('')+'</ul></section>';
+  }
   function researchActions(item) {
     return '<div class="research-actions"><button type="button" class="action-button" data-copy-link>Copy link</button></div>';
   }
@@ -252,7 +258,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div><div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;

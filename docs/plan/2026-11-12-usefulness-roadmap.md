@@ -42,7 +42,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 ### Epic 3 · Understand what you are looking at
 
-- [ ] **M3.1 "Also appears in" themes.** The research panel lists every theme that includes the selected ticker as buttons that open that theme.
+- [x] **M3.1 "Also appears in" themes.** The research panel lists every theme that includes the selected ticker as buttons that open that theme.
   - Acceptance: NVDA shows Technology, Semiconductors, Growth, and AI & chip demand; the current theme is marked; buttons are keyboard reachable.
 - [ ] **M3.2 Exposure explainer.** Each ticker shows a short plain-language "What you would own" note for its exposure type (a business, a stock fund, a bond fund, Treasury bills, bullion trust, futures fund, currency trust). The research checklist gets a matching glossary.
   - Acceptance: every one of the 87 instruments maps to exactly one type; no figures, prices, or yields are stated; the existing futures warning stays.
