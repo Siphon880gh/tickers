@@ -135,6 +135,13 @@
     .chip-list button:hover{background:var(--accent-soft)}
     .chip-list button[aria-current=true]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
     .chip-group{color:var(--muted);font-weight:500}
+    .exposure-note{margin:1rem 1.25rem 0;padding:.75rem .85rem;border:1px solid var(--border);border-radius:8px;background:#fafcfe;font-size:.875rem;color:#3f5569}
+    .exposure-note h3{font-size:.75rem;font-weight:750;text-transform:uppercase;letter-spacing:.075em;color:var(--muted);margin:0 0 .35rem}
+    .exposure-note p{margin:0}
+    .exposure-note strong{color:var(--ink)}
+    .glossary{margin:.75rem 0 0;display:grid;gap:.5rem}
+    .glossary dt{font-weight:700;color:var(--ink)}
+    .glossary dd{margin:0 0 .25rem}
     .research-head .note{color:var(--muted);font-size:.875rem;margin:.65rem 0 0}
     .research-groups{padding:.3rem 1.25rem 1rem}
     .resource-group{margin-top:1rem}
@@ -155,6 +162,7 @@
     .learn-body li{margin-bottom:.65rem}
     .learn-body strong{color:var(--ink)}
     .learn-body p{margin:.75rem 0 0}
+    .glossary-title{font-size:.875rem;color:var(--ink);margin:1rem 0 0}
     footer{max-width:1512px;margin:auto;padding:0 2rem 1.8rem;display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.8125rem}
     footer p{margin:0}
     .footer-link{white-space:nowrap}
@@ -209,6 +217,8 @@
               <li><strong>Cross-check the conversation.</strong> Social sentiment reflects the people posting, not every investor. Compare claims with filings and primary sources.</li>
               <li><strong>Define your downside.</strong> Decide how much loss you can tolerate before choosing a position size. Understand your order type and any tax consequences.</li>
             </ol>
+            <h3 class="glossary-title">What you would own, by type</h3>
+            <dl class="glossary" id="exposure-glossary"></dl>
             <p>Shortcuts: press <kbd>/</kbd> to search and <kbd>Esc</kbd> to clear it. The address bar keeps your theme and ticker, so you can bookmark or share a view.</p>
             <p>ETF = exchange-traded fund. A ticker is the short symbol used to identify a security on an exchange. The examples here are research starting points, not buy or sell recommendations.</p>
           </div>

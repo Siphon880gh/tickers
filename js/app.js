@@ -32,6 +32,37 @@ async function loadJSON(path) {
     words.push('stocks');
     return words.join(' ');
   }
+  // Plain-language note on what each kind of exposure holds. Wording only: no prices, yields, or figures.
+  const EXPOSURE_TYPES = {
+    business:{label:'One company',text:'Shares of a single business. The price follows how that company does and what investors expect: sales, profit, debt, and management decisions. One company can move very differently from its theme.'},
+    stockFund:{label:'A stock fund',text:'A basket of company stocks in one fund. Owning many companies lowers single-company risk, but the fund still rises and falls with the stock market and its sector. Check the holdings, the index it follows, and the expense ratio.'},
+    bondFund:{label:'A bond fund',text:'A fund of bonds, which are loans to a government or company. Bond prices usually fall when interest rates rise, and longer-term bonds tend to move more. Check the maturity range and the expense ratio.'},
+    bills:{label:'A Treasury bill fund',text:'A fund of short-term U.S. Treasury bills. Its price usually moves little, while its income changes with short-term interest rates. It is not a bank account and is not FDIC insured.'},
+    bullion:{label:'A bullion trust',text:'A trust that holds the physical metal in a vault. Its price follows the metal, minus expenses. It pays no dividends or interest, and U.S. tax rules can treat gains as collectibles.'},
+    futures:{label:'A futures fund',text:'A fund that holds futures contracts instead of the commodity or currency itself. Rolling from one contract to the next can make results drift from the spot price over time, and some of these funds send a K-1 tax form.'},
+    currency:{label:'A currency trust',text:'A trust that holds a foreign currency on deposit. It tends to rise when that currency strengthens against the U.S. dollar and fall when it weakens, minus expenses.'}
+  };
+  function exposureType(item) {
+    if(item.kind==='stock') return 'business';
+    if(item.exposure==='Bullion') return 'bullion';
+    if(fundUsesFutures(item)) return 'futures';
+    if(item.exposure==='Currency trust') return 'currency';
+    if(/treasury bills/i.test(item.exposure)) return 'bills';
+    if(/bond/i.test(item.exposure)) return 'bondFund';
+    return 'stockFund';
+  }
+  function exposureNote(item) {
+    const type=EXPOSURE_TYPES[exposureType(item)];
+    return '<section class="exposure-note" aria-labelledby="exposure-title"><h3 id="exposure-title">What you would own</h3><p><strong>'+escapeHTML(type.label)+'.</strong> '+escapeHTML(type.text)+'</p></section>';
+  }
+  function renderGlossary() {
+    const box=$('exposure-glossary');
+    if(!box) return;
+    box.innerHTML=Object.entries(EXPOSURE_TYPES).map(([key,type])=>{
+      const examples=instruments.filter(item=>exposureType(item)===key).slice(0,3).map(item=>item.symbol);
+      return '<div><dt>'+escapeHTML(type.label)+(examples.length?' <span class="chip-group">· e.g. '+examples.join(', ')+'</span>':'')+'</dt><dd>'+escapeHTML(type.text)+'</dd></div>';
+    }).join('');
+  }
   const relatedThemes = item => themes.filter(theme => theme.symbols.includes(item.symbol));
   function researchLinks(item) {
     const s = item.symbol;
@@ -258,7 +289,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -359,6 +390,7 @@ async function init() {
   }
   $('catalog-count').textContent = instruments.length + ' tickers';
   $('catalog-date').textContent = directoryDate(catalogUpdated);
+  renderGlossary();
   $('search-form').addEventListener('submit', event => event.preventDefault());
   $('search').addEventListener('input', event => { state.query = event.target.value.trim(); render(); });
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });
