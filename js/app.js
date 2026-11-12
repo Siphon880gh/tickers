@@ -140,6 +140,58 @@ async function loadJSON(path) {
     saveWatchlist();
     return isSaved(symbol);
   }
+  // Backup file: {app, version, exportedAt, notes, watchlist}. Restoring merges and never deletes.
+  function backupData() {
+    return {app:'market-forces', version:1, exportedAt:new Date().toISOString(), notes, watchlist};
+  }
+  function downloadBackup() {
+    const blob = new Blob([JSON.stringify(backupData(), null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'market-forces-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    const total = noteCount(Object.keys(notes));
+    return 'Backup downloaded with ' + total + (total === 1 ? ' note' : ' notes') + ' and ' + watchlist.length + (watchlist.length === 1 ? ' saved ticker.' : ' saved tickers.');
+  }
+  function restoreBackup(text) {
+    let data;
+    try { data = JSON.parse(text); } catch { throw new Error('That file is not valid JSON. Nothing changed.'); }
+    const validNotes = data && typeof data.notes === 'object' && data.notes !== null && !Array.isArray(data.notes);
+    const validList = data && Array.isArray(data.watchlist);
+    if (!data || data.app !== 'market-forces' || (!validNotes && !validList)) throw new Error('That file is not a Market Forces backup. Nothing changed.');
+    let addedNotes = 0;
+    let addedSaved = 0;
+    const nextNotes = {...notes};
+    if (validNotes) {
+      for (const [symbol, list] of Object.entries(data.notes)) {
+        if (!/^[A-Z0-9.\-]{1,12}$/.test(symbol) || !Array.isArray(list)) continue;
+        const current = Array.isArray(nextNotes[symbol]) ? [...nextNotes[symbol]] : [];
+        const seen = new Set(current.map(note => note && note.id));
+        const texts = new Set(current.map(note => note && (note.text + '|' + note.at)));
+        for (const note of list) {
+          if (!note || typeof note.text !== 'string' || !note.text.trim() || typeof note.id !== 'string') continue;
+          if (seen.has(note.id) || texts.has(note.text + '|' + note.at)) continue;
+          current.push({id: note.id, text: note.text.slice(0, 2000), at: typeof note.at === 'string' ? note.at : ''});
+          seen.add(note.id);
+          addedNotes++;
+        }
+        current.sort((a, b) => String(b.at).localeCompare(String(a.at)));
+        if (current.length) nextNotes[symbol] = current;
+      }
+    }
+    const nextList = [...watchlist];
+    if (validList) for (const symbol of data.watchlist) if (typeof symbol === 'string' && bySymbol[symbol] && !nextList.includes(symbol)) { nextList.push(symbol); addedSaved++; }
+    notes = nextNotes;
+    watchlist = nextList;
+    saveNotes();
+    saveWatchlist();
+    if (!addedNotes && !addedSaved) return 'Nothing new in that file. Everything in it is already here.';
+    return 'Restored ' + addedNotes + (addedNotes === 1 ? ' note' : ' notes') + ' and ' + addedSaved + (addedSaved === 1 ? ' saved ticker.' : ' saved tickers.');
+  }
   function saveNotes() {
     localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
   }
@@ -488,6 +540,17 @@ async function init() {
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });
   $('index-mode').addEventListener('click', () => setMode('index'));
   $('compare-mode').addEventListener('click', () => setMode('compare'));
+  const backupMessage = message => { $('backup-message').textContent = message; };
+  $('backup-download').addEventListener('click', () => { try { backupMessage(downloadBackup()); } catch { backupMessage('The backup could not be created in this browser.'); } });
+  $('backup-restore').addEventListener('click', () => $('backup-file').click());
+  $('backup-file').addEventListener('change', async event => {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = '';
+    if (!file) return;
+    if (file.size > 2000000) { backupMessage('That file is too large to be a Market Forces backup. Nothing changed.'); return; }
+    try { backupMessage(restoreBackup(await file.text())); render(false); }
+    catch (error) { backupMessage(error.message); }
+  });
   $('notes-only').addEventListener('change', event => { state.notesOnly = event.target.checked; render(); });
   document.addEventListener('submit', event => {
     if (event.target.id !== 'note-form') return;

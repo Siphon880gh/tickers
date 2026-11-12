@@ -171,6 +171,8 @@
     .learn-body li{margin-bottom:.65rem}
     .learn-body strong{color:var(--ink)}
     .learn-body p{margin:.75rem 0 0}
+    .backup-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+    .backup-message{color:var(--ink);font-weight:600}
     .glossary-title{font-size:.875rem;color:var(--ink);margin:1rem 0 0}
     footer{max-width:1512px;margin:auto;padding:0 2rem 1.8rem;display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.8125rem}
     footer p{margin:0}
@@ -229,6 +231,12 @@
             </ol>
             <h3 class="glossary-title">What you would own, by type</h3>
             <dl class="glossary" id="exposure-glossary"></dl>
+            <section class="backup" aria-labelledby="backup-title">
+              <h3 class="glossary-title" id="backup-title">Back up your notes and saved tickers</h3>
+              <p>Notes and saved tickers stay in this browser. Download a backup file to keep a copy or move them to another browser, then restore it there. Restoring adds to what is already here; it does not delete anything.</p>
+              <div class="backup-actions"><button type="button" class="action-button" id="backup-download">Download backup</button><button type="button" class="action-button" id="backup-restore">Restore from file</button><input type="file" id="backup-file" accept="application/json,.json" hidden tabindex="-1"></div>
+              <p class="backup-message" id="backup-message" aria-live="polite"></p>
+            </section>
             <p>Shortcuts: press <kbd>/</kbd> to search and <kbd>Esc</kbd> to clear it. The address bar keeps your theme and ticker, so you can bookmark or share a view.</p>
             <p>ETF = exchange-traded fund. A ticker is the short symbol used to identify a security on an exchange. The examples here are research starting points, not buy or sell recommendations.</p>
           </div>

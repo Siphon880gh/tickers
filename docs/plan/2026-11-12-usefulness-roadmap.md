@@ -56,7 +56,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 - [x] **M5.1 Watchlist.** "Save" on the research panel adds a ticker to a watchlist kept in this browser (new key `market-forces-watchlist`; `market-forces-notes` unchanged). A "Saved tickers" nav item lists them and rows show a Saved badge.
   - Acceptance: saving/removing updates nav count and badge immediately; survives refresh; an empty watchlist explains how to save.
-- [ ] **M5.2 Back up and restore.** Download notes and watchlist as one JSON file; restore merges a file back in without duplicating notes.
+- [x] **M5.2 Back up and restore.** Download notes and watchlist as one JSON file; restore merges a file back in without duplicating notes.
   - Acceptance: export → clear storage → import restores everything; importing the same file twice adds nothing; a bad file shows a plain error and changes nothing.
 - [ ] **M5.3 Search your notes.** Search text also matches the reader's own notes, and a match says it came from a note.
   - Acceptance: a word only in a note finds that ticker; the result row shows "Matches your note".
