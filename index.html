@@ -177,12 +177,75 @@
     footer{max-width:1512px;margin:auto;padding:0 2rem 1.8rem;display:flex;justify-content:space-between;gap:1rem;color:var(--muted);font-size:.8125rem}
     footer p{margin:0}
     .footer-link{white-space:nowrap}
+    /* Why-it-matters simulations, copied from Tool Training: dotted purple phrases open a stepped SAMPLE walk. */
+    :root{--sim:#6d28d9;--sim-soft:#f3edff;--sim-line:#c4b5fd;--up:#13795b;--down:#c2412d}
+    .sim-trigger{display:inline;padding:0 .05em;margin:0;border:0;background:none;font:inherit;font-weight:650;color:var(--sim);text-align:left;text-decoration:underline dotted 2px;text-decoration-color:#6d28d9a6;text-underline-offset:3px;border-radius:3px;cursor:pointer;line-height:inherit}
+    .sim-trigger::after{content:"▶";display:inline-block;margin-left:.18em;font-size:.55em;vertical-align:super;text-decoration:none}
+    .sim-trigger:hover{background:var(--sim-soft)}
+    .sim-trigger:focus-visible{outline:3px solid var(--sim);outline-offset:2px}
+    .sim-trigger[aria-expanded=true]{background:var(--sim-soft)}
+    .sim-hint{display:block;margin-top:.25rem;font-size:.8125rem}
+    .sim-hint .sim-sample{color:var(--sim);font-weight:650;text-decoration:underline dotted 2px;text-underline-offset:3px}
+    .sim-note{color:#3f5569}
+    .sim-guide ul{list-style:none;padding:0;margin:.6rem 0 0;display:grid;gap:.6rem}
+    .sim-guide li{margin:0}
+    .sim-count{color:var(--muted);font-size:.8125rem}
+    .sim-list-goal{display:block;color:var(--muted);font-size:.8125rem}
+    .sim-layer{position:fixed;inset:0;z-index:2147483100;display:flex;align-items:center;justify-content:center;padding:1rem}
+    .sim-backdrop{position:absolute;inset:0;background:#0b1a2a66}
+    .sim-panel{position:relative;width:100%;max-width:40rem;max-height:90vh;overflow-y:auto;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 18px 50px #0b1a2a40;color:var(--ink);font-size:.875rem;animation:sim-in .16s ease-out}
+    .sim-head{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;padding:.85rem 1rem;border-bottom:1px solid var(--border);background:#fff}
+    .sim-eyebrow{margin:0;font-size:.6875rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:var(--sim)}
+    .sim-head h2{margin:.15rem 0 0;font-size:1.05rem;line-height:1.3;letter-spacing:-.01em}
+    .sim-close{flex-shrink:0;border:1px solid var(--border);background:#fff;color:var(--ink);border-radius:6px;padding:.35rem .6rem;font-size:.8125rem;font-weight:650}
+    .sim-body{padding:1rem;display:grid;gap:.8rem}
+    .sim-goal{margin:0;padding:.6rem .75rem;border:1px solid var(--sim-line);background:var(--sim-soft);border-radius:8px;font-size:.8125rem}
+    .sim-figure{margin:0}
+    .sim-figure figcaption{margin-top:.3rem;font-size:.6875rem;color:var(--muted)}
+    .sim-chart{display:block;width:100%;height:auto;max-height:13rem;border:1px solid var(--border);border-radius:8px;background:#fafcfe}
+    .sim-chart .sim-current{fill:#6d28d91a}
+    .sim-chart .sim-slot{stroke:var(--border);stroke-width:2}
+    .sim-chart .sim-up line,.sim-chart .sim-up rect{stroke:var(--up);fill:var(--up)}
+    .sim-chart .sim-down line,.sim-chart .sim-down rect{stroke:var(--down);fill:var(--down)}
+    .sim-chart .sim-axis{fill:var(--muted);stroke:none;font-size:8px}
+    .sim-chart .sim-mark circle{fill:var(--sim)}
+    .sim-chart .sim-mark text{fill:#fff;font-size:8px;font-weight:700}
+    .sim-chart .sim-mark-line line{stroke:var(--sim);stroke-width:.8}
+    .sim-chart .sim-mark-line text{fill:var(--sim);font-size:8px}
+    .sim-chart .sim-readout line{stroke:var(--sim);stroke-width:.8}
+    .sim-chart .sim-readout rect{fill:#fff;stroke:var(--sim);stroke-width:.8}
+    .sim-chart .sim-readout text{fill:var(--sim);font-size:8px;font-weight:650}
+    .sim-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+    .sim-table{width:100%;border-collapse:collapse;font-size:.75rem;font-variant-numeric:tabular-nums}
+    .sim-table th,.sim-table td{padding:.35rem .5rem;border-bottom:1px solid #e4ebf0;text-align:left;vertical-align:top}
+    .sim-table thead th{background:#fafcfe;font-weight:700;white-space:nowrap}
+    .sim-table tbody th{font-weight:600;color:var(--ink)}
+    .sim-table tr:last-child>*{border-bottom:0}
+    .sim-table .sim-col-current{background:#6d28d914}
+    .sim-table thead .sim-col-current{background:#6d28d926;color:var(--sim)}
+    .sim-table .sim-row-current>*{font-weight:700}
+    .sim-table .sim-cell-current{outline:2px solid var(--sim);outline-offset:-2px}
+    .sim-step{display:grid;gap:.55rem}
+    .sim-step p{margin:0}
+    .sim-progress{font-size:.75rem;color:var(--muted)}
+    .sim-progress strong{color:var(--ink)}
+    .sim-kicker{font-size:.6875rem!important;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .sim-why{border-left:4px solid var(--sim);background:#fafcfe;padding:.5rem .7rem;border-radius:0 6px 6px 0}
+    .sim-why .sim-kicker{color:var(--sim)}
+    .sim-takeaway{padding:.55rem .7rem;border:1px solid #9fd6c2;background:#ecf8f3;border-radius:8px;font-size:.8125rem}
+    .sim-controls{display:flex;flex-wrap:wrap;gap:.5rem}
+    .sim-button{min-height:40px;border:1px solid #b9cad6;background:#fff;color:var(--ink);border-radius:6px;padding:.45rem .8rem;font-size:.8125rem;font-weight:650}
+    .sim-button:disabled{opacity:.45}
+    .sim-primary{background:var(--sim);border-color:var(--sim);color:#fff}
+    .sim-fine{margin:0;font-size:.6875rem;color:var(--muted)}
+    @keyframes sim-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    @media(max-width:640px){.sim-layer{align-items:flex-end;padding:0}.sim-panel{max-width:none;max-height:88vh;border-radius:14px 14px 0 0;border-bottom:0}}
     @media(min-width:1181px){.sidebar{max-height:calc(100vh - 2rem);overflow:auto}.research{max-height:calc(100vh - 2rem);overflow-y:auto}}
     @media(max-width:1180px){.workspace{grid-template-columns:202px minmax(0,1fr)}.research{grid-column:2;position:static}.resource-links{grid-template-columns:repeat(3,minmax(0,1fr))}.sidebar{grid-column:1;grid-row:1 / span 2}.content{grid-column:2}.shell{padding:1.5rem}.masthead-inner{padding:1.1rem 1.5rem}}
     @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.mode-toggle{min-height:44px}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
     @media(max-width:480px){.ticker-row{flex-direction:column;align-items:stretch;gap:.75rem}.quick-link{align-self:flex-start}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-    @media print{.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link,.research-actions,.notes-panel form{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sim-panel{animation:none}}
+    @media print{.sim-layer{display:none!important}.sim-trigger{color:inherit;font-weight:inherit;text-decoration:none}.sim-trigger::after{content:none}.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link,.research-actions,.notes-panel form{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
   </style>
 </head>
 <body>
@@ -196,7 +259,7 @@
   </header>
   <div class="shell">
     <div class="topline">
-      <div><h1>Start with what moves the market.</h1><p>Choose a theme, industry, or market, then open your research.</p></div>
+      <div><h1>Start with what moves the market.</h1><p>Choose a theme, industry, or market, then open your research.<span class="sim-hint"><span class="sim-sample">Dotted purple phrases ▶</span> open a short simulation: a SAMPLE chart or table you step through, showing why that check matters.</span></p></div>
       <a class="guide-link" href="#research-guide" id="guide-link">New to researching a ticker?</a>
     </div>
     <form class="searchbar" role="search" id="search-form">
@@ -213,7 +276,7 @@
       <label class="notes-filter" for="notes-only"><input id="notes-only" type="checkbox"> Has notes</label>
     </form>
     <div class="workspace">
-      <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Themes, industries, and markets"></nav><p class="sidebar-foot">A theme suggests a connection, not a guaranteed price direction. Each ticker gives you a different kind of exposure.</p></aside>
+      <aside class="sidebar"><nav class="theme-nav" id="theme-nav" aria-label="Themes, industries, and markets"></nav><p class="sidebar-foot"><button type="button" class="sim-trigger" data-sim="producer" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">A theme suggests a connection, not a guaranteed price direction.</button> Each ticker gives you a different kind of exposure.</p></aside>
       <main class="content" id="main-content" tabindex="-1">
         <section class="topic" id="topic" aria-labelledby="topic-title"></section>
         <div class="results-head"><h3 id="results-heading">Common tickers</h3><span id="result-count"></span></div>
@@ -222,15 +285,20 @@
           <summary>Before you trade: a simple research checklist</summary>
           <div class="learn-body">
             <ol>
-              <li><strong>Know what you own.</strong> A stock is a business. A stock ETF holds a basket of businesses. Bullion trusts and futures funds have different structures and risks.</li>
-              <li><strong>Check the business or fund.</strong> For a company, read revenue, profit, debt, cash flow, and management guidance. For a fund, check its issuer, holdings, fees, index, concentration, and prospectus.</li>
-              <li><strong>Look for the next catalyst.</strong> Earnings, inflation reports, central-bank decisions, inventory reports, and supply changes can matter. Separate an announced event from speculation.</li>
-              <li><strong>Check the market price.</strong> Valuation, trading volume, the bid–ask spread, and past price swings help you understand what a trade may cost. A good story can already be priced in.</li>
-              <li><strong>Cross-check the conversation.</strong> Social sentiment reflects the people posting, not every investor. Compare claims with filings and primary sources.</li>
-              <li><strong>Define your downside.</strong> Decide how much loss you can tolerate before choosing a position size. Understand your order type and any tax consequences.</li>
+              <li><strong><button type="button" class="sim-trigger" data-sim="wrapper" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">Know what you own.</button></strong> A stock is a business. A stock ETF holds a basket of businesses. Bullion trusts and futures funds have different structures and risks.</li>
+              <li><strong><button type="button" class="sim-trigger" data-sim="financials" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">Check the business or fund.</button></strong> For a company, read revenue, profit, debt, cash flow, and management guidance. For a fund, check its issuer, <button type="button" class="sim-trigger" data-sim="holdings" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">holdings</button>, <button type="button" class="sim-trigger" data-sim="fees" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">fees</button>, index, <button type="button" class="sim-trigger" data-sim="concentration" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">concentration</button>, and prospectus.</li>
+              <li><strong><button type="button" class="sim-trigger" data-sim="earnings" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">Look for the next catalyst.</button></strong> Earnings, <button type="button" class="sim-trigger" data-sim="inflation" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">inflation reports</button>, <button type="button" class="sim-trigger" data-sim="yields" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">central-bank decisions</button>, inventory reports, and supply changes can matter. Separate an announced event from speculation.</li>
+              <li><strong>Check the market price.</strong> Valuation, trading volume, the bid–ask spread, and past price swings help you understand what a trade may cost. <button type="button" class="sim-trigger" data-sim="earnings" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">A good story can already be priced in.</button></li>
+              <li><strong><button type="button" class="sim-trigger" data-sim="sentiment" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">Cross-check the conversation.</button></strong> Social sentiment reflects the people posting, not every investor. Compare claims with filings and primary sources.</li>
+              <li><strong><button type="button" class="sim-trigger" data-sim="downside" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">Define your downside.</button></strong> Decide how much loss you can tolerate before choosing a position size. Understand your order type and any tax consequences.</li>
             </ol>
             <h3 class="glossary-title">What you would own, by type</h3>
             <dl class="glossary" id="exposure-glossary"></dl>
+            <section class="sim-guide" id="sim-guide" aria-labelledby="sim-guide-title">
+              <h3 class="glossary-title" id="sim-guide-title">Simulations: why each check matters</h3>
+              <p>Step through a SAMPLE chart or table one step at a time. Each step says what it shows and why we are looking. Simulated, not real prices, unless a step names a dated value from this page. Starting points, not buy or sell advice.</p>
+              <ul id="sim-list"></ul>
+            </section>
             <section class="backup" aria-labelledby="backup-title">
               <h3 class="glossary-title" id="backup-title">Back up your notes and saved tickers</h3>
               <p>Notes and saved tickers stay in this browser. Download a backup file to keep a copy or move them to another browser, then restore it there. Restoring adds to what is already here; it does not delete anything.</p>
@@ -244,6 +312,7 @@
       </main>
       <aside class="research" id="research" tabindex="-1" aria-label="Selected ticker research"></aside>
     </div>
+    <span class="sr-only" id="sim-trigger-hint">Opens a short simulation</span>
     <p class="sr-only" role="status" id="status" aria-live="polite" aria-atomic="true"></p>
   </div>
   <footer><p>No live prices on this page. Research opens in a new tab; some services require sign-in or a subscription.</p><p><a href="https://www.investor.gov/introduction-investing" class="footer-link" target="_blank" rel="noopener noreferrer">Investor.gov beginner resources<span class="sr-only"> (opens in a new tab)</span></a></p></footer>
@@ -251,9 +320,12 @@
   <script>
     (function () {
       var version = Date.now();
-      var script = document.createElement('script');
-      script.src = 'js/app.js?v=' + version;
-      document.body.appendChild(script);
+      ['js/simulations.js', 'js/sim-popover.js', 'js/app.js'].forEach(function (src) {
+        var script = document.createElement('script');
+        script.src = src + '?v=' + version;
+        script.async = false;
+        document.body.appendChild(script);
+      });
     })();
   </script>
   <script src="js/harness-ai.js" defer data-app-id="stocks/tickers" data-role="complete" data-input="the directory of economic themes with their stocks and funds in `data/catalog.json`" data-folder="tickers" data-app="Market Forces" data-parent="stocks" data-accent="#0f2a44" data-ask="Ask it to add a theme, industry, or market force with the `add-theme` skill, or to check every ticker with `audit-tickers` (`.agents/skills/`). The directory lives in `data/catalog.json`."></script>

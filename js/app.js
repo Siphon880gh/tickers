@@ -26,6 +26,12 @@ async function loadJSON(path) {
   const externalAttrs = ' target="_blank" rel="noopener noreferrer"';
   const link = (title,url,description='',featured=false) => '<a class="resource-link' + (featured?' featured':'') + '" href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + (description?'<small>' + escapeHTML(description) + '</small>':'') + '<span class="sr-only"> (opens in a new tab)</span></a>';
   const fundUsesFutures = item => item.exposure.includes('futures');
+  // Why-it-matters simulations (js/simulations.js data, js/sim-popover.js popover). Without them, copy renders plain.
+  const SIMS = window.MFSims || null;
+  const POP = window.MFSimPopover || null;
+  const simRefs = (group, key) => (SIMS && SIMS[group] && SIMS[group][key]) || [];
+  const simRich = (plain, refs) => POP ? POP.richText(plain, refs) : escapeHTML(plain);
+  const simText = parts => POP ? POP.toolText(parts) : escapeHTML(parts.map(part => typeof part === 'string' ? part : part.text).join(''));
   const stockAnalysisURL = item => 'https://stockanalysis.com/' + (item.kind==='stock'?'stocks/':'etf/') + item.symbol.toLowerCase() + '/';
   function redditSearchQuery(item) {
     const words = (item.symbol + ' ' + item.name).split(/[^A-Za-z0-9]+/).filter(word => word.length > 0 && word.length <= 5);
@@ -53,14 +59,14 @@ async function loadJSON(path) {
   }
   function exposureNote(item) {
     const type=EXPOSURE_TYPES[exposureType(item)];
-    return '<section class="exposure-note" aria-labelledby="exposure-title"><h3 id="exposure-title">What you would own</h3><p><strong>'+escapeHTML(type.label)+'.</strong> '+escapeHTML(type.text)+'</p></section>';
+    return '<section class="exposure-note" aria-labelledby="exposure-title"><h3 id="exposure-title">What you would own</h3><p><strong>'+escapeHTML(type.label)+'.</strong> '+simRich(type.text,simRefs('exposureRefs',exposureType(item)))+'</p></section>';
   }
   function renderGlossary() {
     const box=$('exposure-glossary');
     if(!box) return;
     box.innerHTML=Object.entries(EXPOSURE_TYPES).map(([key,type])=>{
       const examples=instruments.filter(item=>exposureType(item)===key).slice(0,3).map(item=>item.symbol);
-      return '<div><dt>'+escapeHTML(type.label)+(examples.length?' <span class="chip-group">· e.g. '+examples.join(', ')+'</span>':'')+'</dt><dd>'+escapeHTML(type.text)+'</dd></div>';
+      return '<div><dt>'+escapeHTML(type.label)+(examples.length?' <span class="chip-group">· e.g. '+examples.join(', ')+'</span>':'')+'</dt><dd>'+simRich(type.text,simRefs('exposureRefs',key))+'</dd></div>';
     }).join('');
   }
   const relatedThemes = item => themes.filter(theme => theme.symbols.includes(item.symbol));
@@ -278,12 +284,12 @@ async function loadJSON(path) {
       return;
     }
     if(state.theme==='all') {
-      $('topic').innerHTML='<p class="eyebrow">Full directory</p><h2 id="topic-title">All common tickers</h2><p>Browse '+instruments.length+' stocks and funds, or choose an asset, industry, market, or economic force to narrow your starting point.</p><p class="connection">A stock is a business; a fund may hold stocks, bonds, bullion, currencies, or futures. Check the exposure label before comparing tickers.</p>';
+      $('topic').innerHTML='<p class="eyebrow">Full directory</p><h2 id="topic-title">All common tickers</h2><p>Browse '+instruments.length+' stocks and funds, or choose an asset, industry, market, or economic force to narrow your starting point.</p><p class="connection">'+simRich('A stock is a business; a fund may hold stocks, bonds, bullion, currencies, or futures. Check the exposure label before comparing tickers.',simRefs('pageRefs','allConnection'))+'</p>';
       return;
     }
     const theme=themes.find(item=>item.id===state.theme);
     const eyebrow=theme.category?theme.group+' · '+theme.category:theme.group;
-    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(eyebrow)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+escapeHTML(theme.description)+'</p><p class="connection"><strong>The connection: </strong>'+escapeHTML(theme.connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>';
+    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(eyebrow)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+simRich(theme.description,(SIMS?.themeRefs[theme.id]||{}).description)+'</p><p class="connection"><strong>The connection: </strong>'+simRich(theme.connection,(SIMS?.themeRefs[theme.id]||{}).connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>';
   }
   function renderResults(pool) {
     $('result-count').textContent=pool.length+' '+(pool.length===1?'ticker':'tickers');
@@ -339,7 +345,7 @@ async function loadJSON(path) {
     $('research').setAttribute('aria-label','Index weights');
     if(!indexData) {$('research').innerHTML='<div class="research-placeholder">Index weights did not load.</div>';return;}
     const picks=state.indexPicks.map(symbol=>bySymbol[symbol]).filter(Boolean);
-    const head='<div class="research-head"><p class="eyebrow">Index weights</p><h2>Where the weight sits</h2><p class="note">Each line is the share of that index, largest first. The date is the holdings snapshot.</p></div>';
+    const head='<div class="research-head"><p class="eyebrow">Index weights</p><h2>Where the weight sits</h2><p class="note">'+simRich('Each line is the share of that index, largest first.',simRefs('pageRefs','indexNote'))+' The date is the holdings snapshot.</p></div>';
     const body=!picks.length
       ? '<div class="research-placeholder">Check one or more tickers. A fund is usually not a member of the index it tracks.</div>'
       : '<div class="research-groups">'+picks.map(item=>{
@@ -415,7 +421,7 @@ async function loadJSON(path) {
   function renderCompare() {
     $('research').setAttribute('aria-label','Compare tickers');
     const picks=state.comparePicks.map(symbol=>bySymbol[symbol]).filter(Boolean);
-    const head='<div class="research-head"><p class="eyebrow">Compare · up to '+COMPARE_MAX+'</p><h2>Side by side</h2><p class="note">Check up to '+COMPARE_MAX+' tickers in the list. Picks stay when you change themes or search. This compares structure, not performance.</p></div>';
+    const head='<div class="research-head"><p class="eyebrow">Compare · up to '+COMPARE_MAX+'</p><h2>Side by side</h2><p class="note">Check up to '+COMPARE_MAX+' tickers in the list. Picks stay when you change themes or search. '+simRich('This compares structure, not performance.',simRefs('pageRefs','compareNote'))+'</p></div>';
     if(!picks.length) {$('research').innerHTML=head+'<div class="research-placeholder">Check a ticker to start a comparison. Try a fund and a company from the same theme.</div>';return;}
     const cells=fn=>picks.map(item=>'<td>'+fn(item)+'</td>').join('');
     const row=(label,fn)=>'<tr><th scope="row">'+label+'</th>'+cells(fn)+'</tr>';
@@ -429,7 +435,7 @@ async function loadJSON(path) {
       +row('Research',compareLinks)
       +'</tbody></table></div>';
     const futures=picks.filter(fundUsesFutures);
-    const risk=futures.length?'<div class="risk-note"><strong>Futures exposure:</strong> '+futures.map(item=>item.symbol).join(', ')+' '+(futures.length===1?'uses':'use')+' contracts rather than storing the commodity or currency. Read the issuer’s current documents.</div>':'';
+    const risk=futures.length?'<div class="risk-note"><strong>Futures exposure:</strong> '+futures.map(item=>item.symbol).join(', ')+' '+(futures.length===1?'uses':'use')+' contracts '+simRich('rather than storing the commodity or currency',simRefs('pageRefs','compareFutures'))+'. Read the issuer’s current documents.</div>':'';
     $('research').innerHTML=head+table+risk;
   }
   function renderResearch() {
@@ -439,7 +445,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. Rolling contracts, expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -461,6 +467,14 @@ async function loadJSON(path) {
   // Deep links: the hash holds theme, ticker, search text, and filter, e.g. #theme=gold&ticker=GLD or #q=copper&kind=fund.
   let pushNext=false;
   let appliedHash=null;
+  let hashSim=null;
+  // `sim=<id>` opens a simulation on load or Back/Forward; closing removes it from the address bar.
+  function syncSimFromHash() {
+    if(!POP) return;
+    const wanted=hashSim&&POP.has(hashSim)?hashSim:null;
+    if(wanted&&POP.current()!==wanted) POP.open(wanted,document.querySelector('.sim-trigger[data-sim="'+wanted+'"]'));
+    else if(!wanted&&POP.isOpen()) POP.close();
+  }
   function stateHash() {
     const params=new URLSearchParams();
     if(state.query) params.set('q',state.query); else params.set('theme',state.theme);
@@ -468,6 +482,8 @@ async function loadJSON(path) {
     if(state.selected) params.set('ticker',state.selected);
     if(state.compareMode) params.set('compare',state.comparePicks.join(','));
     if(state.indexMode) params.set('weights',state.indexPicks.join(','));
+    const openSim=POP&&POP.current();
+    if(openSim) params.set('sim',openSim);
     return '#'+params.toString().replace(/%2C/gi,',');
   }
   function syncURL() {
@@ -499,6 +515,7 @@ async function loadJSON(path) {
     if(state.compareMode) { state.indexMode=false; state.comparePicks=[...new Set(compare.toUpperCase().split(',').map(symbol=>symbol.trim()).filter(symbol=>bySymbol[symbol]))].slice(0,COMPARE_MAX); }
     $('search').value=state.query;
     $('kind-filter').value=state.kind;
+    hashSim=params.get('sim');
     return true;
   }
   function onHistoryMove() {
@@ -506,6 +523,7 @@ async function loadJSON(path) {
     if(!applyHash()) return;
     appliedHash=location.hash;
     render();
+    syncSimFromHash();
   }
   function chooseSymbol(symbol,moveFocus=false) {
     const item=bySymbol[symbol];
@@ -553,6 +571,11 @@ async function init() {
   $('catalog-count').textContent = instruments.length + ' tickers';
   $('catalog-date').textContent = directoryDate(catalogUpdated);
   renderGlossary();
+  if (POP && SIMS) {
+    POP.init(SIMS.sims);
+    POP.renderList($('sim-list'));
+    POP.onChange = () => { pushNext = false; syncURL(); };
+  } else { $('sim-guide')?.setAttribute('hidden', ''); }
   $('search-form').addEventListener('submit', event => event.preventDefault());
   $('search').addEventListener('input', event => { state.query = event.target.value.trim(); render(); });
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });
@@ -603,6 +626,7 @@ async function init() {
   document.addEventListener('keydown', event => {
     const target = event.target;
     const typing = target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+    if (POP && POP.isOpen()) return;
     if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey && !event.altKey) { event.preventDefault(); $('search').focus(); $('search').select(); return; }
     if (event.key === 'Escape' && target === $('search') && $('search').value) { event.preventDefault(); $('search').value = ''; state.query = ''; render(); $('status').textContent = 'Search cleared.'; }
   });
@@ -652,6 +676,7 @@ async function init() {
   window.addEventListener('hashchange', onHistoryMove);
   applyHash();
   render(false);
+  syncSimFromHash();
   if (document.modelContext?.registerTool) {
     const lifecycle = new AbortController();
     const tools = [

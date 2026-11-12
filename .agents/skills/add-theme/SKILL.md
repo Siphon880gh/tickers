@@ -42,6 +42,6 @@ Show the theme fields and each new or reused ticker. For each ticker, list the r
 
 Edit `data/catalog.json` only after the user accepts the proposal. Add new instruments beside related entries, and include every new symbol in the theme's `symbols` array. A theme symbol must exist in `instruments`.
 
-After editing, run `node tools/check-catalog.mjs` and fix every error before reporting back.
+After editing, run `node tools/check-catalog.mjs` and fix every error before reporting back. If you changed a theme's `description` or `connection`, also run `node tools/test-simulations.mjs`: underlined phrases in `js/simulations.js` (`themeRefs`) must still match the text exactly.
 
 Change `researchLinks` in `js/app.js` only when a new exposure type needs a different holdings or filings rule. Say why.

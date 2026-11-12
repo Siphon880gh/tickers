@@ -68,6 +68,11 @@ Ordered by value for effort. Each milestone is one commit.
 - [x] **M6.2 Agent tools and docs for the new features.** The page's `document.modelContext` tools gain a read-only `compare_tickers` tool, and the README lists what the page can do (deep links, compare, saved tickers, backup, shortcuts).
   - Acceptance: the tool rejects unknown symbols and more than 3 symbols, and returns the same fields as the Compare table; README matches the page.
 
+### Epic 7 · Why-it-matters simulations
+
+- [x] **M7.1 Underlined phrases with stepped simulations, copied from Tool Training.** Dotted purple phrases ▶ open one shared popover (a bottom sheet on a phone) with a goal, a SAMPLE candlestick tape or table, Next / Previous / Replay and arrow keys, and "What this shows" plus "Why we are doing this" on every step. 19 simulations cover wrappers, futures rolls, producers vs commodities, margins, duration, yields, gold and real rates, currencies, inflation, earnings, Financials columns, fees, index concentration (from the dated snapshot), fund holdings, sentiment, defensive sectors, AI valuations, dividends, and position size. Phrases are structured refs in `js/simulations.js`; `sim=<id>` in the hash opens one.
+  - Acceptance: `node tools/test-simulations.mjs` passes; every underline resolves; Escape, Close, or the backdrop closes and returns focus; closing removes `sim=`; existing deep links, search, notes, compare, and index weights still work.
+
 ## Not in scope
 
-Live prices, charts, screening by numbers, or any buy/sell signal. New tickers or themes go through the `add-theme` skill with live sources, not this roadmap.
+Live prices, live charts (the simulations use labeled SAMPLE tapes only), screening by numbers, or any buy/sell signal. New tickers or themes go through the `add-theme` skill with live sources, not this roadmap.

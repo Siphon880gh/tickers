@@ -24,9 +24,12 @@ Beginner’s directory of common stocks and funds, grouped by economic theme, wi
 - **Save tickers and keep notes.** Both stay in this browser. Search also finds words in your notes. Back up and restore them from the research guide.
 - **Share or bookmark a view.** The address keeps the theme, ticker, search, filter, and Compare or Index weights picks, for example `#theme=gold&ticker=GLD` or `#theme=gold&compare=GLD,IAU,NEM`. Copy link on the research panel copies it.
 - **Keyboard.** Press `/` to search and `Esc` to clear it.
+- **Step through why it matters.** Dotted purple phrases ▶ in theme text, the research panel, Compare, Index weights, and the research guide open a short simulation, copied from Tool Training in the stocks trainer: a SAMPLE chart or table you step through with Next, Previous, Replay, or the arrow keys. Each step says what it shows and why we are looking. `#…&sim=duration` opens one directly. The research guide lists all of them.
 
 No live prices. These are research starting points, not buy or sell recommendations.
 
 ## Check the catalog
 
 After editing `data/catalog.json` or `data/index-weights.json`, run `node tools/check-catalog.mjs`. It needs no packages. It fails on a theme symbol missing from `instruments`, a duplicate symbol or theme id, a missing field, an unknown group or category, or a link that is not `https://`, and warns about tickers no theme lists.
+
+After editing simulations (`js/simulations.js`) or any theme text they underline, run `node tools/test-simulations.mjs`. It checks the step rules (Next, Previous, Replay, bounds), that every simulation has 5 or more steps with what-and-why copy and a SAMPLE label, that every underlined phrase still exists in the catalog or page and points at a real simulation, and that the index-weights walk matches `data/index-weights.json`.
