@@ -461,6 +461,7 @@ async function loadJSON(path) {
     if(state.kind!=='all') params.set('kind',state.kind);
     if(state.selected) params.set('ticker',state.selected);
     if(state.compareMode) params.set('compare',state.comparePicks.join(','));
+    if(state.indexMode) params.set('weights',state.indexPicks.join(','));
     return '#'+params.toString().replace(/%2C/gi,',');
   }
   function syncURL() {
@@ -485,6 +486,10 @@ async function loadJSON(path) {
     if(bySymbol[ticker]) state.selected=ticker;
     const compare=params.get('compare');
     state.compareMode=compare!==null;
+    const weights=params.get('weights');
+    const symbolList=value=>[...new Set(value.toUpperCase().split(',').map(symbol=>symbol.trim()).filter(symbol=>bySymbol[symbol]))];
+    state.indexMode=weights!==null&&!state.compareMode;
+    if(state.indexMode) state.indexPicks=symbolList(weights);
     if(state.compareMode) { state.indexMode=false; state.comparePicks=[...new Set(compare.toUpperCase().split(',').map(symbol=>symbol.trim()).filter(symbol=>bySymbol[symbol]))].slice(0,COMPARE_MAX); }
     $('search').value=state.query;
     $('kind-filter').value=state.kind;
