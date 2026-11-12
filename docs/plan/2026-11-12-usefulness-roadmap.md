@@ -49,7 +49,7 @@ Ordered by value for effort. Each milestone is one commit.
 
 ### Epic 4 · Compare a few tickers
 
-- [ ] **M4.1 Compare mode.** A "Compare" toggle (like Index weights) lets a reader check up to 3 tickers and see them side by side: type, exposure, issuer, what you would own, themes, and the main research links for each.
+- [x] **M4.1 Compare mode.** A "Compare" toggle (like Index weights) lets a reader check up to 3 tickers and see them side by side: type, exposure, issuer, what you would own, themes, and the main research links for each.
   - Acceptance: Compare and Index weights are mutually exclusive; a 4th pick is refused with a spoken message; picks survive switching themes; the compare view is in the URL (`compare=GLD,IAU`); print shows the comparison.
 
 ### Epic 5 · Keep your research

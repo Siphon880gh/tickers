@@ -142,6 +142,14 @@
     .glossary{margin:.75rem 0 0;display:grid;gap:.5rem}
     .glossary dt{font-weight:700;color:var(--ink)}
     .glossary dd{margin:0 0 .25rem}
+    .compare-wrap{padding:0 1.25rem 1rem;overflow-x:auto}
+    .compare-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.8125rem;margin-top:1rem}
+    .compare-table th,.compare-table td{border-top:1px solid var(--border);padding:.55rem .4rem;vertical-align:top;text-align:left;overflow-wrap:anywhere}
+    .compare-table thead th{border-top:0;padding-top:0}
+    .compare-table tbody th{font-size:.7rem;font-weight:750;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);width:5.2rem}
+    .compare-table .symbol{font-size:1rem;display:block}
+    .compare-table ul{list-style:none;margin:0;padding:0;display:grid;gap:.3rem}
+    .compare-remove{margin-top:.35rem;border:1px solid #ebd5a6;background:#fff;color:#70541d;border-radius:5px;padding:.2rem .45rem;font-size:.75rem;font-weight:650}
     .research-head .note{color:var(--muted);font-size:.875rem;margin:.65rem 0 0}
     .research-groups{padding:.3rem 1.25rem 1rem}
     .resource-group{margin-top:1rem}
@@ -197,6 +205,7 @@
         </div>
       </div>
       <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option><option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
+      <button type="button" id="compare-mode" class="mode-toggle" aria-pressed="false" aria-controls="research">Compare</button>
       <button type="button" id="index-mode" class="mode-toggle" aria-pressed="false" aria-controls="research">Index weights</button>
       <label class="notes-filter" for="notes-only"><input id="notes-only" type="checkbox"> Has notes</label>
     </form>

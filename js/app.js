@@ -113,7 +113,7 @@ async function loadJSON(path) {
     ]});
     return groups;
   }
-  let state = {theme:'gold',query:'',kind:'all',notesOnly:false,selected:'GLD',indexMode:false,indexPicks:[]};
+  let state = {theme:'gold',query:'',kind:'all',notesOnly:false,selected:'GLD',indexMode:false,indexPicks:[],compareMode:false,comparePicks:[]};
   let notes = {};
   const NOTES_KEY = 'market-forces-notes';
   function loadNotes() {
@@ -212,12 +212,13 @@ async function loadJSON(path) {
       return;
     }
     $('ticker-results').innerHTML='<div class="ticker-list">'+pool.map(item => {
-      const picked=state.indexPicks.includes(item.symbol);
-      const selected=state.indexMode?picked:item.symbol===state.selected;
-      const check=state.indexMode?'<label class="index-check"><input type="checkbox" data-index-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Include '+item.symbol+' in index weights"></label>':'';
+      const picked=state.indexMode?state.indexPicks.includes(item.symbol):state.comparePicks.includes(item.symbol);
+      const pickMode=state.indexMode||state.compareMode;
+      const selected=pickMode?picked:item.symbol===state.selected;
+      const check=state.indexMode?'<label class="index-check"><input type="checkbox" data-index-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Include '+item.symbol+' in index weights"></label>':state.compareMode?'<label class="index-check"><input type="checkbox" data-compare-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Compare '+item.symbol+'"></label>':'';
       const noteTotal=notesFor(item.symbol).length;
       const noteChip=noteTotal?'<span class="badge notes">'+noteTotal+(noteTotal===1?' note':' notes')+'</span>':'';
-      const action=state.indexMode?'Include or remove '+item.symbol+' from index weights':'Select '+item.symbol+' for research links';
+      const action=state.indexMode?'Include or remove '+item.symbol+' from index weights':state.compareMode?'Add or remove '+item.symbol+' in the comparison':'Select '+item.symbol+' for research links';
       return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
     }).join('')+'</div>';
   }
@@ -272,7 +273,7 @@ async function loadJSON(path) {
     return '<section class="theme-chips" aria-labelledby="chips-title"><h3 id="chips-title">'+item.symbol+' appears in '+list.length+(list.length===1?' theme':' themes')+'</h3><ul class="chip-list">'+list.map(theme=>'<li><button type="button" data-theme="'+theme.id+'"'+(theme.id===current?' aria-current="true"':'')+'>'+escapeHTML(theme.name)+' <span class="chip-group">· '+escapeHTML(theme.category||theme.group)+'</span></button></li>').join('')+'</ul></section>';
   }
   function researchActions(item) {
-    return '<div class="research-actions"><button type="button" class="action-button" data-copy-link>Copy link</button></div>';
+    return '<div class="research-actions"><button type="button" class="action-button" data-copy-link>Copy link</button><button type="button" class="action-button" data-compare-add>'+(state.comparePicks.includes(item.symbol)?'Open comparison':'Add to compare')+(state.comparePicks.length?' ('+state.comparePicks.length+' picked)':'')+'</button></div>';
   }
   async function copyLink(button) {
     const url=location.href;
@@ -283,8 +284,63 @@ async function loadJSON(path) {
     field.value=url; field.focus(); field.select();
     $('status').textContent='Copying is blocked here. The link is selected; press Command+C or Ctrl+C.';
   }
+  const COMPARE_MAX=3;
+  function setComparePick(symbol,on) {
+    const picks=state.comparePicks.filter(current=>current!==symbol);
+    if(on) {
+      if(picks.length>=COMPARE_MAX) { $('status').textContent='You can compare up to '+COMPARE_MAX+' tickers. Remove one first.'; return false; }
+      picks.push(symbol);
+    }
+    state.comparePicks=picks;
+    return true;
+  }
+  function toggleCompare(symbol) {
+    const ok=setComparePick(symbol,!state.comparePicks.includes(symbol));
+    if(ok) state.selected=symbol;
+    render(ok);
+    document.querySelector('[data-compare-pick="'+symbol+'"]')?.focus();
+    if(!ok) $('status').textContent='You can compare up to '+COMPARE_MAX+' tickers. Remove one first.';
+  }
+  function setMode(mode) {
+    state.indexMode=mode==='index'?!state.indexMode:false;
+    state.compareMode=mode==='compare'?!state.compareMode:false;
+    if(state.indexMode&&!state.indexPicks.length&&state.selected) state.indexPicks=[state.selected];
+    if(state.compareMode&&!state.comparePicks.length&&state.selected) state.comparePicks=[state.selected];
+    pushNext=true;
+    render();
+  }
+  function compareLinks(item) {
+    const official=item.official||google(item.name+' '+item.symbol+(item.kind==='stock'?' official investor relations':' '+item.issuer+' official fund holdings fees prospectus'));
+    const root=stockAnalysisURL(item);
+    const rows=[['Stock Analysis',root]];
+    if(item.kind==='stock') rows.push(['Financials',root+'financials/'],[item.official?'Investor relations':'Find investor relations',official]);
+    else rows.push(['Holdings',(item.exposure==='Bullion'||item.exposure==='Currency trust'||fundUsesFutures(item))?official:root+'holdings/'],[item.official?'Fund issuer':'Find fund issuer',official]);
+    rows.push(['Google News',googleNews(item.symbol+' '+item.name)]);
+    return '<ul>'+rows.map(([title,url])=>'<li><a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> for '+item.symbol+' (opens in a new tab)</span></a></li>').join('')+'</ul>';
+  }
+  function renderCompare() {
+    $('research').setAttribute('aria-label','Compare tickers');
+    const picks=state.comparePicks.map(symbol=>bySymbol[symbol]).filter(Boolean);
+    const head='<div class="research-head"><p class="eyebrow">Compare · up to '+COMPARE_MAX+'</p><h2>Side by side</h2><p class="note">Check up to '+COMPARE_MAX+' tickers in the list. Picks stay when you change themes or search. This compares structure, not performance.</p></div>';
+    if(!picks.length) {$('research').innerHTML=head+'<div class="research-placeholder">Check a ticker to start a comparison. Try a fund and a company from the same theme.</div>';return;}
+    const cells=fn=>picks.map(item=>'<td>'+fn(item)+'</td>').join('');
+    const row=(label,fn)=>'<tr><th scope="row">'+label+'</th>'+cells(fn)+'</tr>';
+    const table='<div class="compare-wrap"><table class="compare-table"><caption class="sr-only">Comparison of '+picks.map(item=>item.symbol).join(', ')+'</caption><thead><tr><td></td>'+picks.map(item=>'<th scope="col"><span class="symbol">'+item.symbol+'</span><button type="button" class="compare-remove" data-compare-remove="'+item.symbol+'">Remove<span class="sr-only"> '+item.symbol+'</span></button></th>').join('')+'</tr></thead><tbody>'
+      +row('Name',item=>escapeHTML(item.name))
+      +row('Type',item=>item.kind==='stock'?'Stock':'Fund')
+      +row('You own',item=>escapeHTML(EXPOSURE_TYPES[exposureType(item)].label))
+      +row('Exposure',item=>escapeHTML(item.exposure))
+      +row('Issuer',item=>item.kind==='fund'?escapeHTML(item.issuer):'<span aria-label="Not a fund">—</span>')
+      +row('Themes',item=>escapeHTML(relatedThemes(item).map(theme=>theme.name).join(', ')||'—'))
+      +row('Research',compareLinks)
+      +'</tbody></table></div>';
+    const futures=picks.filter(fundUsesFutures);
+    const risk=futures.length?'<div class="risk-note"><strong>Futures exposure:</strong> '+futures.map(item=>item.symbol).join(', ')+' '+(futures.length===1?'uses':'use')+' contracts rather than storing the commodity or currency. Read the issuer’s current documents.</div>':'';
+    $('research').innerHTML=head+table+risk;
+  }
   function renderResearch() {
     if(state.indexMode) {renderIndexWeights();return;}
+    if(state.compareMode) {renderCompare();return;}
     $('research').setAttribute('aria-label','Selected ticker research');
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
@@ -299,8 +355,10 @@ async function loadJSON(path) {
     if(focusedTheme) document.querySelector('.theme-button[data-theme="'+focusedTheme+'"]')?.focus({preventScroll:true});
     const modeButton=$('index-mode');
     if(modeButton) modeButton.setAttribute('aria-pressed',String(state.indexMode));
+    $('compare-mode')?.setAttribute('aria-pressed',String(state.compareMode));
     syncURL();
-    if(announce) $('status').textContent=state.indexMode?state.indexPicks.length+' '+(state.indexPicks.length===1?'ticker':'tickers')+' selected for index weights.':pool.length+' matching tickers.'+(state.selected?' Research links shown for '+state.selected+'.':'');
+    if(announce&&state.compareMode) $('status').textContent=state.comparePicks.length+' of '+COMPARE_MAX+' tickers in the comparison.';
+    else if(announce) $('status').textContent=state.indexMode?state.indexPicks.length+' '+(state.indexPicks.length===1?'ticker':'tickers')+' selected for index weights.':pool.length+' matching tickers.'+(state.selected?' Research links shown for '+state.selected+'.':'');
   }
   function chooseTheme(id) {
     if(id!=='all'&&!themes.some(theme=>theme.id===id)) throw new Error('Unknown theme.');
@@ -314,7 +372,8 @@ async function loadJSON(path) {
     if(state.query) params.set('q',state.query); else params.set('theme',state.theme);
     if(state.kind!=='all') params.set('kind',state.kind);
     if(state.selected) params.set('ticker',state.selected);
-    return '#'+params.toString();
+    if(state.compareMode) params.set('compare',state.comparePicks.join(','));
+    return '#'+params.toString().replace(/%2C/gi,',');
   }
   function syncURL() {
     const hash=stateHash();
@@ -336,6 +395,9 @@ async function loadJSON(path) {
     state.theme=theme==='all'||themes.some(item=>item.id===theme)?theme:(query?state.theme:'gold');
     state.kind=['stock','fund'].includes(kind)?kind:'all';
     if(bySymbol[ticker]) state.selected=ticker;
+    const compare=params.get('compare');
+    state.compareMode=compare!==null;
+    if(state.compareMode) { state.indexMode=false; state.comparePicks=[...new Set(compare.toUpperCase().split(',').map(symbol=>symbol.trim()).filter(symbol=>bySymbol[symbol]))].slice(0,COMPARE_MAX); }
     $('search').value=state.query;
     $('kind-filter').value=state.kind;
     return true;
@@ -394,11 +456,8 @@ async function init() {
   $('search-form').addEventListener('submit', event => event.preventDefault());
   $('search').addEventListener('input', event => { state.query = event.target.value.trim(); render(); });
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });
-  $('index-mode').addEventListener('click', () => {
-    state.indexMode = !state.indexMode;
-    if (state.indexMode && !state.indexPicks.length && state.selected) state.indexPicks = [state.selected];
-    render();
-  });
+  $('index-mode').addEventListener('click', () => setMode('index'));
+  $('compare-mode').addEventListener('click', () => setMode('compare'));
   $('notes-only').addEventListener('change', event => { state.notesOnly = event.target.checked; render(); });
   document.addEventListener('submit', event => {
     if (event.target.id !== 'note-form') return;
@@ -412,6 +471,15 @@ async function init() {
     $('note-text')?.focus();
   });
   document.addEventListener('change', event => {
+    const compareBox = event.target.closest('[data-compare-pick]');
+    if (compareBox) {
+      const symbol = compareBox.dataset.comparePick;
+      const ok = setComparePick(symbol, compareBox.checked);
+      render(ok);
+      if (!ok) $('status').textContent = 'You can compare up to ' + COMPARE_MAX + ' tickers. Remove one first.';
+      document.querySelector('[data-compare-pick="'+symbol+'"]')?.focus();
+      return;
+    }
     const box = event.target.closest('[data-index-pick]');
     if (!box) return;
     const symbol = box.dataset.indexPick;
@@ -440,10 +508,18 @@ async function init() {
     }
     const themeButton = event.target.closest('[data-theme]');
     if (themeButton) { chooseTheme(themeButton.dataset.theme); return; }
-    if (event.target.closest('[data-index-pick]')) return;
+    if (event.target.closest('[data-index-pick],[data-compare-pick]')) return;
+    const removeButton = event.target.closest('[data-compare-remove]');
+    if (removeButton) { setComparePick(removeButton.dataset.compareRemove, false); render(); ($('research').querySelector('.compare-remove') || $('compare-mode')).focus(); return; }
+    const compareAdd = event.target.closest('[data-compare-add]');
+    if (compareAdd && state.selected) {
+      if (!state.comparePicks.includes(state.selected) && !setComparePick(state.selected, true)) { state.compareMode = true; state.indexMode = false; pushNext = true; render(false); $('status').textContent = 'You can compare up to ' + COMPARE_MAX + ' tickers. Remove one first.'; return; }
+      state.compareMode = true; state.indexMode = false; pushNext = true; render(); $('compare-mode').focus(); return;
+    }
     const tickerButton = event.target.closest('[data-symbol]');
     if (tickerButton) {
       if (state.indexMode) { togglePick(tickerButton.dataset.symbol); return; }
+      if (state.compareMode) { toggleCompare(tickerButton.dataset.symbol); return; }
       chooseSymbol(tickerButton.dataset.symbol, true);
       return;
     }
