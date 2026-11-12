@@ -216,6 +216,12 @@ async function loadJSON(path) {
     const items = list.map(note => '<li class="note-item"><p>' + escapeHTML(note.text) + '</p><time datetime="' + escapeHTML(note.at || '') + '">' + escapeHTML(formatNoteTime(note.at)) + '</time><button type="button" class="note-delete" data-delete-note="' + escapeHTML(note.id) + '">Delete</button></li>').join('');
     return '<section class="notes-panel"><h3>Notes</h3><form id="note-form"><label for="note-text">Note for ' + item.symbol + '</label><textarea id="note-text" maxlength="2000" rows="3"></textarea><button type="submit" class="add-note">Add note</button></form>' + (items ? '<ul class="note-list">' + items + '</ul>' : '') + '<p class="resource-note">Notes stay in this browser.</p></section>';
   }
+  function noteMatches(symbol, query) {
+    const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
+    if (!words.length) return false;
+    const text = notesFor(symbol).map(note => note.text).join(' ').toLowerCase();
+    return Boolean(text) && words.every(word => text.includes(word));
+  }
   function matchingThemes(query) {
     const words = query.toLowerCase().split(/\s+/).filter(Boolean);
     return themes.filter(theme => {
@@ -231,7 +237,7 @@ async function loadJSON(path) {
       const words = query.split(/\s+/).filter(Boolean);
       pool = instruments.filter(item => {
         const text = (item.symbol+' '+item.name+' '+item.exposure+' '+item.description+' '+(item.issuer||'')).toLowerCase();
-        return matchedSymbols.has(item.symbol) || words.every(word => text.includes(word));
+        return matchedSymbols.has(item.symbol) || words.every(word => text.includes(word)) || noteMatches(item.symbol, query);
       });
       pool.sort((a,b) => Number(b.symbol.toLowerCase()===query)-Number(a.symbol.toLowerCase()===query));
     } else {
@@ -264,7 +270,7 @@ async function loadJSON(path) {
   function renderTopic() {
     if(state.query) {
       const matches=matchingThemes(state.query);
-      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, and economic themes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
+      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, economic themes, and your notes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
       return;
     }
     if(state.theme==='saved') {
@@ -296,7 +302,8 @@ async function loadJSON(path) {
       const selected=pickMode?picked:item.symbol===state.selected;
       const check=state.indexMode?'<label class="index-check"><input type="checkbox" data-index-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Include '+item.symbol+' in index weights"></label>':state.compareMode?'<label class="index-check"><input type="checkbox" data-compare-pick="'+item.symbol+'"'+(picked?' checked':'')+' aria-label="Compare '+item.symbol+'"></label>':'';
       const noteTotal=notesFor(item.symbol).length;
-      const savedChip=isSaved(item.symbol)?'<span class="badge saved">Saved</span>':'';
+      const noteHit=state.query&&noteMatches(item.symbol,state.query)?'<span class="badge notes">Matches your note</span>':'';
+      const savedChip=noteHit+(isSaved(item.symbol)?'<span class="badge saved">Saved</span>':'');
       const noteChip=savedChip+(noteTotal?'<span class="badge notes">'+noteTotal+(noteTotal===1?' note':' notes')+'</span>':'');
       const action=state.indexMode?'Include or remove '+item.symbol+' from index weights':state.compareMode?'Add or remove '+item.symbol+' in the comparison':'Select '+item.symbol+' for research links';
       return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
