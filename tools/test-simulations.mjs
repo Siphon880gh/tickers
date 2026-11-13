@@ -125,4 +125,101 @@ test('richText underlines exact phrases, escapes, and leaves missing phrases pla
   assert.ok(pop.toolText(['A ', {text: 'b', sim: 'fees'}, '.']).includes('data-sim="fees"'));
 });
 
+test('at least 35 simulations', () => assert.ok(data.sims.length >= 35, 'only ' + data.sims.length));
+test('every theme in data/catalog.json has at least one underline', () => {
+  const bare = catalog.themes.filter(theme => !Object.values(data.themeRefs[theme.id] || {}).some(refs => refs.length)).map(theme => theme.id);
+  assert.deepEqual(bare, []);
+});
+test('every phrase renders as its own underline (no overlaps or repeats hiding one)', () => {
+  const count = (html, id) => (html.match(new RegExp('data-sim="' + id + '"', 'g')) || []).length;
+  const check = (where, text, refs) => {
+    const html = pop.richText(text, refs);
+    assert.equal((html.match(/class="sim-trigger"/g) || []).length, refs.length, where + ' renders ' + (html.match(/class="sim-trigger"/g) || []).length + ' of ' + refs.length);
+    for (const [phrase, id] of refs) assert.ok(count(html, id) >= 1 && html.includes('>' + phrase.replace(/&/g, '&amp;') + '</button>'), where + ' · ' + phrase);
+  };
+  for (const [themeId, fields] of Object.entries(data.themeRefs)) {
+    const theme = catalog.themes.find(item => item.id === themeId);
+    for (const [field, refs] of Object.entries(fields)) check(themeId + '.' + field, theme[field], refs);
+  }
+});
+// SAMPLE tables must add up, so a reader who checks the arithmetic is not misled.
+const num = cell => Number(String(cell).replace(/[−–]/g, '-').replace(/[^0-9.\-]/g, ''));
+const sim = id => data.sims.find(s => s.id === id);
+const near = (a, b, tol, where) => assert.ok(Math.abs(a - b) <= tol, where + ': ' + a + ' vs ' + b);
+test('SAMPLE arithmetic: cap rate, FFO, breadth, country mix', () => {
+  const cap = sim('cap-rate').rows;
+  for (let c = 1; c < cap[0].length; c++) near(num(cap[2][c]) / (num(cap[1][c]) / 100), num(cap[3][c]), 0.6, 'cap-rate col ' + c);
+  const ffo = sim('ffo').rows;
+  for (let c = 1; c < ffo[0].length; c++) {
+    const eps = num(ffo[0][c]) + num(ffo[1][c]) + num(ffo[2][c]) + num(ffo[3][c]);
+    near(eps, num(ffo[4][c]), 0.001, 'ffo EPS col ' + c);
+    near(eps - num(ffo[1][c]) - num(ffo[2][c]), num(ffo[5][c]), 0.001, 'ffo FFO col ' + c);
+    near(100 * num(ffo[6][c]) / num(ffo[4][c]), num(ffo[7][c]), 0.6, 'ffo ÷ EPS col ' + c);
+    near(100 * num(ffo[6][c]) / num(ffo[5][c]), num(ffo[8][c]), 0.6, 'ffo ÷ FFO col ' + c);
+  }
+  const br = sim('breadth').rows;
+  let total = 0;
+  for (const row of br.slice(0, 5)) { const pts = num(row[1]) * num(row[2]) / 100; near(pts, num(row[3]), 0.001, 'breadth ' + row[0]); total += pts; }
+  near(total, num(br[5][2]), 0.001, 'breadth index');
+  near(br.slice(0, 5).reduce((sum, row) => sum + num(row[2]), 0) / 5, num(br[6][2]), 0.001, 'breadth equal weight');
+  const cm = sim('country-mix').rows;
+  let fund = 0;
+  for (const row of cm.slice(0, 4)) {
+    const inDollars = ((1 + num(row[2]) / 100) * (1 + num(row[3]) / 100) - 1) * 100;
+    near(inDollars, num(row[4]), 0.06, 'country-mix ' + row[0]);
+    near(num(row[1]) * num(row[4]) / 100, num(row[5]), 0.006, 'country-mix contribution ' + row[0]);
+    fund += num(row[5]);
+  }
+  near(fund, num(cm[4][5]), 0.001, 'country-mix fund');
+});
+test('SAMPLE arithmetic: roll, swings, size funds, spreads, and the other tables', () => {
+  const bw = sim('backwardation').rows;
+  let value = 100;
+  for (let c = 1; c < bw[0].length; c++) {
+    const roll = (num(bw[1][c]) / num(bw[2][c]) - 1) * 100;
+    near(roll, num(bw[4][c]), 0.06, 'backwardation roll col ' + c);
+    value *= 1 + roll / 100;
+    near(value, num(bw[5][c]), 0.06, 'backwardation fund col ' + c);
+  }
+  for (const [ret, val] of [[0, 1], [2, 3]]) {
+    const rows = sim('swings').rows;
+    let v = 10000;
+    for (let c = 2; c < rows[0].length; c++) { v *= 1 + num(rows[ret][c]) / 100; near(v, num(rows[val][c]), 0.6, 'swings ' + rows[val][0] + ' col ' + c); }
+  }
+  const sb = sim('size-beta').rows;
+  for (const row of sb.slice(1)) near((row.slice(1, 7).reduce((acc, cell) => acc * (1 + num(cell) / 100), 1) - 1) * 100, num(row[7]), 0.06, 'size-beta ' + row[0]);
+  const sp = sim('spread').rows;
+  for (let c = 1; c < sp[0].length; c++) {
+    near(num(sp[1][c]) - num(sp[0][c]), num(sp[2][c]), 0.001, 'spread col ' + c);
+    near(5000 * num(sp[3][c]) / 100, num(sp[4][c]), 0.01, 'spread cost col ' + c);
+  }
+  const vt = sim('value-trap').rows;
+  for (const [p, e, pe] of [[0, 1, 2], [3, 4, 5]]) for (let c = 1; c < vt[0].length; c++) near(num(vt[p][c]) / num(vt[e][c]), num(vt[pe][c]), 0.06, 'value-trap ' + vt[pe][0] + ' col ' + c);
+  const pc = sim('patent-cliff').rows;
+  for (let c = 1; c < pc[0].length; c++) near(num(pc[0][c]) + num(pc[1][c]) + num(pc[2][c]), num(pc[3][c]), 0.001, 'patent-cliff col ' + c);
+  const cx = sim('policy-capex').rows;
+  for (let c = 1; c < cx[0].length; c++) near(100 * num(cx[2][c]) / num(cx[3][c]), num(cx[4][c]), 0.6, 'policy-capex col ' + c);
+  const rf = sim('refinance').rows;
+  for (let c = 1; c < rf[0].length; c++) {
+    near(num(rf[0][c]) + 3, num(rf[1][c]), 0.001, 'refinance rate col ' + c);
+    near(200 * num(rf[1][c]) / 100, num(rf[2][c]), 0.001, 'refinance interest col ' + c);
+    near(num(rf[3][c]) - num(rf[2][c]), num(rf[4][c]), 0.001, 'refinance profit col ' + c);
+  }
+  const tr = sim('tracking').rows;
+  for (let c = 1; c < tr[0].length; c++) near(100 * (num(tr[2][c]) / num(tr[1][c]) - 1), num(tr[3][c]), 0.006, 'tracking premium col ' + c);
+  const nim = sim('nim').rows;
+  for (let c = 1; c < nim[0].length; c++) {
+    near(num(nim[1][c]) - num(nim[0][c]), num(nim[2][c]), 0.001, 'nim curve col ' + c);
+    near(num(nim[3][c]) - num(nim[4][c]), num(nim[5][c]), 0.001, 'nim margin col ' + c);
+  }
+});
+test('every new simulation is underlined in at least one page text, not only index.html', () => {
+  const inData = new Set();
+  for (const fields of Object.values(data.themeRefs)) for (const refs of Object.values(fields)) for (const [, id] of refs) inData.add(id);
+  for (const refs of Object.values(data.exposureRefs)) for (const [, id] of refs) inData.add(id);
+  const htmlOnly = ['spread', 'swings', 'stop-loss', 'value-trap'];
+  for (const id of ['size-beta', 'refinance', 'cap-rate', 'ffo', 'nim', 'ad-cycle', 'patent-cliff', 'policy-capex', 'tracking', 'breadth', 'rotation', 'correlation', 'country-mix', 'backwardation']) assert.ok(inData.has(id), id);
+  for (const id of htmlOnly) assert.ok(html.includes('data-sim="' + id + '"'), id + ' in index.html');
+});
+
 console.log(passed + ' checks passed, ' + data.sims.length + ' simulations, ' + used.size + ' with page underlines.');

@@ -72,6 +72,8 @@ Ordered by value for effort. Each milestone is one commit.
 
 - [x] **M7.1 Underlined phrases with stepped simulations, copied from Tool Training.** Dotted purple phrases ▶ open one shared popover (a bottom sheet on a phone) with a goal, a SAMPLE candlestick tape or table, Next / Previous / Replay and arrow keys, and "What this shows" plus "Why we are doing this" on every step. 19 simulations cover wrappers, futures rolls, producers vs commodities, margins, duration, yields, gold and real rates, currencies, inflation, earnings, Financials columns, fees, index concentration (from the dated snapshot), fund holdings, sentiment, defensive sectors, AI valuations, dividends, and position size. Phrases are structured refs in `js/simulations.js`; `sim=<id>` in the hash opens one.
   - Acceptance: `node tools/test-simulations.mjs` passes; every underline resolves; Escape, Close, or the backdrop closes and returns focus; closing removes `sim=`; existing deep links, search, notes, compare, and index weights still work.
+- [x] **M7.2 More simulations, one underline on every theme.** 18 more SAMPLE walks (37 in all): value traps, size and beta, floating-rate debt, cap rates, REIT FFO, bank margins and the yield curve, the ad cycle, patent cliffs and trial results, policy and capex cycles, price vs NAV, index breadth, sector rotation, diversification, country weights, contango vs backwardation, past price swings, the bid–ask spread, and stop orders. Each underlines existing copy; small cap gained one sentence on financing costs.
+  - Acceptance: every theme in `data/catalog.json` has at least one underline; every phrase renders; the SAMPLE tables add up (checked in `tools/test-simulations.mjs`).
 
 ## Not in scope
 
