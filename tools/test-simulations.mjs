@@ -65,7 +65,12 @@ test('candle layout keeps bars inside the chart', () => {
 test('every tape says SAMPLE or simulated', () => { for (const sim of data.sims) assert.match(sim.tape, /SAMPLE|simulated/i, sim.id); });
 
 const used = new Set();
-const use = (where, id) => { assert.ok(ids.has(id), where + ' → unknown simulation ' + id); used.add(id); };
+const usedTerms = new Set();
+// A ref id is a simulation id, or 'term:<id>' for a grey-underlined definition.
+const use = (where, id) => {
+  if (String(id).startsWith('term:')) { const term = id.slice(5); assert.ok(data.terms[term], where + ' → unknown term ' + term); usedTerms.add(term); return; }
+  assert.ok(ids.has(id), where + ' → unknown simulation ' + id); used.add(id);
+};
 test('theme phrases exist in data/catalog.json and resolve', () => {
   for (const [themeId, fields] of Object.entries(data.themeRefs)) {
     const theme = catalog.themes.find(item => item.id === themeId);
@@ -95,6 +100,7 @@ test('underlines in index.html resolve', () => {
   const found = [...html.matchAll(/class="sim-trigger" data-sim="([^"]+)"/g)].map(m => m[1]);
   assert.ok(found.length >= 10, 'only ' + found.length + ' triggers in index.html');
   for (const id of found) use('index.html', id);
+  for (const m of html.matchAll(/class="term-tip" data-term="([^"]+)"/g)) use('index.html', 'term:' + m[1]);
   assert.ok(html.includes('id="sim-trigger-hint"') && html.includes('id="sim-list"'));
   assert.ok(html.indexOf('js/simulations.js') < html.indexOf("'js/app.js'"), 'simulations load before app.js');
 });
@@ -131,16 +137,19 @@ test('every theme in data/catalog.json has at least one underline', () => {
   assert.deepEqual(bare, []);
 });
 test('every phrase renders as its own underline (no overlaps or repeats hiding one)', () => {
-  const count = (html, id) => (html.match(new RegExp('data-sim="' + id + '"', 'g')) || []).length;
+  const attr = id => String(id).startsWith('term:') ? 'data-term="' + id.slice(5) + '"' : 'data-sim="' + id + '"';
   const check = (where, text, refs) => {
     const html = pop.richText(text, refs);
-    assert.equal((html.match(/class="sim-trigger"/g) || []).length, refs.length, where + ' renders ' + (html.match(/class="sim-trigger"/g) || []).length + ' of ' + refs.length);
-    for (const [phrase, id] of refs) assert.ok(count(html, id) >= 1 && html.includes('>' + phrase.replace(/&/g, '&amp;') + '</button>'), where + ' · ' + phrase);
+    const n = (html.match(/class="(sim-trigger|term-tip)"/g) || []).length;
+    assert.equal(n, refs.length, where + ' renders ' + n + ' of ' + refs.length);
+    for (const [phrase, id] of refs) assert.ok(html.includes(attr(id)) && html.includes('>' + phrase.replace(/&/g, '&amp;') + '</button>'), where + ' · ' + phrase);
   };
   for (const [themeId, fields] of Object.entries(data.themeRefs)) {
     const theme = catalog.themes.find(item => item.id === themeId);
     for (const [field, refs] of Object.entries(fields)) check(themeId + '.' + field, theme[field], refs);
   }
+  const exposureText = key => appJS.match(new RegExp('\\b' + key + ":\\{label:'[^']*',text:'([^']*)'"))[1];
+  for (const [key, refs] of Object.entries(data.exposureRefs)) check('exposure ' + key, exposureText(key), refs);
 });
 // SAMPLE tables must add up, so a reader who checks the arithmetic is not misled.
 const num = cell => Number(String(cell).replace(/[−–]/g, '-').replace(/[^0-9.\-]/g, ''));
@@ -222,4 +231,84 @@ test('every new simulation is underlined in at least one page text, not only ind
   for (const id of htmlOnly) assert.ok(html.includes('data-sim="' + id + '"'), id + ' in index.html');
 });
 
-console.log(passed + ' checks passed, ' + data.sims.length + ' simulations, ' + used.size + ' with page underlines.');
+// ---------- Beginner layer (M7.3) ----------
+test('every walk has a level, and Basic walks come first in the guide', () => {
+  for (const sim of data.sims) assert.ok(['basic', 'next', 'advanced'].includes(sim.level) && sim.levelName, sim.id + ' has no level');
+  assert.ok(data.sims.filter(sim => sim.level === 'basic').length >= 10, 'fewer than 10 Basic walks');
+  for (const id of Object.keys(data.LEVELS)) assert.ok(ids.has(id), 'LEVELS names unknown walk ' + id);
+});
+test('prerequisites resolve, and every bar walk links to the bar-reading walk', () => {
+  for (const sim of data.sims) {
+    for (const id of sim.before) { assert.ok(ids.has(id) && id !== sim.id, sim.id + ' → ' + id); assert.ok(data.PREREQ_LABEL[id], 'no "New to…?" label for ' + id); }
+    if (sim.kind === 'bars' && sim.id !== 'bar-reading') assert.ok(sim.before.includes('bar-reading'), sim.id);
+  }
+  for (const id of ['yields', 'duration']) assert.ok(data.sims.find(s => s.id === id).before.includes('bond-seesaw'), id);
+  for (const id of ['concentration', 'breadth']) assert.ok(data.sims.find(s => s.id === id).before.includes('index-basics'), id);
+  const popJS = read('js/sim-popover.js');
+  assert.ok(popJS.includes("trigger('bar-reading', 'How to read a bar')"), 'bar captions link to the bar-reading walk');
+  assert.ok(popJS.includes('data-sim-before') && popJS.includes('data-sim-back') && popJS.includes('data-sim-level'));
+});
+test('Start here: 5 to 8 Basic walks, a 3-step how-to panel, and the guide link points at it', () => {
+  assert.ok(data.startHere.length >= 5 && data.startHere.length <= 8);
+  for (const id of data.startHere) { assert.ok(ids.has(id), id); assert.equal(data.sims.find(s => s.id === id).level, 'basic', id); }
+  assert.ok(html.includes('id="start-here"') && html.includes('id="start-list"') && html.includes('href="#start-here" id="guide-link"'));
+  const panel = html.slice(html.indexOf('id="start-here"'), html.indexOf('id="start-list"'));
+  assert.equal((panel.match(/<li>/g) || []).length, 3, 'how-to panel has 3 steps');
+  assert.ok(appJS.includes("POP.renderStartHere($('start-list'), SIMS.startHere)") && appJS.includes("$('start-here')"));
+});
+test('terms: 25+ plain definitions, each shown somewhere on the page', () => {
+  const list = Object.entries(data.terms);
+  assert.ok(list.length >= 25, 'only ' + list.length + ' terms');
+  for (const [id, t] of list) {
+    assert.match(id, /^[a-z0-9-]+$/);
+    assert.ok(t.term && t.def.length >= 30, id + ' definition too short');
+    if (t.sim) assert.ok(ids.has(t.sim), id + ' → unknown walk ' + t.sim);
+    assert.ok(usedTerms.has(id), id + ' is defined but never underlined on the page');
+  }
+  const out = pop.richText('An ETF and a bond.', [['ETF', 'term:etf'], ['bond', 'bond-seesaw']]);
+  assert.ok(out.includes('class="term-tip" data-term="etf"') && out.includes('data-sim="bond-seesaw"'));
+  assert.ok(pop.toolText(['A ', {text: 'b', term: 'etf'}]).includes('data-term="etf"'));
+});
+test('every research link has a one-line plain-language note', () => {
+  const groups = appJS.slice(appJS.indexOf('const groups = ['), appJS.indexOf('return groups;'));
+  const titles = new Set();
+  for (const m of groups.matchAll(/\[\s*(?:item\.official\?)?'([^']+)'(?::'([^']+)')?,/g)) { titles.add(m[1]); if (m[2]) titles.add(m[2]); }
+  assert.ok(titles.size >= 20, 'found only ' + titles.size + ' link titles');
+  for (const title of titles) assert.ok(data.linkHelp[title] && data.linkHelp[title].length >= 20, 'no help line for ' + title);
+  for (const title of Object.keys(data.linkHelp)) assert.ok(titles.has(title), 'help for a link that does not exist: ' + title);
+  assert.ok(appJS.includes('group.links.map(helpLink)'));
+});
+test('beginner copy: futures walks start with what a contract is, and terms are defined at first use', () => {
+  const first = id => { const sim = data.sims.find(s => s.id === id); return (sim.kind === 'bars' ? sim.bars : sim.steps)[0].what; };
+  assert.match(first('futures-roll'), /futures contract is/i);
+  assert.match(first('backwardation'), /futures contract/i);
+  const all = id => JSON.stringify(data.sims.find(s => s.id === id));
+  for (const [id, words] of [['gold-rates', 'A real yield is'], ['duration', 'called maturity'], ['duration', 'Duration is a sensitivity score'], ['value-trap', 'earnings per share, or EPS, is'], ['ai', 'P/E, the share price divided by'], ['correlation', 'correlation measures'], ['yields', 'A yield is'], ['size-beta', 'beta compares'], ['earnings', 'A catalyst is'], ['dividend', 'the first day a new buyer'], ['concentration', 'an index of about 500']]) assert.ok(all(id).includes(words), id + ' lacks "' + words + '"');
+});
+test('SAMPLE arithmetic: foundation walks', () => {
+  const cp = sim('compounding').rows;
+  const fv = months => 100 * ((1.005 ** months - 1) / 0.005);
+  [12, 120, 360].forEach((months, i) => {
+    near(months * 100, num(cp[0][i + 1]), 0.001, 'compounding put in ' + months);
+    near(fv(months), num(cp[1][i + 1]), 0.6, 'compounding value ' + months);
+    near(num(cp[1][i + 1]) - num(cp[0][i + 1]), num(cp[2][i + 1]), 0.001, 'compounding growth ' + months);
+  });
+  near(fv(240), num(cp[4][3]), 0.6, 'late starter');
+  near(240 * 100, num(cp[3][3]), 0.001, 'late starter put in');
+  assert.ok(JSON.stringify(sim('compounding')).includes('$54,248') && num(cp[1][3]) - num(cp[4][3]) === 54248);
+  const price = y => { let p = 0; for (let t = 1; t <= 10; t++) p += 40 / (1 + y) ** t; return p + 1000 / (1 + y) ** 10; };
+  const bs = sim('bond-seesaw').rows;
+  near(price(0.05), num(bs[2][2]), 0.5, 'bond at 5%');
+  near(price(0.03), num(bs[2][3]), 0.5, 'bond at 3%');
+  near((price(0.05) / 1000 - 1) * 100, num(bs[4][2]), 0.06, 'bond change at 5%');
+  near((price(0.03) / 1000 - 1) * 100, num(bs[4][3]), 0.06, 'bond change at 3%');
+  const ix = sim('index-basics').rows;
+  let total = 0;
+  for (const row of ix.slice(0, 4)) { const cap = num(row[1]) * num(row[2]) / 1000; near(cap, num(row[3]), 0.001, 'index cap ' + row[0]); total += cap; }
+  near(total, num(ix[4][3]), 0.001, 'index total');
+  for (const row of ix.slice(0, 4)) { near(100 * num(row[3]) / total, num(row[4]), 0.001, 'index weight ' + row[0]); near(num(row[4]) / 10, num(row[5]), 0.001, 'index move ' + row[0]); }
+  const st = sim('stock-basics').rows;
+  for (let c = 1; c < st[0].length; c++) { near(num(st[2][c]), num(st[3][c]), 0.001, 'stock value col ' + c); near(num(st[2][c]) * 100, num(st[4][c]), 0.001, 'your shares col ' + c); }
+});
+
+console.log(passed + ' checks passed, ' + data.sims.length + ' simulations (' + data.sims.filter(sim => sim.level === 'basic').length + ' Basic), ' + used.size + ' with page underlines, ' + usedTerms.size + ' of ' + Object.keys(data.terms).length + ' terms on the page.');

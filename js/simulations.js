@@ -9,6 +9,118 @@
   const step = (col, row, what, why) => ({col, row, what, why});
 
   const sims = [
+    // Beginner foundations (M7.3): read these first. They define the words the other walks use.
+    {
+      kind: 'columns', id: 'stock-basics',
+      title: 'What a stock is',
+      goal: 'A share of stock is a small slice of ownership in a company. Step through four SAMPLE years of a made-up company to see who sets the share price, why it moves with profit and mood, and when a gain becomes real money.',
+      tape: 'SAMPLE company with 1,000,000 shares · you own 100 · simulated',
+      start: 1,
+      columns: ['', 'Day you buy', 'Year 1', 'Year 2', 'Year 3'],
+      rows: [
+        ['Your share of the company', '100 of 1,000,000 (0.01%)', '0.01%', '0.01%', '0.01%'],
+        ['Company’s yearly profit', '$2.0M', '$2.4M', '$1.6M', '$2.8M'],
+        ['Share price (last trade)', '$30', '$38', '$22', '$40'],
+        ['Whole company’s value (price × shares)', '$30M', '$38M', '$22M', '$40M'],
+        ['Your 100 shares are worth', '$3,000', '$3,800', '$2,200', '$4,000']
+      ],
+      steps: [
+        step(1, 0, 'You buy 100 of the company’s 1,000,000 shares: you own 0.01% of the business.', 'A stock is ownership, not a loan. You share in the company’s future profits and losses, and nobody promises you any payment back.'),
+        step(1, 2, 'The share price is $30 because that is what the last buyer and seller agreed on.', 'No one sets a stock price. It is the price of the most recent trade on an exchange, so it changes whenever buyers and sellers change their minds.'),
+        step(2, 1, 'Year 1: profit grows 20%, to $2.4M, and the price rises to $38.', 'Buyers pay more for a business they expect to earn more. Profit, and what investors expect it to become, is the main thing behind a share price over time.'),
+        step(3, 2, 'Year 2: profit falls 33%, but the price falls further, 42%, to $22.', 'Prices also carry mood and expectations, so they can overshoot in both directions. A falling price does not always mean the business is broken, and a rising one does not mean it is healthy.'),
+        step(4, 3, 'Year 3: at $40 a share, the whole company is valued at $40M (price × 1,000,000 shares).', 'That total is the company’s market value, or market cap. It, not the share price, tells you how big a company is; the index walk uses it.'),
+        step(4, 4, 'Your 100 shares are worth $4,000, a $1,000 gain on paper.', 'The gain becomes money only when you sell, or in part through dividends if the company pays them. Until then the price can still fall.')
+      ],
+      takeaway: 'A stock is part-ownership of a business. Its price is the last trade, driven by profit and expectations, and nothing about it is guaranteed.'
+    },
+    {
+      kind: 'bars', id: 'bar-reading',
+      title: 'How to read a price bar (candlestick)',
+      goal: 'Most walks here draw prices as candlestick bars. Step through six SAMPLE daily bars to learn the four prices in each bar (open, high, low, close), what the thick body and thin wicks show, what green and red mean, and why the bar period matters.',
+      tape: 'SAMPLE stock · daily bars · simulated',
+      start: 1,
+      bars: [
+        bar('Day 1', [100, 104, 98, 103], 'Day 1: one bar is one period, here one day. The stock opened at 100 and closed at 103, so the bar is green.', 'The thick body runs from the open to the close. Green means it closed higher than it opened. The line under the chart lists the four prices as O (open), H (high), L (low), C (close).'),
+        bar('Day 2', [103, 105, 96, 97], 'Day 2: it opened at 103 and closed at 97, so the bar is red.', 'Red means the close was below that same bar’s open. It compares the bar with itself, not with yesterday.'),
+        bar('Day 3', [97, 108, 96, 98], 'Day 3: the price reached 108 during the day but closed at 98, leaving a long thin line above a small body.', 'The thin lines are wicks: they mark the high and the low. A long upper wick means the price went up and was pushed back down before the close.'),
+        bar('Day 4', [98, 99, 90, 98.5], 'Day 4: the price dipped to 90 and recovered to 98.50, close to where it opened.', 'A small body with a long lower wick means a big move inside the day that did not last. The body shows the net move; the wicks show the full range.'),
+        bar('Day 5', [100, 102, 99.5, 101.5], 'Day 5: the bar opens at 100, above Day 4’s 98.50 close, leaving a gap between the bars.', 'A gap means the price jumped between periods, often on news released while the market was closed. Gaps matter for stop orders, as the stop-order walk shows.'),
+        bar('Day 6', [101.5, 103, 100.5, 102], 'Day 6: closes at 102. A single weekly bar for these six days would open at 100, close at 102, with a high of 108 and a low of 90.', 'Same prices, very different picture. Always check whether a chart’s bars are days, weeks, or months; each walk names its period in the label at the top.', {readout: 'Week: O 100 C 102'})
+      ],
+      takeaway: 'Each bar holds four prices: the body spans open to close (green up, red down) and the wicks mark the high and low. Check the bar period before reading a chart.'
+    },
+    {
+      kind: 'columns', id: 'index-basics',
+      title: 'What an index is, and market cap',
+      goal: 'An index such as the S&P 500 or the Russell 2000 is a list of companies plus a rule for combining their prices into one number. Step through a SAMPLE four-company index to see market cap (company size), how size-weighting works, and what an index fund does.',
+      tape: 'SAMPLE four-company index · simulated',
+      start: 1,
+      columns: ['', 'Share price', 'Shares', 'Market cap (price × shares)', 'Weight in the index', 'Index move if only it rises 10%'],
+      rows: [
+        ['Company A', '$250', '200M', '$50B', '50%', '+5.0%'],
+        ['Company B', '$50', '500M', '$25B', '25%', '+2.5%'],
+        ['Company C', '$150', '100M', '$15B', '15%', '+1.5%'],
+        ['Company D', '$20', '500M', '$10B', '10%', '+1.0%'],
+        ['Index (all four)', '—', '—', '$100B', '100%', '—']
+      ],
+      steps: [
+        step(1, 4, 'Four SAMPLE companies make up this index. Real ones are bigger: about 500 large U.S. companies in the S&P 500, about 2,000 smaller ones in the Russell 2000.', 'An index is a measuring stick for a slice of the market. You cannot buy it directly; an index fund buys the companies in it.'),
+        step(2, 2, 'Company C’s shares cost $150 each, but it has only 100 million of them.', 'A high share price does not make a company big. It depends on how many shares there are.'),
+        step(3, 2, 'Market cap = price × shares. C is worth $15B, smaller than B ($25B) even though B’s shares cost only $50.', 'Market cap is how size is measured. Large-cap, mid-cap, and small-cap themes sort companies by it.'),
+        step(4, 0, 'In a size-weighted index each company counts in proportion to its market cap, so A is 50% of the index.', 'Most big indexes weight by market cap. The biggest companies count the most, which is what the Index weights panel shows with real dated snapshots.'),
+        step(5, 0, 'If only A rises 10%, the index rises 5%. If only D rises 10%, the index rises 1%.', 'Weight × move = effect on the index. That is why a few giants can carry an index, as the concentration and breadth walks show.'),
+        step(5, 4, 'An index fund holds all four in these weights, so it follows the index, minus its fee.', 'A fund that tracks an index is usually not in that index itself. Its page names the index it follows; check it before comparing two funds.')
+      ],
+      takeaway: 'An index is a rule for combining many prices; most weight companies by market cap (price × shares). An index fund copies it, so its biggest companies matter most.'
+    },
+    {
+      kind: 'columns', id: 'bond-seesaw',
+      title: 'The bond seesaw: why prices fall when yields rise',
+      goal: 'A bond is a loan that pays fixed interest. Step through a SAMPLE $1,000 ten-year bond paying 4% to see why its price must fall when new bonds pay more, rise when they pay less, and end at $1,000 if you hold it to the end.',
+      tape: 'SAMPLE $1,000 bond · 4% a year · 10 years · simulated',
+      start: 1,
+      columns: ['', 'Day you buy', 'New bonds pay 5%', 'New bonds pay 3%', 'Final day'],
+      rows: [
+        ['Your bond pays each year', '$40', '$40', '$40', '$40 + your $1,000 back'],
+        ['A new $1,000 bond pays each year', '$40 (4%)', '$50 (5%)', '$30 (3%)', '—'],
+        ['Price a buyer would pay for yours', '$1,000', 'about $923', 'about $1,085', '$1,000'],
+        ['Yield for that buyer (income ÷ price, plus the final repayment)', '4%', '5%', '3%', '—'],
+        ['Change in your bond’s price', '0%', '−7.7%', '+8.5%', '0%']
+      ],
+      steps: [
+        step(1, 0, 'You lend $1,000 for 10 years. The borrower pays you $40 a year and returns your $1,000 at the end.', 'A bond is a loan to a government or company. The $40 is fixed the day you buy, so 4% is your yield: yearly income as a share of what you paid.'),
+        step(2, 1, 'Interest rates rise and new bonds now pay $50 a year.', 'Nobody will pay $1,000 for your $40 bond when $1,000 buys a new one paying $50. Your bond has to get cheaper to compete.'),
+        step(2, 2, 'Its price falls to about $923, a level where the next buyer also earns about 5%.', 'This is the seesaw: when yields go up, existing bond prices go down until their yield matches the market. The price drop is the cost of having locked in less.'),
+        step(3, 2, 'If new bonds pay only 3% instead, your $40 bond is worth about $1,085.', 'The seesaw works the other way too. Falling yields lift existing bond prices.'),
+        step(4, 2, 'On the final day (maturity) you get your $1,000 back, whatever happened to rates.', 'Price swings matter if you sell early, or own a bond fund, which keeps buying new bonds and never matures. The more years a bond has left, the bigger the swing; the duration walk shows that.')
+      ],
+      takeaway: 'Bond prices and yields sit on a seesaw: when new bonds pay more, existing ones fall in price, and the other way around. Holding to maturity returns the loan; selling early or a fund does not promise that.'
+    },
+    {
+      kind: 'columns', id: 'compounding',
+      title: 'Compounding and time: $100 a month',
+      goal: 'Compounding means your gains start earning gains of their own. Step through $100 a month at a steady SAMPLE 6% a year over 1, 10, and 30 years, then see what starting 10 years later costs.',
+      tape: 'SAMPLE $100 added at each month’s end · steady 6% a year, compounded monthly · simulated',
+      start: 1,
+      columns: ['', 'Year 1', 'Year 10', 'Year 30'],
+      rows: [
+        ['Money you put in', '$1,200', '$12,000', '$36,000'],
+        ['Value at a SAMPLE 6% a year', '$1,234', '$16,388', '$100,452'],
+        ['Growth on top of what you put in', '$34', '$4,388', '$64,452'],
+        ['Late starter (begins in Year 11) · put in', '$0', '$0', '$24,000'],
+        ['Late starter · value', '$0', '$0', '$46,204']
+      ],
+      steps: [
+        step(1, 0, 'Year 1: you put in $100 a month, $1,200 in all.', 'Start with your own money, so you can tell it apart from growth. Every later number is compared with this row.'),
+        step(1, 2, 'Year 1: growth adds only $34.', 'In the first year compounding looks like nothing. That is why many people give up on it early.'),
+        step(2, 2, 'Year 10: you have put in $12,000 and growth has added $4,388.', 'Growth is now earning growth: each year’s gain is a bigger share of the total than the year before.'),
+        step(3, 1, 'Year 30: $36,000 put in has become $100,452. Almost two thirds of it is growth.', 'Time does most of the work in the late years. The rate matters, but the number of years matters more.'),
+        step(3, 4, 'A late starter who saves the same $100 a month from Year 11 ends with $46,204.', 'Skipping the first 10 years saved $12,000 in deposits and cost $54,248 by Year 30. The early years are the most valuable ones.'),
+        step(3, 3, 'The late starter put in $24,000 for 20 years; the early starter $36,000 for 30.', 'Real returns are not a steady 6%: some years are negative, and fees subtract every year (the fee walk). Use this as a picture of time, not a forecast.')
+      ],
+      takeaway: 'Compounding rewards time more than anything else. Starting earlier with less often beats starting later with more; real returns vary and are never guaranteed.'
+    },
     {
       kind: 'columns', id: 'wrapper',
       title: 'Same theme, four wrappers',
@@ -47,6 +159,7 @@
         ['Fund value (start 100)', '100.0', '100.7', '96.0', '95.5', '91.0', '90.5']
       ],
       steps: [
+        step(1, 0, 'First, what a futures contract is: an agreement to buy a set amount of a commodity on a set future date, at a price agreed today. Spot is the price for delivery right now: 70 here.', 'A futures fund never takes delivery. Before each contract ends it sells it and buys a later one, which is called rolling. Everything in this walk follows from that.'),
         step(1, 2, 'Month 1: spot crude is 70. The fund buys next month’s contract at 71.50, above spot.', 'When later contracts cost more than spot (contango), every roll buys high. That gap is the first thing to look for on a futures fund’s issuer page.'),
         step(2, 3, 'Month 2: spot rises to 72 and the contract ends there. Spot gained 2.9%; the fund gained only 0.7%.', 'The fund earns the move from its purchase price (71.50) to where the contract ends (72), not the move from 70. That shortfall is the roll cost.'),
         step(3, 2, 'Month 3: spot falls back to 70, and the fund rolls again into a 71.40 contract.', 'The roll happens every month whether the market is up or down. A short chart can hide it; a longer comparison with spot shows it.'),
@@ -109,8 +222,8 @@
         ['Long-term bond fund', '20+ years', 'About 17', 'About −17%', 'About +17%', 'Locked in for decades']
       ],
       steps: [
-        step(1, 0, 'Each row is a SAMPLE Treasury fund. The first difference is how long its bonds have until they repay.', 'Maturity is the fund’s time horizon. The fund’s page lists it, and it is the first thing to check before calling any bond fund safe.'),
-        step(2, 3, 'Duration turns maturity into a sensitivity: roughly the percent price change for a 1-point change in yields.', 'It is a rule of thumb, not a promise, but it lets you compare funds quickly. Look for it on the issuer’s fact sheet.'),
+        step(1, 0, 'Each row is a SAMPLE Treasury fund (Treasuries are loans to the U.S. government). The first difference is how long its bonds have until they repay, called maturity.', 'Maturity is the fund’s time horizon. New to bond prices? The bond seesaw walk comes first. The fund’s page lists it, and it is the first thing to check before calling any bond fund safe.'),
+        step(2, 3, 'Duration is a sensitivity score built from maturity: roughly the percent a price changes when yields move 1 point (say from 4% to 5%).', 'It is a rule of thumb, not a promise, but it lets you compare funds quickly. Look for it on the issuer’s fact sheet.'),
         step(3, 3, 'If yields rise 1 point, the long fund falls roughly 17%; the T-bill fund barely moves.', 'Bond prices move opposite to yields, and longer bonds move more. That is why rate news matters far more for a long fund than for a short one.'),
         step(4, 3, 'If yields fall 1 point, the same math runs in reverse: roughly +17% for the long fund.', 'Duration cuts both ways. Owning a long fund is a view on long-term yields, whether you meant it or not.'),
         step(5, 0, 'Income: the T-bill fund’s payout resets quickly to new rates, while the long fund locks its rate in for years.', 'A T-bill fund trades price stability for income that changes. Neither is a bank account; decide what you want the fund to do before picking one.')
@@ -124,7 +237,7 @@
       tape: 'SAMPLE long-term bond fund · monthly bars · simulated',
       start: 2,
       bars: [
-        bar('Jan', [90, 91, 89, 90.5], 'January: the SAMPLE fund closes at 90.50 with the 10-year yield at 4.20%.', 'Put the yield beside the price. A bond-fund chart makes more sense read against yields than on its own.', {readout: '10y 4.20%'}),
+        bar('Jan', [90, 91, 89, 90.5], 'January: the SAMPLE fund closes at 90.50 with the 10-year yield at 4.20%. A yield is the yearly interest a bond pays as a share of its price.', 'Put the yield beside the price. A bond-fund chart makes more sense read against yields than on its own.', {readout: '10y 4.20%'}),
         bar('Feb', [90.5, 93, 90, 92.5], 'February: the yield falls to 4.05% and the fund rises to 92.50.', 'Opposite directions: lower yields, higher bond prices. This is the relationship the theme’s connection describes.', {readout: '10y 4.05%'}),
         bar('Mar', [92.5, 93, 88, 88.5], 'March: a strong SAMPLE jobs report (N) lifts the yield to 4.35%, and the fund drops to 88.50.', 'Good economic news can raise rate expectations and push bond prices down. A headline that sounds positive can be negative for this fund.', {mark: 'news', readout: '10y 4.35%'}),
         bar('Apr', [88.5, 89.5, 87, 88], 'April: a quiet month. The yield edges up and the fund drifts lower.', 'Small yield moves add up for a long fund because of its long duration. Stay with what each bar shows instead of guessing a trend.', {readout: '10y 4.40%'}),
@@ -140,7 +253,7 @@
       tape: 'SAMPLE bullion trust · monthly bars · simulated',
       start: 2,
       bars: [
-        bar('Jan', [180, 184, 178, 182], 'January: the SAMPLE trust closes at 182, with real yields at 1.8% and a steady dollar.', 'Record the backdrop first. You will compare each later bar with these two readings, not with what you expect.', {readout: 'Real 1.8% · $ steady'}),
+        bar('Jan', [180, 184, 178, 182], 'January: the SAMPLE trust closes at 182, with real yields at 1.8% and a steady dollar. A real yield is a bond’s interest rate minus expected inflation: what lenders earn after rising prices.', 'Record the backdrop first. You will compare each later bar with these two readings, not with what you expect.', {readout: 'Real 1.8% · $ steady'}),
         bar('Feb', [182, 190, 181, 189], 'February: real yields fall and the dollar weakens; the trust rises to 189.', 'Lower real yields make a no-interest asset cheaper to hold, and a weaker dollar makes gold cheaper for other buyers. This is the textbook link.', {readout: 'Real 1.5% · $ weaker'}),
         bar('Mar', [189, 191, 183, 185], 'March: real yields tick up and the dollar firms; the trust slips to 185.', 'Same link, opposite direction. Two months that agree with a story are still not proof, so keep stepping.', {readout: 'Real 1.7% · $ stronger'}),
         bar('Apr', [185, 197, 184, 195], 'April: real yields rise and the dollar strengthens, yet the trust jumps to 195 on SAMPLE central-bank buying and a risk scare (N).', 'Other forces, such as central-bank demand and fear, can overpower rates. That is why the theme’s connection lists several drivers, not one.', {mark: 'news', readout: 'Real 1.9% · $ stronger'}),
@@ -176,7 +289,7 @@
     {
       kind: 'columns', id: 'inflation',
       title: 'Inflation reports: three wrappers, three reactions',
-      goal: 'Inflation themes mix inflation-linked bonds, commodities, and businesses. Step through five SAMPLE inflation reports to see why each reacts differently, and why none is a guaranteed hedge over a few months.',
+      goal: 'Inflation themes mix inflation-linked bonds (whose value is adjusted for inflation), commodities, and businesses. Step through five SAMPLE inflation reports to see why each reacts differently, and why none is a guaranteed hedge over a few months.',
       tape: 'SAMPLE monthly reports and fund moves · simulated',
       start: 1,
       columns: ['', 'Report 1', 'Report 2', 'Report 3', 'Report 4', 'Report 5'],
@@ -203,7 +316,7 @@
       tape: 'SAMPLE company · weekly bars · simulated',
       start: 2,
       bars: [
-        bar('W1', [40, 41, 39.5, 40.5], 'Week 1: a quiet week near 40.', 'Before a catalyst, note the starting point and the report date. The Earnings & guidance link is how you find the date ahead of time.'),
+        bar('W1', [40, 41, 39.5, 40.5], 'Week 1: a quiet week near 40.', 'A catalyst is a scheduled event that can move the price. Before one, note the starting point, the report date, and the guidance (management’s own forecast). The Earnings & guidance link is how you find the date ahead of time.'),
         bar('W2', [40.5, 43, 40, 42.5], 'Week 2: shares climb to 42.50 as investors expect a strong quarter.', 'A run-up before the report means good news may already be in the price. That is what “a good story can already be priced in” means.'),
         bar('W3', [42.5, 44, 42, 43.8], 'Week 3: more gains into the report, closing at 43.80.', 'Expectations rise with the price. The bar to clear is now what investors hope for, not last year’s result.'),
         bar('W4', [43.8, 44.5, 38, 39], 'Week 4: earnings (E). Profit beats estimates, but next quarter’s guidance is cut, and shares fall to 39.', 'Guidance is about the future, and the future is what the price weighs. Read the report and the outlook, not just the beat-or-miss headline.', {mark: 'earnings'}),
@@ -273,7 +386,7 @@
         ['Index result', '', '', '', 'About −2.1%']
       ],
       steps: [
-        step(1, 0, 'NVDA is 8.34% of the S&P 500 in the Oct 8, 2026 snapshot stored on this page.', 'A weight is the share of the fund’s money in one company. One stock out of about 500 carrying over 8% is the first sign the index is not evenly spread.'),
+        step(1, 0, 'NVDA is 8.34% of the S&P 500, an index of about 500 large U.S. companies, in the Oct 8, 2026 snapshot stored on this page.', 'A weight is the share of the fund’s money in one company. One stock out of about 500 carrying over 8% is the first sign the index is not evenly spread.'),
         step(2, 4, 'Add AAPL, MSFT, AMZN, and GOOGL: these five directory tickers make up 28.35% of the index.', 'The running total is the concentration check. More than a quarter of an S&P 500 fund rides on five businesses.'),
         step(3, 0, 'Now a SAMPLE week: those five each fall 10%, and every other company rises 1%.', 'This is a what-if, not a forecast. It isolates what weight alone does to the result.'),
         step(4, 0, 'NVDA’s 10% drop alone takes about 0.83 points off the index.', 'Effect on the index = weight × move. That one multiplication is why the largest holdings matter most.'),
@@ -324,7 +437,7 @@
     {
       kind: 'bars', id: 'defensive',
       title: 'Steady demand is not a steady price',
-      goal: 'Staples and utilities are often researched for a slowdown because demand for them is steadier. Step through SAMPLE monthly bars of a staples fund, with the 10-year yield beside each, to see why steady demand does not mean a steady price.',
+      goal: 'Staples (everyday goods) and utilities (power and water) are often called defensive and researched for a slowdown because demand for them is steadier. Step through SAMPLE monthly bars of a staples fund, with the 10-year yield beside each, to see why steady demand does not mean a steady price.',
       tape: 'SAMPLE consumer staples fund · monthly bars · simulated',
       start: 2,
       bars: [
@@ -353,7 +466,7 @@
         ['Chip fund (basket)', '100', '125', '145', '135', '120']
       ],
       steps: [
-        step(1, 0, 'Q1: revenue grows 20% and the shares trade at 25 times earnings.', 'Write down growth, margin, and the price paid for each dollar of earnings (P/E). The story is the fourth thing to check, not the first.'),
+        step(1, 0, 'Q1: revenue grows 20% and the shares trade at 25 times earnings.', 'Write down growth, margin, and the price paid for each dollar of earnings: P/E, the share price divided by yearly profit per share. The story is the fourth thing to check, not the first.'),
         step(2, 3, 'Q2: demand lifts growth to 45%. Investors now pay 33 times earnings, and the price reaches 150.', 'Part of the rise is higher earnings and part is a higher multiple. The multiple is investors’ expectation, and it can shrink.'),
         step(3, 3, 'Q3: growth peaks at 60%, the P/E reaches 40, and the price has doubled since Q1.', 'Now the price assumes strong growth continues. Check guidance and the spending plans of the customers buying the chips.'),
         step(4, 0, 'Q4: earnings still rise, but growth slows to 35% and margins dip. The price falls to 170.', 'Earnings went up and the stock went down. Slowing growth and competition can cut the multiple faster than profit grows.'),
@@ -370,7 +483,7 @@
       start: 2,
       bars: [
         bar('W1', [50, 50.6, 49.6, 50.2], 'Week 1: shares near 50.20, paying a SAMPLE $1.00 quarterly dividend.', 'Start with the payout and the price: $1 a quarter is about an 8% yearly yield at $50. A very high yield is a prompt to ask why.', {readout: '$1.00 a quarter'}),
-        bar('W2', [50.2, 50.5, 48.9, 49.1], 'Week 2: the ex-dividend date (D). Shares open about $1 lower and close at 49.10.', 'On the ex-dividend date the price usually drops by roughly the payout, because that cash is leaving the company. Your total stays about the same.', {mark: 'dividend'}),
+        bar('W2', [50.2, 50.5, 48.9, 49.1], 'Week 2: the ex-dividend date (D), the first day a new buyer no longer gets the coming payout. Shares open about $1 lower and close at 49.10.', 'On the ex-dividend date the price usually drops by roughly the payout, because that cash is leaving the company. Your total stays about the same.', {mark: 'dividend'}),
         bar('W3', [49.1, 49.5, 47.5, 47.8], 'Week 3: shares keep slipping, to 47.80.', 'The payout did not protect the price. A share price can fall by more than the dividend.'),
         bar('W4', [47.8, 48, 41, 42], 'Week 4: earnings (E). The company cuts the dividend to $0.50 to save cash, and shares fall to 42.', 'A dividend can be cut when cash flow weakens. The Cash flow and Dividend history links show whether past payouts were covered.', {mark: 'earnings', readout: '$0.50 a quarter'}),
         bar('W5', [42, 43, 41.5, 42.6], 'Week 5: shares steady near 42.60.', 'Over five weeks an investor received $1 in dividends and lost about $7.60 in price. Look at total return, not the yield alone.')
@@ -416,7 +529,7 @@
         ['B · P/E', '8.0', '10.0', '14.7', '18.0']
       ],
       steps: [
-        step(1, 2, 'Today: company A trades at $40 with $5.00 of earnings per share, a P/E of 8.', 'P/E is price divided by earnings per share. A low number says investors pay little for each dollar of profit. It does not say why they pay so little.'),
+        step(1, 2, 'Today: company A trades at $40 and earned $5.00 per share last year (earnings per share, or EPS, is yearly profit divided by the number of shares). Price ÷ EPS gives a P/E of 8.', 'P/E is price divided by earnings per share. A low number says investors pay little for each dollar of profit. It does not say why they pay so little.'),
         step(1, 5, 'Company B also trades at $40 with $5.00 of earnings: the same P/E of 8.', 'On the ratio alone the two look identical. The ratio uses last year’s earnings, so the question is whether those earnings will hold.'),
         step(2, 4, 'Year 1: B’s earnings fall to $3.00 and its price drops 25% to $30, yet its P/E rises to 10.', 'When earnings shrink faster than the price, a falling stock gets more expensive on the ratio. That is a value trap: cheap for a reason.'),
         step(2, 1, 'Year 1: A’s earnings grow a little, to $5.20, and its price rises to $44.', 'Earnings that hold up let a cheap stock rise. The difference between A and B was the business, not the label.'),
@@ -438,7 +551,7 @@
         ['Small-cap fund', '+4%', '−7%', '−4%', '+7%', '−3%', '+0.8%', '−2.9%']
       ],
       steps: [
-        step(1, 3, 'Month 1: a strong SAMPLE jobs report. The small-cap fund rises 4%, twice the large-cap fund’s 2%.', 'Smaller companies sell more of their goods at home, so U.S. growth news reaches them more directly. A fund that moves more than the market is said to have a higher beta.'),
+        step(1, 3, 'Month 1: a strong SAMPLE jobs report. The small-cap fund rises 4%, twice the large-cap fund’s 2%.', 'Smaller companies sell more of their goods at home, so U.S. growth news reaches them more directly. A fund that tends to move more than the market is said to have a higher beta (beta compares a fund’s typical move with the whole market’s).'),
         step(2, 3, 'Month 2: a growth scare. Small caps fall 7%, mid caps 5%, large caps 3%.', 'The extra sensitivity works in both directions. A higher beta means larger drops, not only larger gains.'),
         step(3, 3, 'Month 3: interest rates rise. Small caps fall 4% against 1% for large caps.', 'Smaller firms often carry more floating-rate debt and less cash, so higher borrowing costs hurt them sooner. The financing-cost simulation shows that in one company.'),
         step(4, 2, 'Month 4: hopes of a rate cut. The mid-cap fund jumps 5% and the small-cap fund 7%.', 'Mid caps usually sit between the two extremes: more sensitive than the giants, less than the smallest firms.'),
@@ -707,7 +820,7 @@
       steps: [
         step(2, 0, 'Month 2: company A falls 12% on its own SAMPLE news while company B rises 3%.', 'That is company-specific risk. When companies have different problems, owning several lets one’s bad news be offset by another’s good month.'),
         step(2, 2, 'Month 2: the sector fund falls only 4%.', 'This is what spreading company risk across an industry means: A’s problem is diluted by the other holdings.'),
-        step(4, 2, 'Month 4: a SAMPLE industry-wide chip slowdown. A falls 8%, B 7%, and the sector fund 7%.', 'When companies share a driver they move together; they are highly correlated. A sector fund cannot spread away the risk of its own sector.'),
+        step(4, 2, 'Month 4: a SAMPLE industry-wide chip slowdown. A falls 8%, B 7%, and the sector fund 7%.', 'When companies share a driver they move together; they are highly correlated (correlation measures how closely two prices move in step). A sector fund cannot spread away the risk of its own sector.'),
         step(4, 3, 'Month 4: the broad stock fund falls only 4%, because other sectors did not share the chip problem.', 'Holdings with different drivers have lower correlation, so the total swings less.'),
         step(4, 4, 'Month 4: the stock-and-bond mix falls just 1%, as SAMPLE bonds rose 2%.', 'Assets with different drivers can smooth the path. Correlations change, though: in a rate shock stocks and bonds can fall together.'),
         step(6, 4, 'Worst months: A −12%, B −9%, sector fund −7%, broad fund −4%, mix −1%.', 'Diversification shrinks the worst month but also the best ones (A’s +10% became +1%). It lowers risk; it does not remove loss.')
@@ -754,6 +867,7 @@
         ['Fund value (start 100)', '97.2', '95.2', '95.2', '97.3', '100.1']
       ],
       steps: [
+        step(1, 1, 'First, the words: a futures contract fixes today the price for buying oil on a later date. Spot is the price for oil delivered now, held at 70 here so only the curve changes.', 'A futures fund holds contracts, not barrels, and swaps each one for a later contract before it ends. The gap between the later price and spot decides whether that swap costs or earns money.'),
         step(1, 2, 'Month 1: inventories are high. Next month’s contract costs 72 while spot is 70: contango.', 'When storage is full, oil for later delivery costs more to cover storage and financing, so the curve slopes up.'),
         step(1, 4, 'Month 1: spot does not move, yet the fund loses 2.8% as its 72 contract ends at 70.', 'Buying above spot and converging down to it is the roll cost the futures-roll simulation shows.'),
         step(3, 3, 'Month 3: SAMPLE inventory reports show stocks back to normal; the curve flattens and the roll costs nothing.', 'Weekly inventory reports, such as the EIA’s, explain why the curve changes shape. That is why they belong in a futures fund’s research.'),
@@ -828,19 +942,106 @@
     }
   ];
 
+  // Every walk carries a level, shown in the guide and the popover header. Basic walks assume nothing.
+  const LEVELS = {
+    'stock-basics': 'basic', 'bar-reading': 'basic', 'index-basics': 'basic', 'bond-seesaw': 'basic', compounding: 'basic',
+    wrapper: 'basic', fees: 'basic', downside: 'basic', dividend: 'basic', correlation: 'basic', spread: 'basic', swings: 'basic', sentiment: 'basic', concentration: 'basic',
+    producer: 'next', margin: 'next', duration: 'next', yields: 'next', 'gold-rates': 'next', dollar: 'next', inflation: 'next', earnings: 'next', financials: 'next',
+    holdings: 'next', defensive: 'next', ai: 'next', 'value-trap': 'next', 'size-beta': 'next', breadth: 'next', rotation: 'next', 'country-mix': 'next',
+    'stop-loss': 'next', tracking: 'next', 'ad-cycle': 'next', 'patent-cliff': 'next',
+    'futures-roll': 'advanced', backwardation: 'advanced', refinance: 'advanced', 'cap-rate': 'advanced', ffo: 'advanced', nim: 'advanced', 'policy-capex': 'advanced'
+  };
+  const LEVEL_NAMES = {basic: 'Basic', next: 'Next step', advanced: 'Advanced'};
+  // Walks to read first, shown as "New to …? ▶" at the top of a walk. Every bar walk points to the bar-reading walk.
+  const BEFORE = {
+    yields: ['bond-seesaw'], duration: ['bond-seesaw'], concentration: ['index-basics'], breadth: ['index-basics'], tracking: ['index-basics'],
+    'size-beta': ['index-basics'], 'value-trap': ['stock-basics'], ai: ['stock-basics'], producer: ['stock-basics']
+  };
+  const PREREQ_LABEL = {'bar-reading': 'New to bars?', 'bond-seesaw': 'New to bonds?', 'index-basics': 'New to indexes?', 'stock-basics': 'New to stocks?'};
+  for (const sim of sims) {
+    sim.level = LEVELS[sim.id];
+    sim.levelName = LEVEL_NAMES[sim.level];
+    sim.before = [...(BEFORE[sim.id] || [])];
+    if (sim.kind === 'bars' && sim.id !== 'bar-reading') sim.before.unshift('bar-reading');
+  }
+  // The "Start here" path pinned at the top of the research guide.
+  const startHere = ['stock-basics', 'bar-reading', 'index-basics', 'bond-seesaw', 'compounding', 'correlation', 'downside'];
+
+  // Plain-language definitions behind grey-underlined words ('term:<id>' in the refs below, data-term in index.html).
+  const terms = {
+    etf: {term: 'ETF', def: 'Exchange-traded fund: a fund whose shares trade on a stock exchange all day, like a stock. One share gives you a slice of everything the fund holds.'},
+    bond: {term: 'Bond', def: 'A loan you make to a government or company. It pays fixed interest and returns the loan on a set date (maturity).', sim: 'bond-seesaw'},
+    treasury: {term: 'Treasury', def: 'A bond, note, or bill issued by the U.S. government. Bills last a year or less; notes and bonds last longer.', sim: 'bond-seesaw'},
+    maturity: {term: 'Maturity', def: 'The date a bond repays its loan. A fund’s maturity range tells you how long its bonds have left; longer usually means bigger price swings.', sim: 'duration'},
+    fdic: {term: 'FDIC insured', def: 'Bank deposits are protected by a U.S. government agency up to set limits if the bank fails. Funds, including Treasury bill funds, are not.'},
+    collectibles: {term: 'Collectibles (tax)', def: 'U.S. tax rules can treat gains on physical metal, including many bullion trusts, as collectibles, which may be taxed at a higher rate than stock gains. Check current rules or a tax adviser.'},
+    futures: {term: 'Futures contract', def: 'An agreement to buy or sell a set amount of something (oil, gold, a currency) on a set future date at a price agreed today.', sim: 'futures-roll'},
+    spot: {term: 'Spot price', def: 'The price for buying something for delivery now, as opposed to a futures price for a later date.', sim: 'backwardation'},
+    k1: {term: 'K-1 tax form', def: 'A tax form some partnership-structured funds send instead of the usual 1099. It can arrive late and make tax filing more complex.'},
+    snapshot: {term: 'Snapshot', def: 'Holdings as of one date. Index weights change every day, so each figure here is only as current as its date.'},
+    'market-cap': {term: 'Market cap', def: 'A company’s total market value: share price × number of shares. Large-, mid-, and small-cap groups sort companies by it.', sim: 'index-basics'},
+    sector: {term: 'Sector', def: 'A group of companies in the same broad line of business, such as technology or health care. A sector fund holds many of them.', sim: 'correlation'},
+    'inflation-linked': {term: 'Inflation-linked bond', def: 'A bond whose principal is adjusted for inflation, such as Treasury TIPS. It protects against rising prices over time, but its price still moves with interest rates.', sim: 'inflation'},
+    emerging: {term: 'Emerging market', def: 'A country whose economy and stock market are still developing, often with faster growth and more political and currency risk.', sim: 'country-mix'},
+    developed: {term: 'Developed market', def: 'A country with a mature economy and established stock market, such as Japan, the UK, or Germany.', sim: 'country-mix'},
+    style: {term: 'Growth vs value', def: 'Index labels. Growth companies are expected to grow profits fast and usually cost more per dollar of earnings; value companies look cheaper on ratios. Each fund’s index sets its own rules.', sim: 'value-trap'},
+    dividend: {term: 'Dividend', def: 'Cash a company pays its shareholders out of profits, often every quarter. It can be raised, cut, or stopped.', sim: 'dividend'},
+    earnings: {term: 'Earnings', def: 'A company’s profit after costs. Earnings per share (EPS) is that profit divided by the number of shares.', sim: 'stock-basics'},
+    valuation: {term: 'Valuation', def: 'What investors pay for a business compared with what it earns or owns, for example the P/E ratio: share price ÷ yearly earnings per share.', sim: 'value-trap'},
+    'risk-appetite': {term: 'Risk appetite', def: 'How willing investors feel to take chances. When it is high they buy riskier assets; when it drops they move toward safer ones.'},
+    opec: {term: 'OPEC', def: 'The Organization of the Petroleum Exporting Countries, a group of oil producers whose output decisions can move oil prices.'},
+    lng: {term: 'LNG', def: 'Liquefied natural gas: gas cooled into a liquid so it can be shipped overseas.'},
+    issuer: {term: 'Issuer', def: 'The company that runs a fund (for example iShares, Vanguard, or State Street). Its site has the official holdings, fees, and documents.'},
+    prospectus: {term: 'Prospectus', def: 'A fund’s official rulebook: what it may hold, its fees, and its risks. The issuer publishes it.'},
+    guidance: {term: 'Guidance', def: 'A company’s own forecast for its coming results, usually given with its earnings report.', sim: 'earnings'},
+    volume: {term: 'Trading volume', def: 'How many shares changed hands in a period. Low volume often means wider bid–ask spreads.', sim: 'spread'},
+    'cash-flow': {term: 'Cash flow', def: 'Cash actually coming in and going out of a business. Profit can include non-cash items; cash flow shows whether the business pays its bills.'},
+    filings: {term: 'Filings', def: 'Official reports companies must send to the SEC, the U.S. market regulator, such as the annual 10-K and quarterly 10-Q. They are primary sources.'},
+    'position-size': {term: 'Position size', def: 'How much money you put into one investment. It decides what a mistake costs you.', sim: 'downside'}
+  };
+
+  // One plain-language line under each research link, keyed by the link title in js/app.js.
+  const linkHelp = {
+    'Stock Analysis': 'A free summary page: price, size, key numbers, and links.',
+    'Finviz': 'A chart with the main stats and recent headlines on one page.',
+    'Yahoo chart': 'An interactive price chart; switch the bar period and see volume.',
+    'Analyst views': 'What professional analysts forecast. Opinions, not facts.',
+    'Financials overview': 'All the company’s reported results, by year or quarter.',
+    'Income statement': 'What the company sold and what it kept as profit.',
+    'Balance sheet': 'What the company owns and what it owes on one date.',
+    'Cash flow': 'Cash that actually came in and went out.',
+    'SEC filings': 'The company’s official reports to the U.S. regulator.',
+    'Investor relations': 'The company’s own site for results, slides, and calls.',
+    'Find investor relations': 'A search for the company’s own results page.',
+    'Earnings & guidance': 'When the next report is, and what management expects.',
+    'Valuation & ratios': 'What you pay per dollar of profit, sales, or assets.',
+    'Dividend history': 'Past cash payouts and whether they grew or were cut.',
+    'Fund issuer': 'The fund company’s official page: the source to trust.',
+    'Find fund issuer': 'A search for the fund company’s official page.',
+    'Holdings & exposure': 'Everything the fund owns, largest first.',
+    'Fees & structure': 'The yearly fee (expense ratio) and basic fund facts.',
+    'Reports & prospectus': 'The fund’s rulebook and annual reports.',
+    'Google News': 'Recent news stories that mention this ticker.',
+    'Press releases': 'Announcements written by the company itself.',
+    'Stocktwits': 'Short posts from traders. Opinions, often noisy.',
+    'Reddit search': 'Recent community discussions. Check claims elsewhere.',
+    'X cashtag search': 'Posts tagged $TICKER on X. Opinions, not facts.',
+    'Seeking Alpha': 'Articles and comments by investors and analysts.'
+  };
+
   // Underlined phrases in each theme's catalog text: [exact phrase from the catalog, simulation id].
   const themeRefs = {
     gold: {connection: [['real interest rates, the dollar', 'gold-rates'], ['Gold miners also face business and operating risks.', 'wrapper']]},
     silver: {connection: [['Bullion funds and silver miners give different exposure.', 'wrapper']]},
-    oil: {description: [['crude oil futures', 'futures-roll']], connection: [['inventories', 'backwardation'], ['An oil company or stock ETF is not a direct crude-price tracker.', 'producer']]},
-    gas: {description: [['gas futures', 'futures-roll']], connection: [['storage', 'backwardation'], ['Exporters and producers can have different sensitivities.', 'producer']]},
+    oil: {description: [['crude oil futures', 'futures-roll']], connection: [['OPEC', 'term:opec'], ['inventories', 'backwardation'], ['An oil company or stock ETF is not a direct crude-price tracker.', 'producer']]},
+    gas: {description: [['gas futures', 'futures-roll'], ['LNG exports', 'term:lng']], connection: [['storage', 'backwardation'], ['Exporters and producers can have different sensitivities.', 'producer']]},
     fertilizer: {connection: [['Gas costs are especially important for nitrogen producers.', 'margin']]},
     resin: {connection: [['natural-gas and oil feedstock costs', 'margin'], ['These shares are not a direct resin-price tracker.', 'producer']]},
     copper: {description: [['copper futures', 'futures-roll']], connection: [['A mining company adds operating and country risks.', 'producer']]},
     uranium: {connection: [['Read fund holdings to see how much exposure is actually uranium.', 'holdings']]},
     agriculture: {connection: [['Crop-futures funds and an equipment maker have very different economics.', 'wrapper']]},
     property: {description: [['real-estate investment trusts', 'ffo']], connection: [['borrowing costs', 'cap-rate']]},
-    technology: {connection: [['A sector fund spreads company risk across the industry.', 'correlation'], ['the price investors already pay', 'ai']]},
+    technology: {description: [['the sector fund', 'term:sector']], connection: [['A sector fund spreads company risk across the industry.', 'correlation'], ['the price investors already pay', 'ai']]},
     semiconductors: {connection: [['One chip company is not the same exposure as the basket.', 'ai']]},
     communication: {description: [['the sector fund that groups them', 'concentration']], connection: [['Advertising, user growth, and regulation', 'ad-cycle']]},
     financials: {connection: [['Interest rates, credit losses, and regulation', 'nim'], ['A bank and a payment network are not the same business.', 'nim']]},
@@ -852,22 +1053,22 @@
     staples: {connection: [['Steadier demand does not make the shares immune to costs, competition, or a high starting price.', 'defensive']]},
     utilities: {connection: [['Utility shares can also move with bond yields.', 'defensive']]},
     'real-estate': {description: [['real-estate investment trusts', 'ffo']], connection: [['borrowing costs', 'cap-rate']]},
-    'large-cap': {connection: [['Large-cap funds are dominated by their biggest holdings.', 'concentration'], ['A rising index can still leave many companies behind.', 'breadth']]},
-    'mid-cap': {connection: [['Mid-sized companies can be more sensitive to the U.S. economy than the largest firms.', 'size-beta'], ['Read the current holdings before treating the fund as one industry.', 'holdings']]},
-    'small-cap': {connection: [['Smaller companies can swing more than the large-cap market.', 'size-beta'], ['Many rely more on borrowing, so financing costs can weigh on profits.', 'refinance']]},
-    'total-market': {connection: [['Total-market funds are still weighted toward the largest companies.', 'concentration']]},
-    developed: {connection: [['Currency moves', 'dollar'], ['the country mix', 'country-mix']]},
-    emerging: {connection: [['currencies', 'dollar'], ['a heavy weight in a few countries can dominate the fund', 'country-mix']]},
-    'growth-style': {connection: [['The fund can fall hard when investors pay less for future profits.', 'ai']]},
-    value: {connection: [['A value label is a classification, not proof of a bargain.', 'value-trap']]},
-    dividend: {connection: [['The share price can fall by more than the payout, and the payout can be cut.', 'dividend']]},
-    'bond-market': {connection: [['Bond prices generally move opposite to yields.', 'yields'], ['Longer-term funds move more when yields change.', 'duration']]},
-    'commodity-market': {connection: [['futures returns can differ from the spot price', 'futures-roll']]},
-    'currency-market': {connection: [['UUP tracks a defined basket.', 'dollar']]},
-    inflation: {connection: [['None is a guaranteed short-term inflation hedge', 'inflation']]},
+    'large-cap': {description: [['The large-company stock market', 'term:market-cap'], ['through an S&P 500 fund', 'index-basics']], connection: [['Large-cap funds are dominated by their biggest holdings.', 'concentration'], ['A rising index can still leave many companies behind.', 'breadth']]},
+    'mid-cap': {description: [['Medium-sized U.S. companies', 'term:market-cap'], ['a fund tracking the S&P MidCap 400', 'index-basics']], connection: [['Mid-sized companies can be more sensitive to the U.S. economy than the largest firms.', 'size-beta'], ['Read the current holdings before treating the fund as one industry.', 'holdings']]},
+    'small-cap': {description: [['Smaller U.S. companies', 'term:market-cap'], ['a fund tracking the Russell 2000', 'index-basics']], connection: [['Smaller companies can swing more than the large-cap market.', 'size-beta'], ['Many rely more on borrowing, so financing costs can weigh on profits.', 'refinance']]},
+    'total-market': {description: [['large, mid-sized, and smaller U.S. companies', 'term:market-cap']], connection: [['Total-market funds are still weighted toward the largest companies.', 'concentration']]},
+    developed: {description: [['developed markets', 'term:developed']], connection: [['Currency moves', 'dollar'], ['the country mix', 'country-mix']]},
+    emerging: {description: [['emerging-market countries', 'term:emerging']], connection: [['currencies', 'dollar'], ['a heavy weight in a few countries can dominate the fund', 'country-mix']]},
+    'growth-style': {description: [['classify as growth', 'term:style']], connection: [['The fund can fall hard when investors pay less for future profits.', 'ai']]},
+    value: {description: [['classifies as value', 'term:style']], connection: [['A value label is a classification, not proof of a bargain.', 'value-trap']]},
+    dividend: {description: [['dividend income', 'term:dividend']], connection: [['The share price can fall by more than the payout, and the payout can be cut.', 'dividend']]},
+    'bond-market': {description: [['U.S. Treasury funds', 'term:treasury']], connection: [['Bond prices generally move opposite to yields.', 'yields'], ['Longer-term funds move more when yields change.', 'duration']]},
+    'commodity-market': {connection: [['Others hold futures', 'term:futures'], ['futures returns can differ from the spot price', 'futures-roll']]},
+    'currency-market': {connection: [['UUP tracks a defined basket.', 'dollar'], ['risk appetite', 'term:risk-appetite']]},
+    inflation: {connection: [['Inflation-linked bonds', 'term:inflation-linked'], ['None is a guaranteed short-term inflation hedge', 'inflation']]},
     rates: {connection: [['Longer duration means more sensitivity.', 'duration'], ['A rate cut does not guarantee that every bond or property fund rises.', 'yields']]},
-    dollar: {connection: [['Interest-rate differences', 'dollar']]},
-    growth: {description: [['industries connected to business activity', 'rotation']], connection: [['Strong economic data can also lift interest-rate expectations', 'yields']]},
+    dollar: {connection: [['Interest-rate differences', 'dollar'], ['risk appetite', 'term:risk-appetite']]},
+    growth: {description: [['industries connected to business activity', 'rotation']], connection: [['future earnings', 'term:earnings'], ['valuations', 'term:valuation'], ['Strong economic data can also lift interest-rate expectations', 'yields']]},
     ai: {connection: [['An AI theme alone does not establish a company’s future profit.', 'ai']]},
     infrastructure: {connection: [['timing, margins, capacity, and borrowing costs determine how that becomes profit', 'margin']]},
     slowdown: {description: [['often researched during a slowdown', 'rotation']], connection: [['Relatively steady demand does not make a stock safe from losses.', 'defensive']]},
@@ -876,12 +1077,12 @@
 
   // Underlined phrases in the "What you would own" notes (EXPOSURE_TYPES in js/app.js).
   const exposureRefs = {
-    business: [['One company can move very differently from its theme.', 'producer']],
+    business: [['Shares of a single business.', 'stock-basics'], ['One company can move very differently from its theme.', 'producer']],
     stockFund: [['Owning many companies lowers single-company risk', 'correlation'], ['Check the holdings', 'holdings'], ['the index it follows', 'tracking'], ['the expense ratio', 'fees']],
-    bondFund: [['longer-term bonds tend to move more', 'duration']],
-    bills: [['its income changes with short-term interest rates', 'duration']],
-    bullion: [['Its price follows the metal, minus expenses.', 'wrapper']],
-    futures: [['Rolling from one contract to the next', 'futures-roll']],
+    bondFund: [['which are loans to a government or company', 'term:bond'], ['Bond prices usually fall when interest rates rise', 'bond-seesaw'], ['longer-term bonds tend to move more', 'duration'], ['the maturity range', 'term:maturity']],
+    bills: [['short-term U.S. Treasury bills', 'term:treasury'], ['its income changes with short-term interest rates', 'duration'], ['FDIC insured', 'term:fdic']],
+    bullion: [['Its price follows the metal, minus expenses.', 'wrapper'], ['collectibles', 'term:collectibles']],
+    futures: [['futures contracts', 'term:futures'], ['Rolling from one contract to the next', 'futures-roll'], ['the spot price', 'term:spot'], ['K-1 tax form', 'term:k1']],
     currency: [['strengthens against the U.S. dollar', 'dollar']]
   };
 
@@ -891,7 +1092,9 @@
     compareNote: [['This compares structure, not performance.', 'wrapper']],
     compareFutures: [['rather than storing the commodity or currency', 'futures-roll']],
     researchFutures: [['Rolling contracts', 'futures-roll']],
-    indexNote: [['Each line is the share of that index, largest first.', 'concentration']]
+    indexNote: [['Each line is the share of that index, largest first.', 'concentration']],
+    indexSnapshot: [['holdings snapshot', 'term:snapshot']],
+    indexEmpty: [['A fund is usually not a member of the index it tracks.', 'index-basics']]
   };
 
   // A short "why open these" line under research-link groups, as lesson text: plain runs and {text, sim} triggers.
@@ -903,7 +1106,7 @@
   };
   const sentimentWhy = ['Before acting on posts, ', {text: 'cross-check them with a primary source', sim: 'sentiment'}, '.'];
 
-  const api = {sims, themeRefs, exposureRefs, pageRefs, groupWhy, sentimentWhy};
+  const api = {sims, themeRefs, exposureRefs, pageRefs, groupWhy, sentimentWhy, LEVELS, startHere, terms, linkHelp, PREREQ_LABEL};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.MFSims = api;
 })(typeof window !== 'undefined' ? window : globalThis);

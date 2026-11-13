@@ -74,6 +74,8 @@ Ordered by value for effort. Each milestone is one commit.
   - Acceptance: `node tools/test-simulations.mjs` passes; every underline resolves; Escape, Close, or the backdrop closes and returns focus; closing removes `sim=`; existing deep links, search, notes, compare, and index weights still work.
 - [x] **M7.2 More simulations, one underline on every theme.** 18 more SAMPLE walks (37 in all): value traps, size and beta, floating-rate debt, cap rates, REIT FFO, bank margins and the yield curve, the ad cycle, patent cliffs and trial results, policy and capex cycles, price vs NAV, index breadth, sector rotation, diversification, country weights, contango vs backwardation, past price swings, the bid–ask spread, and stop orders. Each underlines existing copy; small cap gained one sentence on financing costs.
   - Acceptance: every theme in `data/catalog.json` has at least one underline; every phrase renders; the SAMPLE tables add up (checked in `tools/test-simulations.mjs`).
+- [x] **M7.3 Beginner layer.** Five Basic foundation walks (what a stock is, how to read a bar, index and market cap, the bond seesaw, compounding); a Start here panel with a three-step how-to; Basic / Next step / Advanced tags; “New to …? ▶” prerequisite links with Back; a How to read a bar link in every bar caption; 29 grey-underlined plain definitions; one-line notes under every research link; plain first steps for the futures walks and terms defined at first use.
+  - Acceptance: every walk has a level; prerequisites resolve; every bar walk links the bar-reading walk; every term and research-link note appears on the page; keyboard, focus return, print, and phone layout still work.
 
 ## Not in scope
 

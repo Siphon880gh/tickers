@@ -67,8 +67,12 @@
   const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
   // One underlined control. Native <button>, so Enter and Space open it.
   const trigger = (sim, text) => '<button type="button" class="sim-trigger" data-sim="' + escapeHTML(sim) + '" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">' + escapeHTML(text) + '</button>';
-  // Lesson text: plain runs and {text, sim} triggers, as in Tool Training's ToolText.
-  const toolText = parts => (Array.isArray(parts) ? parts : [parts]).map(p => typeof p === 'string' ? escapeHTML(p) : trigger(p.sim, p.text)).join('');
+  // A grey-underlined word with a plain-language definition (a toggletip, not a walk).
+  const termTrigger = (term, text) => '<button type="button" class="term-tip" data-term="' + escapeHTML(term) + '" aria-expanded="false" title="Show a plain-language definition">' + escapeHTML(text) + '</button>';
+  // A ref id of 'term:<id>' is a definition; anything else is a simulation id.
+  const refTrigger = (id, text) => String(id).startsWith('term:') ? termTrigger(String(id).slice(5), text) : trigger(id, text);
+  // Lesson text: plain runs and {text, sim} or {text, term} triggers, as in Tool Training's ToolText.
+  const toolText = parts => (Array.isArray(parts) ? parts : [parts]).map(p => typeof p === 'string' ? escapeHTML(p) : p.term ? termTrigger(p.term, p.text) : trigger(p.sim, p.text)).join('');
   // Plain copy plus [phrase, sim] refs: each phrase is found by exact match, in order. A missing phrase stays plain.
   function richText(plain, refs) {
     const text = String(plain);
@@ -77,14 +81,14 @@
     let pos = 0;
     for (const r of found) {
       if (r.at < pos) continue;
-      html += escapeHTML(text.slice(pos, r.at)) + trigger(r.sim, r.phrase);
+      html += escapeHTML(text.slice(pos, r.at)) + refTrigger(r.sim, r.phrase);
       pos = r.at + r.phrase.length;
     }
     return html + escapeHTML(text.slice(pos));
   }
 
   const walk = {MIN_SIM_STEPS, stepCount, startWalk, replayWalk: startWalk, nextStep, prevStep, atStart, atEnd, currentIndex, stepCopy, walkProgress, visibleColumns, candleLayout};
-  const api = {walk, simulationProblems, trigger, toolText, richText};
+  const api = {walk, simulationProblems, trigger, termTrigger, toolText, richText};
   if (typeof document === 'undefined') { if (typeof module !== 'undefined' && module.exports) module.exports = api; return; }
 
   // ---------- The popover (browser only) ----------
@@ -98,6 +102,10 @@
   let state = null;
   let returnTo = null;
   let prevOverflow = '';
+  let terms = {};
+  let backStack = [];
+  let tip = null;
+  let tipFrom = null;
   const byId = id => sims.find(s => s.id === id);
 
   function candleSVG(sim, s) {
@@ -135,7 +143,8 @@
       out += '<g class="sim-readout" data-readout><line x1="' + g.x + '" x2="' + g.x + '" y1="' + (above ? py + 14 : py) + '" y2="' + (above ? g.yHigh - 2 : g.yLow + 2) + '"/><rect x="' + px + '" y="' + py + '" width="' + pw + '" height="14" rx="3"/><text x="' + (px + pw / 2) + '" y="' + (py + 10) + '" text-anchor="middle">' + escapeHTML(b.readout) + '</text></g>';
     }
     out += '</svg>';
-    return '<figure class="sim-figure">' + out + '<figcaption>' + escapeHTML(sim.tape) + '. Green closed above its open, red below. Tags: E earnings, N headline, D ex-dividend. The pill beside a bar is a SAMPLE reading for that bar.</figcaption></figure>';
+    const howTo = sim.id !== 'bar-reading' && byId('bar-reading') ? ' ' + trigger('bar-reading', 'How to read a bar') : '';
+    return '<figure class="sim-figure">' + out + '<figcaption>' + escapeHTML(sim.tape) + '. Green closed above its open, red below. Tags: E earnings, N headline, D ex-dividend. The pill beside a bar is a SAMPLE reading for that bar.' + howTo + '</figcaption></figure>';
   }
   function columnTable(sim, s) {
     const {visible, current: col, row} = visibleColumns(sim, s);
@@ -179,12 +188,13 @@
     layer.className = 'sim-layer';
     layer.hidden = true;
     layer.innerHTML = '<div class="sim-backdrop" data-sim-close aria-hidden="true"></div><div class="sim-panel" id="sim-dialog" role="dialog" aria-modal="true" aria-labelledby="sim-title" aria-describedby="sim-goal">' +
-      '<div class="sim-head"><div><p class="sim-eyebrow" data-sim-tape></p><h2 id="sim-title"></h2></div><button type="button" class="sim-close" data-sim-close aria-label="Close simulation">Close ✕</button></div>' +
-      '<div class="sim-body"><p class="sim-goal" id="sim-goal"><strong>Goal: </strong><span data-sim-goal></span></p><div data-sim-visual></div><div class="sim-step" data-sim-step aria-live="polite"></div>' +
+      '<div class="sim-head"><div><p class="sim-eyebrow"><span class="sim-level" data-sim-level></span> <span data-sim-tape></span></p><h2 id="sim-title"></h2></div><button type="button" class="sim-close" data-sim-close aria-label="Close simulation">Close ✕</button></div>' +
+      '<div class="sim-body"><div class="sim-before" data-sim-before hidden></div><p class="sim-goal" id="sim-goal"><strong>Goal: </strong><span data-sim-goal></span></p><div data-sim-visual></div><div class="sim-step" data-sim-step aria-live="polite"></div>' +
       '<div class="sim-controls"><button type="button" class="sim-button" data-sim-prev>← Previous</button><button type="button" class="sim-button sim-primary" data-sim-next>Next →</button><button type="button" class="sim-button" data-sim-replay>↺ Replay</button></div>' +
       '<p class="sim-fine">SAMPLE figures, simulated, unless a step names a dated value from this page. Educational, not buy or sell advice. Keys: ← → step, Esc closes.</p></div></div>';
     document.body.appendChild(layer);
     layer.addEventListener('click', event => {
+      if (event.target.closest('[data-sim-back]')) { const back = backStack.pop(); if (back) open(back, null, {fromBack: true}); return; }
       if (event.target.closest('[data-sim-close]')) { close(); return; }
       if (event.target.closest('[data-sim-next]')) { state = nextStep(state); update(); return; }
       if (event.target.closest('[data-sim-prev]')) { state = prevStep(state); update(); return; }
@@ -205,16 +215,32 @@
     });
     return layer;
   }
-  function open(id, from) {
+  function open(id, from, opts = {}) {
     const sim = byId(id);
     if (!sim) return false;
-    if (current) setTriggers(current.id, false);
-    else prevOverflow = document.body.style.overflow;
     ensureLayer();
-    returnTo = from || null;
+    // A walk link inside a definition returns focus to the word that opened the definition.
+    if (from && tip && tip.contains(from)) from = tipFrom;
+    hideTip(false);
+    // Opening a walk from inside the popover (a prerequisite or caption link) keeps the original return target
+    // and remembers where to go back to.
+    const inside = Boolean(from && layer.contains(from));
+    if (current) setTriggers(current.id, false);
+    else { prevOverflow = document.body.style.overflow; backStack = []; }
+    if (inside && current && current.id !== sim.id && !opts.fromBack) backStack.push(current.id);
+    else if (!inside && !opts.fromBack) { backStack = []; returnTo = from || null; }
     current = sim;
     state = startWalk(sim);
     layer.querySelector('[data-sim-tape]').textContent = 'Simulation · ' + sim.tape;
+    const level = layer.querySelector('[data-sim-level]');
+    level.textContent = sim.levelName || '';
+    level.className = 'sim-level' + (sim.level ? ' sim-level-' + sim.level : '');
+    level.hidden = !sim.levelName;
+    const before = layer.querySelector('[data-sim-before]');
+    const back = backStack.length ? byId(backStack[backStack.length - 1]) : null;
+    const pre = (sim.before || []).filter(byId).map(pid => '<span class="sim-pre">' + escapeHTML((api.prereqLabel && api.prereqLabel[pid]) || 'Read first:') + ' ' + trigger(pid, byId(pid).title) + '</span>');
+    before.innerHTML = (back ? '<button type="button" class="sim-back" data-sim-back>← Back to ' + escapeHTML(back.title) + '</button>' : '') + pre.join('');
+    before.hidden = !back && !pre.length;
     layer.querySelector('#sim-title').textContent = sim.title;
     layer.querySelector('[data-sim-goal]').textContent = sim.goal;
     layer.querySelector('.sim-panel').dataset.sim = sim.id;
@@ -235,15 +261,75 @@
     state = null;
     layer.hidden = true;
     document.body.style.overflow = prevOverflow;
+    backStack = [];
     const target = returnTo && returnTo.isConnected ? returnTo : document.querySelector('.sim-trigger[data-sim="' + id + '"]');
     returnTo = null;
     if (target) target.focus({preventScroll: false});
     if (api.onChange) api.onChange(null);
   }
-  // The supplement list in the research guide, like Tool Training's "Simulations: why each check matters".
+  // ---------- Term toggletips: a grey-underlined word shows a short definition beside it ----------
+  function ensureTip() {
+    if (tip) return tip;
+    tip = document.createElement('div');
+    tip.className = 'term-pop';
+    tip.id = 'term-pop';
+    tip.hidden = true;
+    tip.innerHTML = '<div role="status" aria-live="polite" data-term-body></div>';
+    document.body.appendChild(tip);
+    return tip;
+  }
+  function placeTip(from) {
+    const r = from.getBoundingClientRect();
+    const width = Math.min(288, document.documentElement.clientWidth - 16);
+    tip.style.width = width + 'px';
+    const left = Math.min(Math.max(8, r.left + window.scrollX), window.scrollX + document.documentElement.clientWidth - width - 8);
+    tip.style.left = left + 'px';
+    tip.style.top = (r.bottom + window.scrollY + 6) + 'px';
+  }
+  function showTip(id, from) {
+    const t = terms[id];
+    if (!t) return false;
+    ensureTip();
+    if (tipFrom && tipFrom !== from) tipFrom.setAttribute('aria-expanded', 'false');
+    tipFrom = from;
+    from.setAttribute('aria-expanded', 'true');
+    from.setAttribute('aria-controls', 'term-pop');
+    tip.hidden = false;
+    tip.dataset.term = id;
+    tip.querySelector('[data-term-body]').innerHTML = '<p><strong>' + escapeHTML(t.term) + ':</strong> ' + escapeHTML(t.def) + '</p>' + (t.sim && byId(t.sim) ? '<p class="term-walk">Walk: ' + trigger(t.sim, byId(t.sim).title) + '</p>' : '') + '<button type="button" class="term-close" data-term-close aria-label="Close definition">Close ✕</button>';
+    placeTip(from);
+    return true;
+  }
+  function hideTip(refocus) {
+    if (!tip || tip.hidden) return;
+    tip.hidden = true;
+    const from = tipFrom;
+    tipFrom = null;
+    if (from) { from.setAttribute('aria-expanded', 'false'); from.removeAttribute('aria-controls'); if (refocus && from.isConnected) from.focus(); }
+  }
+  document.addEventListener('click', event => {
+    const el = event.target.closest('.term-tip[data-term]');
+    if (el) { event.preventDefault(); if (tipFrom === el && !tip.hidden) hideTip(false); else showTip(el.dataset.term, el); return; }
+    if (event.target.closest('[data-term-close]')) { hideTip(true); return; }
+    if (tip && !tip.hidden && !event.target.closest('.term-pop')) hideTip(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && tip && !tip.hidden && !current) { event.preventDefault(); hideTip(true); }
+  });
+  window.addEventListener('resize', () => hideTip(false));
+
+  const LEVEL_ORDER = {basic: 0, next: 1, advanced: 2};
+  const levelTag = s => s.levelName ? '<span class="sim-level sim-level-' + escapeHTML(s.level) + '">' + escapeHTML(s.levelName) + '</span> ' : '';
+  const listItem = s => '<li data-sim-item="' + escapeHTML(s.id) + '">' + levelTag(s) + trigger(s.id, s.title) + ' <span class="sim-count">· ' + stepCount(s) + (s.kind === 'bars' ? ' bars' : ' steps') + '</span><span class="sim-list-goal">' + escapeHTML(s.goal) + '</span></li>';
+  // The supplement list in the research guide, like Tool Training's "Simulations: why each check matters". Basic first.
   function renderList(box) {
     if (!box) return;
-    box.innerHTML = sims.map(s => '<li data-sim-item="' + escapeHTML(s.id) + '">' + trigger(s.id, s.title) + ' <span class="sim-count">· ' + stepCount(s) + (s.kind === 'bars' ? ' bars' : ' steps') + '</span><span class="sim-list-goal">' + escapeHTML(s.goal) + '</span></li>').join('');
+    box.innerHTML = sims.map((s, i) => ({s, i})).sort((a, b) => (LEVEL_ORDER[a.s.level] ?? 3) - (LEVEL_ORDER[b.s.level] ?? 3) || a.i - b.i).map(({s}) => listItem(s)).join('');
+  }
+  // The pinned "Start here" walks, in reading order.
+  function renderStartHere(box, ids) {
+    if (!box) return;
+    box.innerHTML = (ids || []).map(byId).filter(Boolean).map(listItem).join('');
   }
   document.addEventListener('click', event => {
     const el = event.target.closest('.sim-trigger[data-sim]');
@@ -252,8 +338,10 @@
     open(el.dataset.sim, el);
   });
   Object.assign(api, {
-    init(list) { sims = Array.isArray(list) ? list : []; },
-    open, close, renderList,
+    init(list, termMap) { sims = Array.isArray(list) ? list : []; terms = termMap || {}; },
+    open, close, renderList, renderStartHere, showTip, hideTip,
+    tipOpen: () => Boolean(tip && !tip.hidden),
+    prereqLabel: null,
     has: id => Boolean(byId(id)),
     current: () => current ? current.id : null,
     isOpen: () => Boolean(current),

@@ -24,7 +24,9 @@ async function loadJSON(path) {
   const google = query => 'https://www.google.com/search?q=' + encodeURIComponent(query);
   const googleNews = query => 'https://www.google.com/search?tbm=nws&q=' + encodeURIComponent(query);
   const externalAttrs = ' target="_blank" rel="noopener noreferrer"';
-  const link = (title,url,description='',featured=false) => '<a class="resource-link' + (featured?' featured':'') + '" href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + (description?'<small>' + escapeHTML(description) + '</small>':'') + '<span class="sr-only"> (opens in a new tab)</span></a>';
+  const link = (title,url,description='',featured=false,help='') => '<a class="resource-link' + (featured?' featured':'') + '" href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + (description?'<small>' + escapeHTML(description) + '</small>':'') + (help?'<span class="resource-help">' + escapeHTML(help) + '</span>':'') + '<span class="sr-only"> (opens in a new tab)</span></a>';
+  // Research links carry a one-line plain-language note (linkHelp in js/simulations.js) for first-time readers.
+  const helpLink = ([title,url,description='',featured=false]) => link(title,url,description,featured,(window.MFSims && window.MFSims.linkHelp && window.MFSims.linkHelp[title]) || '');
   const fundUsesFutures = item => item.exposure.includes('futures');
   // Why-it-matters simulations (js/simulations.js data, js/sim-popover.js popover). Without them, copy renders plain.
   const SIMS = window.MFSims || null;
@@ -345,9 +347,9 @@ async function loadJSON(path) {
     $('research').setAttribute('aria-label','Index weights');
     if(!indexData) {$('research').innerHTML='<div class="research-placeholder">Index weights did not load.</div>';return;}
     const picks=state.indexPicks.map(symbol=>bySymbol[symbol]).filter(Boolean);
-    const head='<div class="research-head"><p class="eyebrow">Index weights</p><h2>Where the weight sits</h2><p class="note">'+simRich('Each line is the share of that index, largest first.',simRefs('pageRefs','indexNote'))+' The date is the holdings snapshot.</p></div>';
+    const head='<div class="research-head"><p class="eyebrow">Index weights</p><h2>Where the weight sits</h2><p class="note">'+simRich('Each line is the share of that index, largest first.',simRefs('pageRefs','indexNote'))+' '+simRich('The date is the holdings snapshot.',simRefs('pageRefs','indexSnapshot'))+'</p></div>';
     const body=!picks.length
-      ? '<div class="research-placeholder">Check one or more tickers. A fund is usually not a member of the index it tracks.</div>'
+      ? '<div class="research-placeholder">Check one or more tickers. '+simRich('A fund is usually not a member of the index it tracks.',simRefs('pageRefs','indexEmpty'))+'</div>'
       : '<div class="research-groups">'+picks.map(item=>{
           const rows=memberships(item.symbol);
           const list=rows.length
@@ -445,7 +447,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(args=>link(...args)).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(helpLink).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -572,8 +574,10 @@ async function init() {
   $('catalog-date').textContent = directoryDate(catalogUpdated);
   renderGlossary();
   if (POP && SIMS) {
-    POP.init(SIMS.sims);
+    POP.init(SIMS.sims, SIMS.terms);
+    POP.prereqLabel = SIMS.PREREQ_LABEL;
     POP.renderList($('sim-list'));
+    POP.renderStartHere($('start-list'), SIMS.startHere);
     POP.onChange = () => { pushNext = false; syncURL(); };
   } else { $('sim-guide')?.setAttribute('hidden', ''); }
   $('search-form').addEventListener('submit', event => event.preventDefault());
@@ -626,7 +630,7 @@ async function init() {
   document.addEventListener('keydown', event => {
     const target = event.target;
     const typing = target && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
-    if (POP && POP.isOpen()) return;
+    if (POP && (POP.isOpen() || (event.key === 'Escape' && POP.tipOpen()))) return;
     if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey && !event.altKey) { event.preventDefault(); $('search').focus(); $('search').select(); return; }
     if (event.key === 'Escape' && target === $('search') && $('search').value) { event.preventDefault(); $('search').value = ''; state.query = ''; render(); $('status').textContent = 'Search cleared.'; }
   });
@@ -670,7 +674,8 @@ async function init() {
     if (event.target.closest('#reset-search')) { state.query = ''; state.kind = 'all'; state.notesOnly = false; $('search').value = ''; $('kind-filter').value = 'all'; $('notes-only').checked = false; render(); $('search').focus(); }
   });
   // In-page anchors would replace the deep-link hash, so scroll to them instead.
-  $('guide-link').addEventListener('click', event => { event.preventDefault(); $('research-guide').open = true; $('research-guide').scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'}); $('research-guide').querySelector('summary').focus({preventScroll: true}); });
+  // "New to researching a ticker?" opens the guide at its Start here panel.
+  $('guide-link').addEventListener('click', event => { event.preventDefault(); $('research-guide').open = true; const start = $('start-here') || $('research-guide'); start.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'}); start.focus({preventScroll: true}); });
   document.querySelector('.skip')?.addEventListener('click', event => { event.preventDefault(); $('main-content').focus(); });
   window.addEventListener('popstate', onHistoryMove);
   window.addEventListener('hashchange', onHistoryMove);
