@@ -77,6 +77,16 @@ Ordered by value for effort. Each milestone is one commit.
 - [x] **M7.3 Beginner layer.** Five Basic foundation walks (what a stock is, how to read a bar, index and market cap, the bond seesaw, compounding); a Start here panel with a three-step how-to; Basic / Next step / Advanced tags; “New to …? ▶” prerequisite links with Back; a How to read a bar link in every bar caption; 29 grey-underlined plain definitions; one-line notes under every research link; plain first steps for the futures walks and terms defined at first use.
   - Acceptance: every walk has a level; prerequisites resolve; every bar walk links the bar-reading walk; every term and research-link note appears on the page; keyboard, focus return, print, and phone layout still work.
 
+### Epic 8 · A full app for beginners
+
+- [x] **M8.1 First visit.** A dismissible welcome card; the research guide opens on the first visit only; About, FAQ, and disclaimer page (`about.html`).
+- [x] **M8.2 Coverage.** Building blocks (VTI, VXUS, BND, BNDX, SGOV, AOR) and Corporate & muni bonds (LQD, HYG, MUB, BND, BNDX), checked live on issuer pages; everyday search words; a "Not covered here, and why" note for crypto, leveraged and inverse funds, options, single bonds and CDs, and account types.
+- [x] **M8.3 Freshness.** Every ticker and theme has a `reviewed` date shown on its research panel; a banner after 90 days for entries or the index-weights snapshot; `check-catalog` warns about both. Index weights say "Not in this snapshot" for indexes with no directory company instead of implying zero.
+- [x] **M8.4 Resilience.** Friendly failed-load state with Try again; storage-blocked warning; backup nudge after 3 new notes; offline copy and install through a hand-written manifest and network-first service worker.
+- [x] **M8.5 Phone and polish.** Back to the ticker list on research; the Add / edit with AI helper moves to the footer; per-view `document.title`; Open Graph and Twitter tags; icons.
+- [x] **M8.6 Performance and code health.** Stable `APP_VERSION` stamp; `js/simulations.js` loads when idle or for a `&sim=` link; pure helpers in `js/core.js` tested by `tools/test-app.mjs`; accessibility notes in `docs/accessibility.md`.
+  - Acceptance: all three test scripts and `check-catalog` pass; headless Chrome at 1400 and 390 px shows no console errors; an offline reload renders the directory and the walks.
+
 ## Not in scope
 
 Live prices, live charts (the simulations use labeled SAMPLE tapes only), screening by numbers, or any buy/sell signal. New tickers or themes go through the `add-theme` skill with live sources, not this roadmap.
