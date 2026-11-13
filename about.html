@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="What Market Forces is, where its data comes from, how current it is, and why it is educational, not buy or sell advice.">
+  <meta name="theme-color" content="#102438">
+  <title>About, FAQ, and disclaimer · Market Forces</title>
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="About Market Forces">
+  <meta property="og:description" content="A beginner’s ticker-research directory. Educational, not buy or sell advice.">
+  <meta property="og:image" content="icons/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <style>
+    :root{--navy:#102438;--ink:#152b40;--muted:#56697a;--border:#d9e2e9;--paper:#f2f5f8;--accent:#116f76;--focus:#126bb1}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+    a{color:#0d5f66}
+    a:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+    header{background:var(--navy);color:#fff}
+    .bar{max-width:760px;margin:auto;padding:1rem 1.25rem;display:flex;justify-content:space-between;gap:1rem;align-items:center}
+    .bar a{color:#fff;font-weight:650}
+    main{max-width:760px;margin:auto;padding:1.5rem 1.25rem 2.5rem}
+    h1{font-size:1.8rem;line-height:1.2;margin:.4rem 0 1rem}
+    h2{font-size:1.2rem;margin:2rem 0 .5rem}
+    .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem}
+    .disclaimer{border-left:5px solid #b07a12;background:#fff8ea}
+    details{background:#fff;border:1px solid var(--border);border-radius:8px;padding:.7rem 1rem;margin:.5rem 0}
+    summary{cursor:pointer;font-weight:650}
+    details p{margin:.5rem 0 .2rem}
+    footer{max-width:760px;margin:auto;padding:0 1.25rem 2rem;color:var(--muted);font-size:.875rem}
+  </style>
+</head>
+<body>
+  <header><div class="bar"><a href="./">← Market Forces</a><span>About</span></div></header>
+  <main>
+    <h1>About, FAQ, and disclaimer</h1>
+    <p class="card">Market Forces is a starting point for researching U.S.-listed stocks and funds. It groups common tickers by the economic forces behind them (gold, interest rates, technology, the broad market) and gives each one plain-language research links. It has no live prices, no accounts, and no trading.</p>
+
+    <h2 id="disclaimer">Disclaimer</h2>
+    <div class="card disclaimer">
+      <p><strong>Educational, not buy or sell advice.</strong> Nothing here recommends buying, selling, or holding any security. The tickers are common examples, not picks, and the list is not complete. Investing involves risk, including the loss of money you put in. Before you invest, read the fund’s or company’s own documents, and consider talking with a licensed financial professional about your situation.</p>
+      <p>Market Forces is not affiliated with, endorsed by, or paid by any fund issuer, company, or website it links to. Names and tickers belong to their owners.</p>
+    </div>
+
+    <h2>Where the information comes from</h2>
+    <ul>
+      <li><strong>The directory</strong> (names, types, issuers, and official links) is written by hand in <code>data/catalog.json</code>. Each ticker’s research panel shows the date its entry was last checked against the issuer’s or company’s own page.</li>
+      <li><strong>Index weights</strong> are a dated snapshot from fund holdings files (for example, SPY for the S&amp;P 500). They are estimates, not the official index files, which are licensed.</li>
+      <li><strong>Research links</strong> open other websites: issuers, the SEC, Stock Analysis, Finviz, news searches, and discussion sites. Their numbers and opinions are theirs, not this page’s.</li>
+      <li><strong>Simulations (walks)</strong> use SAMPLE numbers made up to show an idea, such as why bond prices fall when yields rise. They are not real prices or forecasts unless a step names a dated value from this page.</li>
+    </ul>
+
+    <h2>How current it is</h2>
+    <p>Entries older than 90 days are flagged on the page with a “may be out of date” note, and so is an index-weights snapshot older than 90 days. Fees, holdings, and even fund names change, so always confirm on the issuer’s page.</p>
+
+    <h2>Your notes and privacy</h2>
+    <p>Notes and saved tickers are stored only in this browser (local storage). Nothing is sent to a server, and there is no sign-in or tracking on this page. Clearing site data, or closing a private window, deletes them, so use <strong>Download backup</strong> in the research guide to keep a copy. Websites you open from the research links have their own privacy policies.</p>
+
+    <h2>Frequently asked questions</h2>
+    <details><summary>Which fund or stock should I buy?</summary><p>This page will not tell you, on purpose. It helps you understand what a ticker is and where to read about it. For a plain introduction to building an investment plan, start with <a href="https://www.investor.gov/introduction-investing" target="_blank" rel="noopener noreferrer">Investor.gov</a>, the SEC’s site for individual investors.</p></details>
+    <details><summary>What are “Building blocks”?</summary><p>Broad funds that cover a whole market: U.S. stocks, international stocks, U.S. and international bonds, Treasury bills, and an all-in-one stock-and-bond fund. They are listed so you can see what broad funds hold, not as a recommended portfolio.</p></details>
+    <details><summary>Why aren’t bitcoin, leveraged funds, or options here?</summary><p>They are left out on purpose for beginners. Crypto has no earnings or interest and can swing sharply; leveraged and inverse funds reset daily and can drift far from their target over time; options can expire worthless. Searching for them on the main page explains why and links to Investor.gov.</p></details>
+    <details><summary>Are the simulation numbers real?</summary><p>No. Each walk is labelled SAMPLE. The numbers are chosen to make one idea easy to see.</p></details>
+    <details><summary>Why is there no price or chart on the page?</summary><p>Live prices need a paid data feed and can pull attention to short-term moves. The research links open free charts on other sites.</p></details>
+    <details><summary>Can I use it offline or add it to my home screen?</summary><p>Yes. After one visit, the page, the directory, and the walks are kept for offline use. Your browser’s “Add to Home Screen” or “Install” option adds it like an app. Research links still need the internet.</p></details>
+    <details><summary>I found a wrong ticker, name, or link.</summary><p>Thank you. The directory is checked by hand; the date on each research panel says when. Report it on the project’s <a href="https://github.com/Siphon880gh" target="_blank" rel="noopener noreferrer">GitHub</a>.</p></details>
+  </main>
+  <footer><p>Market Forces, by Weng Fei Fung. Educational, not buy or sell advice. <a href="./">Back to the directory</a></p></footer>
+</body>
+</html>
