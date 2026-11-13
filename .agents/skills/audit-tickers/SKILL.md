@@ -27,6 +27,7 @@ For every instrument, confirm with a current source (issuer page, exchange listi
 - `exposure` still describes what it holds. A futures fund must include `futures` in `exposure`. A bullion trust stays `Bullion`. A currency trust stays `Currency trust`.
 - `issuer` is the current sponsor, for funds.
 - `official`, when set, still opens the issuer or investor-relations page. A dead or unrelated URL should be replaced or cleared.
+- `reviewed` on each ticker and theme you checked is set to today's date (`YYYY-MM-DD`). `node tools/check-catalog.mjs` warns about entries older than 90 days, and the page shows a may-be-out-of-date banner past that age.
 
 Also read each theme's `description`, `connection`, and macro `links`. Fix a link that no longer points at the stated source.
 

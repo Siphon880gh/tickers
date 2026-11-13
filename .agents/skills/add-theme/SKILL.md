@@ -17,15 +17,15 @@ If they already named it, restate that topic in one line and continue.
 
 The catalog is `data/catalog.json`. `index.html` is the page. `js/app.js` builds links and renders the directory. There is no server.
 
-- A stock object has `symbol`, `name`, `kind` (`stock`), `exposure`, `description`, and optional `official`
+- A stock object has `symbol`, `name`, `kind` (`stock`), `exposure`, `description`, `reviewed` (the `YYYY-MM-DD` date you checked it against a live official source), and optional `official`
 - A fund object has the same fields, `kind` (`fund`), and `issuer`
-- Each theme is `{id, name, mark, group, symbols, tags, description, connection, links}`
+- Each theme is `{id, name, mark, group, symbols, tags, description, connection, links, reviewed}`. Put everyday words a beginner would type in `tags` (for example `index fund`, `safe`, `retirement`)
 - `group` is `Assets`, `Industries`, `Markets`, or `Economic forces`
-- Market themes also set `category` to `Size`, `Region`, `Style`, or `Asset class`
+- Market themes also set `category` to `Core`, `Size`, `Region`, `Style`, or `Asset class` (`Core` is the Building blocks theme)
 - `links` is `[[title, url], ...]` for the theme's macro sources, not per-ticker links
 - `researchLinks(item)` in `js/app.js` builds every ticker's research links from `kind`, `exposure`, `issuer`, and `official`
 
-A ticker's research links are not a hand-written list. Set the fields `researchLinks` already reads. Put `futures` in `exposure` when the fund holds commodity or currency futures. Use `Bullion` or `Currency trust` when holdings must come from the issuer page instead of Stock Analysis.
+A ticker's research links are not a hand-written list. Set the fields `researchLinks` already reads. Put `futures` in `exposure` when the fund holds commodity or currency futures. Use `Bullion` or `Currency trust` when holdings must come from the issuer page instead of Stock Analysis. Put `allocation` in `exposure` for an all-in-one stock-and-bond fund. Leave fees, yields, and other figures out of the catalog; the issuer page has the current ones.
 
 ## Choose the tickers
 

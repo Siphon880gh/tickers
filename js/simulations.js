@@ -997,6 +997,13 @@
     volume: {term: 'Trading volume', def: 'How many shares changed hands in a period. Low volume often means wider bid–ask spreads.', sim: 'spread'},
     'cash-flow': {term: 'Cash flow', def: 'Cash actually coming in and going out of a business. Profit can include non-cash items; cash flow shows whether the business pays its bills.'},
     filings: {term: 'Filings', def: 'Official reports companies must send to the SEC, the U.S. market regulator, such as the annual 10-K and quarterly 10-Q. They are primary sources.'},
+    allocation: {term: 'Asset allocation', def: 'How your money is split between stocks, bonds, and cash. An all-in-one (allocation) fund holds a set mix for you.', sim: 'correlation'},
+    rebalance: {term: 'Rebalancing', def: 'Selling some of what grew and buying what lagged to get back to your chosen mix, for example 60% stocks and 40% bonds.'},
+    default: {term: 'Default', def: 'When a borrower misses interest or loan payments. Bond funds that lend to weaker companies pay more to make up for this risk.'},
+    'high-yield': {term: 'High-yield bond', def: 'A bond from a company with a credit rating below investment grade, also called a junk bond. It pays more interest because default is more likely.'},
+    'investment-grade': {term: 'Investment grade', def: 'A credit rating of BBB− or higher from S&P or Fitch, or Baa3 or higher from Moody’s: the agencies judge default less likely.'},
+    muni: {term: 'Municipal bond', def: 'A bond from a U.S. state, city, or public agency. Its interest is usually free of federal income tax, and sometimes state tax.'},
+    hedged: {term: 'Currency-hedged', def: 'A fund that uses contracts to cancel most of the effect of foreign-currency moves, so results follow the bonds or stocks more than the exchange rate.', sim: 'dollar'},
     'position-size': {term: 'Position size', def: 'How much money you put into one investment. It decides what a mistake costs you.', sim: 'downside'}
   };
 
@@ -1053,6 +1060,7 @@
     staples: {connection: [['Steadier demand does not make the shares immune to costs, competition, or a high starting price.', 'defensive']]},
     utilities: {connection: [['Utility shares can also move with bond yields.', 'defensive']]},
     'real-estate': {description: [['real-estate investment trusts', 'ffo']], connection: [['borrowing costs', 'cap-rate']]},
+    'building-blocks': {description: [['international stocks', 'country-mix'], ['currency-hedged', 'term:hedged'], ['Treasury bills', 'term:treasury']], connection: [['Each block covers a whole market instead of one company.', 'correlation'], ['The mix of stocks and bonds', 'term:allocation'], ['an all-in-one fund keeps its mix steady by rebalancing', 'term:rebalance']]},
     'large-cap': {description: [['The large-company stock market', 'term:market-cap'], ['through an S&P 500 fund', 'index-basics']], connection: [['Large-cap funds are dominated by their biggest holdings.', 'concentration'], ['A rising index can still leave many companies behind.', 'breadth']]},
     'mid-cap': {description: [['Medium-sized U.S. companies', 'term:market-cap'], ['a fund tracking the S&P MidCap 400', 'index-basics']], connection: [['Mid-sized companies can be more sensitive to the U.S. economy than the largest firms.', 'size-beta'], ['Read the current holdings before treating the fund as one industry.', 'holdings']]},
     'small-cap': {description: [['Smaller U.S. companies', 'term:market-cap'], ['a fund tracking the Russell 2000', 'index-basics']], connection: [['Smaller companies can swing more than the large-cap market.', 'size-beta'], ['Many rely more on borrowing, so financing costs can weigh on profits.', 'refinance']]},
@@ -1063,6 +1071,7 @@
     value: {description: [['classifies as value', 'term:style']], connection: [['A value label is a classification, not proof of a bargain.', 'value-trap']]},
     dividend: {description: [['dividend income', 'term:dividend']], connection: [['The share price can fall by more than the payout, and the payout can be cut.', 'dividend']]},
     'bond-market': {description: [['U.S. Treasury funds', 'term:treasury']], connection: [['Bond prices generally move opposite to yields.', 'yields'], ['Longer-term funds move more when yields change.', 'duration']]},
+    'credit-bonds': {description: [['Bond funds that lend to companies, states, and cities', 'term:bond'], ['investment-grade', 'term:investment-grade']], connection: [['the borrower might not pay back', 'term:default'], ['High-yield funds', 'term:high-yield'], ['can fall with stocks in a recession', 'correlation'], ['Muni interest', 'term:muni']]},
     'commodity-market': {connection: [['Others hold futures', 'term:futures'], ['futures returns can differ from the spot price', 'futures-roll']]},
     'currency-market': {connection: [['UUP tracks a defined basket.', 'dollar'], ['risk appetite', 'term:risk-appetite']]},
     inflation: {connection: [['Inflation-linked bonds', 'term:inflation-linked'], ['None is a guaranteed short-term inflation hedge', 'inflation']]},
@@ -1080,6 +1089,7 @@
     business: [['Shares of a single business.', 'stock-basics'], ['One company can move very differently from its theme.', 'producer']],
     stockFund: [['Owning many companies lowers single-company risk', 'correlation'], ['Check the holdings', 'holdings'], ['the index it follows', 'tracking'], ['the expense ratio', 'fees']],
     bondFund: [['which are loans to a government or company', 'term:bond'], ['Bond prices usually fall when interest rates rise', 'bond-seesaw'], ['longer-term bonds tend to move more', 'duration'], ['the maturity range', 'term:maturity']],
+    allocation: [['a set mix of stock funds and bond funds', 'term:allocation'], ['It rebalances back to that mix', 'term:rebalance'], ['More stocks in the mix means bigger swings.', 'correlation']],
     bills: [['short-term U.S. Treasury bills', 'term:treasury'], ['its income changes with short-term interest rates', 'duration'], ['FDIC insured', 'term:fdic']],
     bullion: [['Its price follows the metal, minus expenses.', 'wrapper'], ['collectibles', 'term:collectibles']],
     futures: [['futures contracts', 'term:futures'], ['Rolling from one contract to the next', 'futures-roll'], ['the spot price', 'term:spot'], ['K-1 tax form', 'term:k1']],

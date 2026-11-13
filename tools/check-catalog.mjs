@@ -16,7 +16,18 @@ function read(path) {
 }
 
 const GROUPS = ['Assets', 'Industries', 'Markets', 'Economic forces'];
-const CATEGORIES = ['Size', 'Region', 'Style', 'Asset class'];
+const CATEGORIES = ['Core', 'Size', 'Region', 'Style', 'Asset class'];
+// Entries and snapshots older than this many days get a warning here and a "may be out of date" banner on the page.
+const STALE_DAYS = 90;
+const isDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && !Number.isNaN(Date.parse(value + 'T00:00:00Z'));
+const ageDays = value => Math.floor((Date.now() - Date.parse(value + 'T00:00:00Z')) / 86400000);
+const staleList = [];
+function checkReviewed(where, value) {
+  if (value === undefined) { warn(where + ' has no reviewed date (YYYY-MM-DD).'); return; }
+  if (!isDate(value)) { fail(where + ' reviewed should be YYYY-MM-DD, not ' + value + '.'); return; }
+  if (ageDays(value) < -1) fail(where + ' reviewed date ' + value + ' is in the future.');
+  else if (ageDays(value) > STALE_DAYS) staleList.push(where + ' (' + value + ')');
+}
 const isText = value => typeof value === 'string' && value.trim().length > 0;
 const isHttps = value => { try { return new URL(value).protocol === 'https:'; } catch { return false; } };
 
@@ -35,6 +46,7 @@ if (catalog) {
     if (item?.kind && !['stock', 'fund'].includes(item.kind)) fail(where + ' kind should be stock or fund, not ' + item.kind + '.');
     if (item?.kind === 'fund' && !isText(item.issuer)) fail(where + ' is a fund without an issuer.');
     if (item?.official && !isHttps(item.official)) fail(where + ' official link is not https: ' + item.official);
+    checkReviewed(where, item?.reviewed);
   });
   const themeIds = new Set();
   const listed = new Set();
@@ -42,6 +54,7 @@ if (catalog) {
     const where = 'theme ' + (theme?.id || '#' + i);
     for (const field of ['id', 'name', 'mark', 'group', 'description', 'connection']) if (!isText(theme?.[field])) fail(where + ' is missing ' + field + '.');
     if (typeof theme?.tags !== 'string') fail(where + ' tags should be a string.');
+    checkReviewed(where, theme?.reviewed);
     if (themeIds.has(theme?.id)) fail(where + ' id is used more than once.');
     themeIds.add(theme?.id);
     if (theme?.id === 'all' || theme?.id === 'saved') fail(where + ' id is reserved by the page.');
@@ -64,11 +77,14 @@ if (catalog) {
   const seen = new Set();
   order.forEach((group, i) => { if (i && group !== order[i - 1] && seen.has(group)) fail('Themes in ' + group + ' are not next to each other; the sidebar would show that heading twice.'); seen.add(group); });
   for (const symbol of symbols) if (!listed.has(symbol)) warn(symbol + ' is in instruments but no theme lists it.');
+  if (staleList.length) warn(staleList.length + ' entries were last reviewed more than ' + STALE_DAYS + ' days ago; re-check them with the audit-tickers skill: ' + staleList.slice(0, 12).join(', ') + (staleList.length > 12 ? ', …' : '') + '.');
 
   const weights = read('data/index-weights.json');
   if (weights) {
     for (const index of weights.indices || []) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(index.snapshotDate || '')) fail('index ' + index.id + ' snapshotDate should be YYYY-MM-DD.');
+      else if (ageDays(index.snapshotDate) > STALE_DAYS) warn('index ' + index.id + ' snapshot is from ' + index.snapshotDate + ', more than ' + STALE_DAYS + ' days ago; refresh data/index-weights.json.');
+      if (!Object.keys(index.weights || {}).length) warn('index ' + index.id + ' has no weights for directory tickers; the page says so instead of showing zeros.');
       if (!isHttps(index.sourceUrl)) fail('index ' + index.id + ' sourceUrl is not https.');
       for (const symbol of Object.keys(index.weights || {})) if (!symbols.has(symbol)) warn('index ' + index.id + ' has a weight for ' + symbol + ', which is not in the catalog.');
     }

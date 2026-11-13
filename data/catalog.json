@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "instruments": [
     {
       "symbol": "GLD",
@@ -8,7 +8,8 @@
       "exposure": "Bullion",
       "description": "A trust holding physical gold; exposure to gold prices after expenses.",
       "issuer": "State Street",
-      "official": "https://www.spdrgoldshares.com/usa/gld/"
+      "official": "https://www.spdrgoldshares.com/usa/gld/",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "IAU",
@@ -17,7 +18,8 @@
       "exposure": "Bullion",
       "description": "A physically backed gold trust. Compare expenses and trading costs with other gold funds.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "GDX",
@@ -26,7 +28,8 @@
       "exposure": "Mining stocks",
       "description": "A basket of gold-mining companies, with business risks as well as gold exposure.",
       "issuer": "VanEck",
-      "official": "https://www.vaneck.com/us/en/investments/gold-miners-etf-gdx/"
+      "official": "https://www.vaneck.com/us/en/investments/gold-miners-etf-gdx/",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "NEM",
@@ -34,7 +37,8 @@
       "kind": "stock",
       "exposure": "Gold miner",
       "description": "A gold-producing business. Costs, output, and execution affect its shares.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "B",
@@ -42,7 +46,8 @@
       "kind": "stock",
       "exposure": "Gold & copper miner",
       "description": "A gold and copper producer. Its former NYSE ticker was GOLD.",
-      "official": "https://www.barrick.com/English/investors/default.aspx"
+      "official": "https://www.barrick.com/English/investors/default.aspx",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SLV",
@@ -51,7 +56,8 @@
       "exposure": "Bullion",
       "description": "A trust holding physical silver, less expenses.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SIVR",
@@ -60,7 +66,8 @@
       "exposure": "Bullion",
       "description": "Physically backed silver exposure; compare fees and liquidity.",
       "issuer": "Aberdeen",
-      "official": "https://www.aberdeeninvestments.com/en-us/investor/funds/view-all-funds/abrdn-physical-silver-shares-etf-us0032641088"
+      "official": "https://www.aberdeeninvestments.com/en-us/investor/funds/view-all-funds/abrdn-physical-silver-shares-etf-us0032641088",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SIL",
@@ -69,7 +76,8 @@
       "exposure": "Mining stocks",
       "description": "A basket of silver-mining businesses rather than physical silver.",
       "issuer": "Global X",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "PAAS",
@@ -77,7 +85,8 @@
       "kind": "stock",
       "exposure": "Silver & gold miner",
       "description": "A precious-metals producer exposed to silver, gold, operating costs, and local conditions.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "USO",
@@ -86,7 +95,8 @@
       "exposure": "Commodity futures",
       "description": "An oil-futures commodity pool; its returns can differ materially from spot crude oil.",
       "issuer": "USCF",
-      "official": "https://www.uscfinvestments.com/uso"
+      "official": "https://www.uscfinvestments.com/uso",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "BNO",
@@ -95,7 +105,8 @@
       "exposure": "Commodity futures",
       "description": "Brent crude oil futures exposure. Contract rolls and fund costs affect returns.",
       "issuer": "USCF",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLE",
@@ -104,7 +115,8 @@
       "exposure": "Energy stocks",
       "description": "U.S. large-cap energy businesses. Its holdings can be concentrated in major producers.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XOM",
@@ -112,7 +124,8 @@
       "kind": "stock",
       "exposure": "Integrated energy",
       "description": "Oil and gas production, refining, and other energy operations.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "CVX",
@@ -120,7 +133,8 @@
       "kind": "stock",
       "exposure": "Integrated energy",
       "description": "Oil and gas production and refining; profits depend on more than crude prices.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "UNG",
@@ -129,7 +143,8 @@
       "exposure": "Commodity futures",
       "description": "Natural-gas futures exposure; weather and contract rolls can create large price swings.",
       "issuer": "USCF",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "FCG",
@@ -138,7 +153,8 @@
       "exposure": "Energy stocks",
       "description": "A basket of natural-gas-related companies; it does not hold physical gas.",
       "issuer": "First Trust",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "EQT",
@@ -146,7 +162,8 @@
       "kind": "stock",
       "exposure": "Natural-gas producer",
       "description": "A U.S. natural-gas producer exposed to gas prices, output, and production costs.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "LNG",
@@ -154,7 +171,8 @@
       "kind": "stock",
       "exposure": "LNG export business",
       "description": "Liquefied natural gas infrastructure and exports. Contract terms shape its exposure.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "NTR",
@@ -162,7 +180,8 @@
       "kind": "stock",
       "exposure": "Fertilizer producer",
       "description": "Potash, nitrogen, and agricultural retail. Crop economics and input prices affect demand.",
-      "official": "https://www.nutrien.com/investors"
+      "official": "https://www.nutrien.com/investors",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "MOS",
@@ -170,7 +189,8 @@
       "kind": "stock",
       "exposure": "Fertilizer producer",
       "description": "A producer of phosphate and potash fertilizers.",
-      "official": "https://investors.mosaicco.com/home/"
+      "official": "https://investors.mosaicco.com/home/",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "CF",
@@ -178,7 +198,8 @@
       "kind": "stock",
       "exposure": "Nitrogen fertilizer",
       "description": "A nitrogen and ammonia producer. Natural gas is an important production input.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "DOW",
@@ -186,7 +207,8 @@
       "kind": "stock",
       "exposure": "Polyethylene & plastics",
       "description": "A materials company that produces polyethylene and other plastics for packaging and industrial uses. Resin prices and feedstock costs affect results.",
-      "official": "https://investors.dow.com/"
+      "official": "https://investors.dow.com/",
+      "reviewed": "2026-11-12"
     },
     {
       "symbol": "LYB",
@@ -194,7 +216,8 @@
       "kind": "stock",
       "exposure": "Polyethylene & polypropylene",
       "description": "A large producer of polyethylene and polypropylene, with related chemicals and polymer technologies.",
-      "official": "https://investors.lyondellbasell.com/"
+      "official": "https://investors.lyondellbasell.com/",
+      "reviewed": "2026-11-12"
     },
     {
       "symbol": "WLK",
@@ -202,7 +225,8 @@
       "kind": "stock",
       "exposure": "Polyethylene & PVC",
       "description": "Produces polyethylene and PVC resins, and also sells PVC building products used in construction.",
-      "official": "https://www.westlake.com/investor-relations"
+      "official": "https://www.westlake.com/investor-relations",
+      "reviewed": "2026-11-12"
     },
     {
       "symbol": "CPER",
@@ -211,7 +235,8 @@
       "exposure": "Commodity futures",
       "description": "Copper futures exposure, with contract-roll and fund-cost effects.",
       "issuer": "USCF",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "COPX",
@@ -220,7 +245,8 @@
       "exposure": "Mining stocks",
       "description": "A basket of copper miners. Shares also reflect operating and country risks.",
       "issuer": "Global X",
-      "official": "https://www.globalxetfs.com/funds/COPX"
+      "official": "https://www.globalxetfs.com/funds/COPX",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "FCX",
@@ -228,7 +254,8 @@
       "kind": "stock",
       "exposure": "Copper & gold miner",
       "description": "A copper-focused miner with additional gold exposure.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SCCO",
@@ -236,7 +263,8 @@
       "kind": "stock",
       "exposure": "Copper miner",
       "description": "A copper producer with significant Latin American operations.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "URA",
@@ -245,7 +273,8 @@
       "exposure": "Nuclear industry stocks",
       "description": "Uranium and nuclear-component companies; a basket of businesses, not a spot uranium fund.",
       "issuer": "Global X",
-      "official": "https://www.globalxetfs.com/funds/ura"
+      "official": "https://www.globalxetfs.com/funds/ura",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "URNM",
@@ -254,7 +283,8 @@
       "exposure": "Uranium industry",
       "description": "Uranium-related equities and physical-uranium vehicles. Check current holdings.",
       "issuer": "Sprott",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "CCJ",
@@ -262,7 +292,8 @@
       "kind": "stock",
       "exposure": "Uranium & nuclear fuel",
       "description": "A uranium and nuclear-fuel business affected by contracting, supply, and production.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "DBA",
@@ -271,7 +302,8 @@
       "exposure": "Commodity futures",
       "description": "A basket of agricultural futures; its results differ from owning food businesses.",
       "issuer": "Invesco",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "CORN",
@@ -280,7 +312,8 @@
       "exposure": "Commodity futures",
       "description": "Corn futures across contract maturities, with roll and expense effects.",
       "issuer": "Teucrium",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "WEAT",
@@ -289,7 +322,8 @@
       "exposure": "Commodity futures",
       "description": "Wheat futures exposure. Weather, supply, and trade policy can matter.",
       "issuer": "Teucrium",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "DE",
@@ -297,7 +331,8 @@
       "kind": "stock",
       "exposure": "Farm equipment",
       "description": "Agricultural and construction equipment. Farm income affects buying decisions.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "TIP",
@@ -306,7 +341,68 @@
       "exposure": "Inflation-linked bonds",
       "description": "U.S. inflation-protected Treasury bonds. Market prices also react to real interest rates.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
+    },
+    {
+      "symbol": "BND",
+      "name": "Vanguard Total Bond Market ETF",
+      "kind": "fund",
+      "exposure": "Broad bond market",
+      "description": "U.S. investment-grade bonds: Treasuries, mortgage-backed bonds, and corporate bonds in one fund.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/bnd",
+      "reviewed": "2026-11-13"
+    },
+    {
+      "symbol": "BNDX",
+      "name": "Vanguard Total International Bond ETF",
+      "kind": "fund",
+      "exposure": "International bonds",
+      "description": "Investment-grade government and corporate bonds from outside the United States, hedged back to U.S. dollars.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/bndx",
+      "reviewed": "2026-11-13"
+    },
+    {
+      "symbol": "AOR",
+      "name": "iShares Core 60/40 Balanced Allocation ETF",
+      "kind": "fund",
+      "exposure": "Stock & bond allocation",
+      "description": "An all-in-one fund of iShares stock and bond funds, aiming for about 60% stocks and 40% bonds.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239756/ishares-core-60-40-balanced-allocation-etf",
+      "reviewed": "2026-11-13"
+    },
+    {
+      "symbol": "LQD",
+      "name": "iShares iBoxx $ Investment Grade Corporate Bond ETF",
+      "kind": "fund",
+      "exposure": "Corporate bonds",
+      "description": "U.S. dollar bonds issued by companies with investment-grade credit ratings.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239566/ishares-iboxx-investment-grade-corporate-bond-etf",
+      "reviewed": "2026-11-13"
+    },
+    {
+      "symbol": "HYG",
+      "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+      "kind": "fund",
+      "exposure": "High-yield bonds",
+      "description": "U.S. dollar bonds from companies rated below investment grade; more income and more default risk.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239565/ishares-iboxx-high-yield-corporate-bond-etf",
+      "reviewed": "2026-11-13"
+    },
+    {
+      "symbol": "MUB",
+      "name": "iShares National Muni Bond ETF",
+      "kind": "fund",
+      "exposure": "Municipal bonds",
+      "description": "Investment-grade bonds from U.S. states, cities, and agencies; interest is generally exempt from federal income tax.",
+      "issuer": "iShares",
+      "official": "https://www.ishares.com/us/products/239766/ishares-national-muni-bond-etf",
+      "reviewed": "2026-11-13"
     },
     {
       "symbol": "TLT",
@@ -315,7 +411,8 @@
       "exposure": "Long-term bonds",
       "description": "Long-duration U.S. Treasury bonds; prices are sensitive to changing yields.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "IEF",
@@ -324,7 +421,8 @@
       "exposure": "Intermediate bonds",
       "description": "Intermediate-term U.S. Treasury bonds with interest-rate exposure.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SHY",
@@ -333,7 +431,8 @@
       "exposure": "Short-term bonds",
       "description": "Shorter-term U.S. Treasuries; generally less rate-sensitive than long-duration bonds.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SGOV",
@@ -342,7 +441,8 @@
       "exposure": "Treasury bills",
       "description": "Very short-term U.S. Treasury bills. Distributions change as short-term rates change.",
       "issuer": "iShares",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "UUP",
@@ -351,7 +451,8 @@
       "exposure": "Currency futures",
       "description": "Long U.S. dollar exposure versus a specified currency basket, using futures.",
       "issuer": "Invesco",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "FXE",
@@ -360,7 +461,8 @@
       "exposure": "Currency trust",
       "description": "Euro exposure relative to the U.S. dollar, less expenses.",
       "issuer": "Invesco",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "FXY",
@@ -369,7 +471,8 @@
       "exposure": "Currency trust",
       "description": "Japanese yen exposure relative to the U.S. dollar, less expenses.",
       "issuer": "Invesco",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SPY",
@@ -378,7 +481,8 @@
       "exposure": "Broad stock market",
       "description": "A basket tracking the S&P 500, focused on large U.S. companies.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "VTI",
@@ -387,7 +491,8 @@
       "exposure": "Broad stock market",
       "description": "Broad U.S. stock exposure across large, mid-sized, and smaller companies.",
       "issuer": "Vanguard",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "QQQ",
@@ -396,7 +501,8 @@
       "exposure": "Nasdaq-100 stocks",
       "description": "Large non-financial Nasdaq companies; significant technology and growth exposure.",
       "issuer": "Invesco",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLY",
@@ -405,7 +511,8 @@
       "exposure": "Consumer stocks",
       "description": "Businesses tied to discretionary spending, with concentration in major holdings.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SMH",
@@ -414,7 +521,8 @@
       "exposure": "Semiconductor stocks",
       "description": "A basket of semiconductor businesses. Check its concentration and geographic exposure.",
       "issuer": "VanEck",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "NVDA",
@@ -422,7 +530,8 @@
       "kind": "stock",
       "exposure": "Semiconductors",
       "description": "GPUs, accelerated computing, and related technology; valuation and competition also matter.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "AMD",
@@ -430,7 +539,8 @@
       "kind": "stock",
       "exposure": "Semiconductors",
       "description": "Processors and graphics chips for computing and data centers.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "AVGO",
@@ -438,7 +548,8 @@
       "kind": "stock",
       "exposure": "Chips & software",
       "description": "Semiconductors and infrastructure software; business lines have different drivers.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLI",
@@ -447,7 +558,8 @@
       "exposure": "Industrial stocks",
       "description": "Large U.S. industrial businesses across several industries.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "PAVE",
@@ -456,7 +568,8 @@
       "exposure": "Infrastructure stocks",
       "description": "Businesses connected to U.S. infrastructure spending, including materials and equipment.",
       "issuer": "Global X",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "CAT",
@@ -464,7 +577,8 @@
       "kind": "stock",
       "exposure": "Industrial equipment",
       "description": "Construction and mining equipment exposed to spending and economic cycles.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "NUE",
@@ -472,7 +586,8 @@
       "kind": "stock",
       "exposure": "Steel producer",
       "description": "A U.S. steel producer affected by demand, input costs, capacity, and trade policy.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "VNQ",
@@ -481,7 +596,8 @@
       "exposure": "Real estate stocks",
       "description": "U.S. real-estate businesses and REITs. Property income and financing conditions matter.",
       "issuer": "Vanguard",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLRE",
@@ -490,7 +606,8 @@
       "exposure": "Real estate stocks",
       "description": "Large U.S. real-estate businesses and REITs, with sector concentration.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLP",
@@ -499,7 +616,8 @@
       "exposure": "Consumer staples",
       "description": "Businesses selling everyday essentials. Defensive demand does not eliminate market risk.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLU",
@@ -508,7 +626,8 @@
       "exposure": "Utility stocks",
       "description": "U.S. utility businesses; rates, regulation, and infrastructure spending can matter.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLV",
@@ -517,7 +636,8 @@
       "exposure": "Health-care stocks",
       "description": "U.S. health-care businesses with regulatory, product, and company risks.",
       "issuer": "State Street",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "PG",
@@ -525,7 +645,8 @@
       "kind": "stock",
       "exposure": "Consumer staples",
       "description": "Everyday consumer products. Margins depend on pricing, costs, and demand.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "JNJ",
@@ -533,7 +654,8 @@
       "kind": "stock",
       "exposure": "Health care",
       "description": "Pharmaceuticals and medical technology, with product and regulatory exposure.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "ICLN",
@@ -542,7 +664,8 @@
       "exposure": "Clean energy stocks",
       "description": "Global clean-energy businesses; check the current index and holdings.",
       "issuer": "iShares",
-      "official": "https://www.ishares.com/us/products/239738/ishares-global-clean-energy-etf"
+      "official": "https://www.ishares.com/us/products/239738/ishares-global-clean-energy-etf",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "TAN",
@@ -551,7 +674,8 @@
       "exposure": "Solar stocks",
       "description": "Solar-related businesses. Policy, financing, and competition affect returns.",
       "issuer": "Invesco",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "FSLR",
@@ -559,7 +683,8 @@
       "kind": "stock",
       "exposure": "Solar manufacturing",
       "description": "A solar-module manufacturer exposed to project demand, policy, and execution.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLK",
@@ -568,7 +693,8 @@
       "exposure": "Technology stocks",
       "description": "Large U.S. technology businesses. Holdings can be concentrated in the biggest companies.",
       "issuer": "State Street",
-      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-technology-select-sector-spdr-etf-xlk"
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-technology-select-sector-spdr-etf-xlk",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "AAPL",
@@ -576,7 +702,8 @@
       "kind": "stock",
       "exposure": "Technology",
       "description": "Consumer devices, software, and services. Product cycles and the price investors pay both matter.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "MSFT",
@@ -584,7 +711,8 @@
       "kind": "stock",
       "exposure": "Software",
       "description": "Software, cloud computing, and business subscriptions.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLC",
@@ -593,7 +721,8 @@
       "exposure": "Communication stocks",
       "description": "Media, entertainment, and interactive-media businesses from the S&P 500.",
       "issuer": "State Street",
-      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-communication-services-select-sector-spdr-etf-xlc"
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-communication-services-select-sector-spdr-etf-xlc",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "GOOGL",
@@ -601,7 +730,8 @@
       "kind": "stock",
       "exposure": "Internet platforms",
       "description": "Search, advertising, cloud, and other internet businesses. Class A shares.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "META",
@@ -609,7 +739,8 @@
       "kind": "stock",
       "exposure": "Social platforms",
       "description": "Social apps and advertising. Spending on new products can move the shares.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLF",
@@ -618,7 +749,8 @@
       "exposure": "Financial stocks",
       "description": "Large U.S. banks, insurers, and other financial businesses.",
       "issuer": "State Street",
-      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf"
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "JPM",
@@ -626,7 +758,8 @@
       "kind": "stock",
       "exposure": "Bank",
       "description": "A large bank. Credit, rates, and markets businesses do not all move together.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "V",
@@ -634,7 +767,8 @@
       "kind": "stock",
       "exposure": "Payments",
       "description": "A payments network. It earns fees on activity; it is not a bank lender.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "LLY",
@@ -642,7 +776,8 @@
       "kind": "stock",
       "exposure": "Pharmaceuticals",
       "description": "A drug company. Product demand, patents, and trial results matter.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "UNH",
@@ -650,7 +785,8 @@
       "kind": "stock",
       "exposure": "Health insurance",
       "description": "Health insurance and health services. Enrollment and medical costs affect results.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "AMZN",
@@ -658,7 +794,8 @@
       "kind": "stock",
       "exposure": "Online retail",
       "description": "Online retail, cloud computing, and advertising. The businesses have different drivers.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "WMT",
@@ -666,7 +803,8 @@
       "kind": "stock",
       "exposure": "Retail",
       "description": "A large retailer of everyday goods. Costs, traffic, and pricing affect margins.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "NEE",
@@ -674,7 +812,8 @@
       "kind": "stock",
       "exposure": "Electric utility",
       "description": "An electric utility with a large renewable-generation business. Regulation and rates matter.",
-      "official": ""
+      "official": "",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "XLB",
@@ -683,7 +822,8 @@
       "exposure": "Materials stocks",
       "description": "Chemicals, metals, and other materials businesses from the S&P 500.",
       "issuer": "State Street",
-      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-materials-select-sector-spdr-etf-xlb"
+      "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-materials-select-sector-spdr-etf-xlb",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "IJH",
@@ -692,7 +832,8 @@
       "exposure": "Mid-cap stocks",
       "description": "A basket of medium-sized U.S. companies in the S&P MidCap 400.",
       "issuer": "iShares",
-      "official": "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf"
+      "official": "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "IWM",
@@ -701,7 +842,8 @@
       "exposure": "Small-cap stocks",
       "description": "A basket of smaller U.S. companies tracking the Russell 2000.",
       "issuer": "iShares",
-      "official": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf"
+      "official": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "VUG",
@@ -710,7 +852,8 @@
       "exposure": "Growth stocks",
       "description": "U.S. companies classified as growth. Technology is often a large part of the fund.",
       "issuer": "Vanguard",
-      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vug"
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vug",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "VTV",
@@ -719,7 +862,8 @@
       "exposure": "Value stocks",
       "description": "U.S. companies classified as value under the fund’s index rules.",
       "issuer": "Vanguard",
-      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vtv"
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vtv",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "VEA",
@@ -728,7 +872,18 @@
       "exposure": "International stocks",
       "description": "Stocks in developed markets outside the United States.",
       "issuer": "Vanguard",
-      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vea"
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vea",
+      "reviewed": "2026-10-09"
+    },
+    {
+      "symbol": "VXUS",
+      "name": "Vanguard Total International Stock ETF",
+      "kind": "fund",
+      "exposure": "International stocks",
+      "description": "Stocks of companies outside the United States, in both developed and emerging markets.",
+      "issuer": "Vanguard",
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vxus",
+      "reviewed": "2026-11-13"
     },
     {
       "symbol": "VWO",
@@ -737,7 +892,8 @@
       "exposure": "Emerging-market stocks",
       "description": "Stocks in emerging-market countries. Country and currency weights change.",
       "issuer": "Vanguard",
-      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vwo"
+      "official": "https://investor.vanguard.com/investment-products/etfs/profile/vwo",
+      "reviewed": "2026-10-09"
     },
     {
       "symbol": "SCHD",
@@ -746,7 +902,8 @@
       "exposure": "Dividend stocks",
       "description": "About 100 U.S. companies screened for dividends and financial strength.",
       "issuer": "Schwab",
-      "official": "https://www.schwab.com/research/etfs/quotes/summary/schd"
+      "official": "https://www.schwab.com/research/etfs/quotes/summary/schd",
+      "reviewed": "2026-10-09"
     }
   ],
   "themes": [
@@ -762,7 +919,7 @@
         "NEM",
         "B"
       ],
-      "tags": "precious metals bullion safe haven gold miners GOLD Barrick",
+      "tags": "precious metals bullion safe haven gold miners GOLD Barrick price",
       "description": "Research the metal itself or the businesses that mine it.",
       "connection": "Watch real interest rates, the dollar, central-bank demand, and risk sentiment. Gold miners also face business and operating risks.",
       "links": [
@@ -774,7 +931,8 @@
           "Real yields · FRED",
           "https://fred.stlouisfed.org/series/DFII10"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "silver",
@@ -787,7 +945,7 @@
         "SIL",
         "PAAS"
       ],
-      "tags": "precious metals bullion solar industrial demand",
+      "tags": "precious metals bullion solar industrial demand silver price",
       "description": "Silver combines precious-metal demand with industrial uses.",
       "connection": "Bullion funds and silver miners give different exposure. Industrial demand and gold-market sentiment can both matter.",
       "links": [
@@ -795,7 +953,8 @@
           "Commodity data · World Bank",
           "https://www.worldbank.org/en/research/commodity-markets"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "oil",
@@ -809,7 +968,7 @@
         "XOM",
         "CVX"
       ],
-      "tags": "crude petroleum brent wti opec gasoline supply geopolitics war",
+      "tags": "crude petroleum brent wti opec gasoline supply geopolitics war gas prices oil price",
       "description": "Explore crude oil futures and the companies that produce and process energy.",
       "connection": "Supply, OPEC decisions, inventories, and global demand can affect oil. An oil company or stock ETF is not a direct crude-price tracker.",
       "links": [
@@ -821,7 +980,8 @@
           "Oil fund documents",
           "https://www.uscfinvestments.com/uso"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "gas",
@@ -842,7 +1002,8 @@
           "Gas storage · EIA",
           "https://www.eia.gov/naturalgas/storage/"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "fertilizer",
@@ -866,7 +1027,8 @@
           "Commodity data · World Bank",
           "https://www.worldbank.org/en/research/commodity-markets"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "resin",
@@ -890,7 +1052,8 @@
           "Commodity data · World Bank",
           "https://www.worldbank.org/en/research/commodity-markets"
         ]
-      ]
+      ],
+      "reviewed": "2026-11-12"
     },
     {
       "id": "copper",
@@ -915,7 +1078,8 @@
           "Copper miners fund",
           "https://www.globalxetfs.com/funds/COPX"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "uranium",
@@ -939,7 +1103,8 @@
           "Uranium fund holdings",
           "https://www.globalxetfs.com/funds/ura"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "agriculture",
@@ -960,7 +1125,8 @@
           "Crop outlook · USDA",
           "https://www.usda.gov/oce/commodity/wasde"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "property",
@@ -971,7 +1137,7 @@
         "VNQ",
         "XLRE"
       ],
-      "tags": "housing property buildings reit rent commercial mortgage",
+      "tags": "housing property buildings reit rent commercial mortgage homes landlord",
       "description": "Funds holding listed property businesses and real-estate investment trusts.",
       "connection": "Rents, occupancy, property type, borrowing costs, and economic conditions can affect returns. These funds are not direct house-price trackers.",
       "links": [
@@ -983,7 +1149,8 @@
           "Treasury yield · FRED",
           "https://fred.stlouisfed.org/series/DGS10"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "technology",
@@ -997,7 +1164,7 @@
         "NVDA",
         "AVGO"
       ],
-      "tags": "technology tech software hardware information technology apple microsoft",
+      "tags": "technology tech software hardware information technology apple microsoft big",
       "description": "Research the sector fund or a few large technology businesses.",
       "connection": "A sector fund spreads company risk across the industry. One business still depends on its products, competition, and the price investors already pay.",
       "links": [
@@ -1005,7 +1172,8 @@
           "Technology sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-technology-select-sector-spdr-etf-xlk"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "semiconductors",
@@ -1026,7 +1194,8 @@
           "Semiconductor fund",
           "https://www.vaneck.com/us/en/investments/semiconductor-etf-smh"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "communication",
@@ -1046,7 +1215,8 @@
           "Communication sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-communication-services-select-sector-spdr-etf-xlc"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "financials",
@@ -1066,7 +1236,8 @@
           "Financial sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "health-care",
@@ -1087,7 +1258,8 @@
           "Health care sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-health-care-select-sector-spdr-etf-xlv"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "energy",
@@ -1107,7 +1279,8 @@
           "Energy sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-energy-select-sector-spdr-etf-xle"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "industrials",
@@ -1127,7 +1300,8 @@
           "Industrial sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-industrial-select-sector-spdr-etf-xli"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "materials",
@@ -1148,7 +1322,8 @@
           "Materials sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-materials-select-sector-spdr-etf-xlb"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "discretionary",
@@ -1167,7 +1342,8 @@
           "Consumer discretionary fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-consumer-discretionary-select-sector-spdr-etf-xly"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "staples",
@@ -1187,7 +1363,8 @@
           "Consumer staples fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-consumer-staples-select-sector-spdr-etf-xlp"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "utilities",
@@ -1206,7 +1383,8 @@
           "Utilities sector fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-utilities-select-sector-spdr-etf-xlu"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "real-estate",
@@ -1225,7 +1403,37 @@
           "Real estate fund",
           "https://investor.vanguard.com/investment-products/etfs/profile/vnq"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
+    },
+    {
+      "id": "building-blocks",
+      "name": "Building blocks",
+      "mark": "Core",
+      "group": "Markets",
+      "category": "Core",
+      "symbols": [
+        "VTI",
+        "VXUS",
+        "BND",
+        "BNDX",
+        "SGOV",
+        "AOR"
+      ],
+      "tags": "building blocks core starter beginner index fund index funds whole market world global all in one one fund balanced 60/40 60 40 stocks and bonds asset allocation diversified diversify retirement long term three fund portfolio cash",
+      "description": "Broad funds many long-term portfolios are built from: U.S. stocks, international stocks, U.S. bonds, currency-hedged international bonds, Treasury bills, and an all-in-one stock-and-bond fund.",
+      "connection": "Each block covers a whole market instead of one company. The mix of stocks and bonds sets most of the ups and downs, and an all-in-one fund keeps its mix steady by rebalancing.",
+      "links": [
+        [
+          "Asset allocation · Investor.gov",
+          "https://www.investor.gov/introduction-investing/investing-basics/glossary/asset-allocation"
+        ],
+        [
+          "Diversification · Investor.gov",
+          "https://www.investor.gov/introduction-investing/investing-basics/glossary/diversification"
+        ]
+      ],
+      "reviewed": "2026-11-13"
     },
     {
       "id": "large-cap",
@@ -1240,7 +1448,7 @@
         "JPM",
         "XOM"
       ],
-      "tags": "large cap big stocks sp500 s&p 500 mega cap",
+      "tags": "large cap big stocks sp500 s&p 500 mega cap index fund blue chip",
       "description": "The large-company stock market, through an S&P 500 fund and a few major businesses.",
       "connection": "Large-cap funds are dominated by their biggest holdings. A rising index can still leave many companies behind.",
       "links": [
@@ -1248,7 +1456,8 @@
           "S&P 500 fund",
           "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-500-etf-trust-spy"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "mid-cap",
@@ -1267,7 +1476,8 @@
           "Mid-cap fund",
           "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "small-cap",
@@ -1286,7 +1496,8 @@
           "Small-cap fund",
           "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf"
         ]
-      ]
+      ],
+      "reviewed": "2026-11-13"
     },
     {
       "id": "total-market",
@@ -1295,9 +1506,10 @@
       "group": "Markets",
       "category": "Size",
       "symbols": [
-        "VTI"
+        "VTI",
+        "VXUS"
       ],
-      "tags": "total market entire us stock market broad",
+      "tags": "total market entire us stock market broad index fund whole vti",
       "description": "A broad fund covering large, mid-sized, and smaller U.S. companies.",
       "connection": "Total-market funds are still weighted toward the largest companies. They are a wide net, not an equal bet on every stock.",
       "links": [
@@ -1305,7 +1517,8 @@
           "Total market fund",
           "https://investor.vanguard.com/investment-products/etfs/profile/vti"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "developed",
@@ -1314,9 +1527,10 @@
       "group": "Markets",
       "category": "Region",
       "symbols": [
-        "VEA"
+        "VEA",
+        "VXUS"
       ],
-      "tags": "international developed markets eafe foreign ex-us",
+      "tags": "international developed markets eafe foreign ex-us europe japan world",
       "description": "Stocks in developed markets outside the United States.",
       "connection": "Currency moves, local economies, and the country mix all affect the result. This is not emerging-market exposure.",
       "links": [
@@ -1324,7 +1538,8 @@
           "Developed markets fund",
           "https://investor.vanguard.com/investment-products/etfs/profile/vea"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "emerging",
@@ -1335,7 +1550,7 @@
       "symbols": [
         "VWO"
       ],
-      "tags": "emerging markets developing countries international",
+      "tags": "emerging markets developing countries international china india",
       "description": "Stocks in emerging-market countries.",
       "connection": "Politics, currencies, and a heavy weight in a few countries can dominate the fund.",
       "links": [
@@ -1343,7 +1558,8 @@
           "Emerging markets fund",
           "https://investor.vanguard.com/investment-products/etfs/profile/vwo"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "growth-style",
@@ -1364,7 +1580,8 @@
           "Growth fund",
           "https://investor.vanguard.com/investment-products/etfs/profile/vug"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "value",
@@ -1386,7 +1603,8 @@
           "Value fund",
           "https://investor.vanguard.com/investment-products/etfs/profile/vtv"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "dividend",
@@ -1400,7 +1618,7 @@
         "JNJ",
         "XOM"
       ],
-      "tags": "dividend income yield payout shareholder",
+      "tags": "dividend income yield payout shareholder passive dividends",
       "description": "Companies and a fund often researched for dividend income.",
       "connection": "A dividend is not extra return by itself. The share price can fall by more than the payout, and the payout can be cut.",
       "links": [
@@ -1408,7 +1626,8 @@
           "Dividend fund",
           "https://www.schwab.com/research/etfs/quotes/summary/schd"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "bond-market",
@@ -1421,9 +1640,10 @@
         "IEF",
         "SHY",
         "SGOV",
-        "TIP"
+        "TIP",
+        "BND"
       ],
-      "tags": "bonds fixed income treasury credit duration",
+      "tags": "bonds fixed income treasury credit duration treasuries safe interest savings",
       "description": "U.S. Treasury funds from very short bills to long-term bonds.",
       "connection": "Bond prices generally move opposite to yields. Longer-term funds move more when yields change.",
       "links": [
@@ -1431,7 +1651,36 @@
           "10-year yield · FRED",
           "https://fred.stlouisfed.org/series/DGS10"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
+    },
+    {
+      "id": "credit-bonds",
+      "name": "Corporate & muni bonds",
+      "mark": "Cr",
+      "group": "Markets",
+      "category": "Asset class",
+      "symbols": [
+        "LQD",
+        "HYG",
+        "MUB",
+        "BND",
+        "BNDX"
+      ],
+      "tags": "corporate bonds credit high yield junk bonds investment grade municipal muni munis tax free tax-exempt income bond fund international bonds default credit spread",
+      "description": "Bond funds that lend to companies, states, and cities, from investment-grade to high-yield, plus broad U.S. and international bond funds.",
+      "connection": "These bonds usually pay more than Treasuries because the borrower might not pay back. High-yield funds carry more default risk and can fall with stocks in a recession. Muni interest is generally free of federal income tax, so compare after-tax income.",
+      "links": [
+        [
+          "High-yield spread · FRED",
+          "https://fred.stlouisfed.org/series/BAMLH0A0HYM2"
+        ],
+        [
+          "Municipal bond data · MSRB EMMA",
+          "https://emma.msrb.org/"
+        ]
+      ],
+      "reviewed": "2026-11-13"
     },
     {
       "id": "commodity-market",
@@ -1454,7 +1703,8 @@
           "Commodity data · World Bank",
           "https://www.worldbank.org/en/research/commodity-markets"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "currency-market",
@@ -1467,7 +1717,7 @@
         "FXE",
         "FXY"
       ],
-      "tags": "currency forex dollar euro yen exchange rates",
+      "tags": "currency forex dollar euro yen exchange rates currencies",
       "description": "The U.S. dollar against other currencies, through currency funds.",
       "connection": "Rate differences and risk appetite move currencies. UUP tracks a defined basket. The euro and yen trusts are each one currency.",
       "links": [
@@ -1475,7 +1725,8 @@
           "Broad dollar index · FRED",
           "https://fred.stlouisfed.org/series/DTWEXBGS"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "inflation",
@@ -1489,7 +1740,7 @@
         "USO",
         "XLE"
       ],
-      "tags": "inflation prices cpi purchasing power cost of living hedge",
+      "tags": "inflation prices cpi purchasing power cost of living hedge rising",
       "description": "Different ways investors research rising prices and inflation expectations.",
       "connection": "Inflation-linked bonds, commodities, and businesses respond differently. None is a guaranteed short-term inflation hedge; starting prices and interest rates still matter.",
       "links": [
@@ -1501,7 +1752,8 @@
           "Inflation expectations · FRED",
           "https://fred.stlouisfed.org/series/T10YIE"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "rates",
@@ -1516,7 +1768,7 @@
         "TIP",
         "VNQ"
       ],
-      "tags": "fed fomc interest rates rate cuts hikes bonds treasury duration yields monetary policy",
+      "tags": "fed fomc interest rates rate cuts hikes bonds treasury duration yields monetary policy mortgage hike",
       "description": "Compare long-term bonds, short-term bonds, and rate-sensitive property stocks.",
       "connection": "Bond prices generally move opposite to yields. Longer duration means more sensitivity. A rate cut does not guarantee that every bond or property fund rises.",
       "links": [
@@ -1528,7 +1780,8 @@
           "10-year yield · FRED",
           "https://fred.stlouisfed.org/series/DGS10"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "dollar",
@@ -1549,7 +1802,8 @@
           "Broad dollar index · FRED",
           "https://fred.stlouisfed.org/series/DTWEXBGS"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "growth",
@@ -1575,7 +1829,8 @@
           "Employment · BLS",
           "https://www.bls.gov/news.release/empsit.toc.htm"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "ai",
@@ -1588,7 +1843,7 @@
         "AMD",
         "AVGO"
       ],
-      "tags": "ai artificial intelligence technology tech semiconductor chips gpu data center computing",
+      "tags": "ai artificial intelligence technology tech semiconductor chips gpu data center computing chatgpt nvidia",
       "description": "Semiconductor businesses connected to computing and AI infrastructure.",
       "connection": "Capital spending, chip demand, competition, supply constraints, and valuations matter. An AI theme alone does not establish a company’s future profit.",
       "links": [
@@ -1596,7 +1851,8 @@
           "Industrial production · FRED",
           "https://fred.stlouisfed.org/series/INDPRO"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "infrastructure",
@@ -1618,7 +1874,8 @@
           "Construction spending · Census",
           "https://www.census.gov/construction/c30/"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "slowdown",
@@ -1633,7 +1890,7 @@
         "JNJ",
         "IEF"
       ],
-      "tags": "recession defensive slowdown essentials consumer staples health care utilities safe haven",
+      "tags": "recession defensive slowdown essentials consumer staples health care utilities safe haven stocks bear market",
       "description": "Essential services, everyday products, and bonds often researched during a slowdown.",
       "connection": "Relatively steady demand does not make a stock safe from losses. A sector fund can still fall because of valuations, yields, regulation, or company problems.",
       "links": [
@@ -1645,7 +1902,8 @@
           "GDP · BEA",
           "https://www.bea.gov/data/gdp/gross-domestic-product"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     },
     {
       "id": "transition",
@@ -1667,7 +1925,8 @@
           "Energy outlook · EIA",
           "https://www.eia.gov/outlooks/steo/"
         ]
-      ]
+      ],
+      "reviewed": "2026-10-09"
     }
   ]
 }
