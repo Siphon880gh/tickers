@@ -2,16 +2,19 @@
 // Catalog records live in data/catalog.json. This file builds links and renders the directory.
 const CACHE_BUST = (() => {
   const src = document.currentScript && document.currentScript.src;
-  if (src) return new URL(src).searchParams.get('v') || String(Date.now());
+  // index.html passes its APP_VERSION as ?v=. A stable stamp lets the browser and the service worker reuse files until the version changes.
+  if (src) return new URL(src).searchParams.get('v') || window.MF_VERSION || 'dev';
   const scripts = document.querySelectorAll('script[src*="app.js"]');
   const last = scripts[scripts.length - 1];
-  return last ? (new URL(last.src).searchParams.get('v') || String(Date.now())) : String(Date.now());
+  return (last && new URL(last.src).searchParams.get('v')) || window.MF_VERSION || 'dev';
 })();
 let instruments = [];
 let themes = [];
 let bySymbol = {};
 let indexData = null;
 let catalogUpdated = '';
+// "Today" for freshness checks. ?asof=YYYY-MM-DD in the address previews the page on a later date (for testing the stale banner).
+const NOW = (() => { const asof = new URLSearchParams(location.search).get('asof'); const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(asof || ''); return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : new Date(); })();
 
 async function loadJSON(path) {
   const response = await fetch(path + '?v=' + encodeURIComponent(CACHE_BUST));
@@ -29,7 +32,27 @@ async function loadJSON(path) {
   const helpLink = ([title,url,description='',featured=false]) => link(title,url,description,featured,(window.MFSims && window.MFSims.linkHelp && window.MFSims.linkHelp[title]) || '');
   const fundUsesFutures = item => item.exposure.includes('futures');
   // Why-it-matters simulations (js/simulations.js data, js/sim-popover.js popover). Without them, copy renders plain.
-  const SIMS = window.MFSims || null;
+  // Pure helpers (hash, search, backup merge, freshness, titles) live in js/core.js so tools/test-app.mjs can test them.
+  const CORE = window.MFCore;
+  // js/simulations.js (the walks and definitions, the largest file) loads when the browser is idle, or at once for a &sim= link.
+  let SIMS = window.MFSims || null;
+  let simsLoading = null;
+  function loadSims() {
+    if (SIMS) return Promise.resolve(SIMS);
+    if (!simsLoading) simsLoading = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'js/simulations.js?v=' + encodeURIComponent(CACHE_BUST);
+      script.onload = () => window.MFSims ? resolve(window.MFSims) : reject(new Error('Simulations did not load.'));
+      script.onerror = () => reject(new Error('Simulations did not load.'));
+      document.head.appendChild(script);
+    }).then(api => { SIMS = api; setupSims(); return api; }, error => {
+      simsLoading = null;
+      for (const id of ['sim-list', 'start-list']) { const box = document.getElementById(id); if (box && !box.querySelector('[data-sim-item]')) box.innerHTML = '<li class="sim-loading">The walks did not load. Check your connection and reload the page.</li>'; }
+      throw error;
+    });
+    return simsLoading;
+  }
+  const whenIdle = fn => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, {timeout: 2000}) : setTimeout(fn, 300));
   const POP = window.MFSimPopover || null;
   const simRefs = (group, key) => (SIMS && SIMS[group] && SIMS[group][key]) || [];
   const simRich = (plain, refs) => POP ? POP.richText(plain, refs) : escapeHTML(plain);
@@ -164,46 +187,41 @@ async function loadJSON(path) {
     anchor.click();
     anchor.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+    saveBackupMeta({since: 0, snoozeAt: BACKUP_NUDGE_AFTER, last: new Date().toISOString()});
     const total = noteCount(Object.keys(notes));
     return 'Backup downloaded with ' + total + (total === 1 ? ' note' : ' notes') + ' and ' + watchlist.length + (watchlist.length === 1 ? ' saved ticker.' : ' saved tickers.');
   }
   function restoreBackup(text) {
-    let data;
-    try { data = JSON.parse(text); } catch { throw new Error('That file is not valid JSON. Nothing changed.'); }
-    const validNotes = data && typeof data.notes === 'object' && data.notes !== null && !Array.isArray(data.notes);
-    const validList = data && Array.isArray(data.watchlist);
-    if (!data || data.app !== 'market-forces' || (!validNotes && !validList)) throw new Error('That file is not a Market Forces backup. Nothing changed.');
-    let addedNotes = 0;
-    let addedSaved = 0;
-    const nextNotes = {...notes};
-    if (validNotes) {
-      for (const [symbol, list] of Object.entries(data.notes)) {
-        if (!/^[A-Z0-9.\-]{1,12}$/.test(symbol) || !Array.isArray(list)) continue;
-        const current = Array.isArray(nextNotes[symbol]) ? [...nextNotes[symbol]] : [];
-        const seen = new Set(current.map(note => note && note.id));
-        const texts = new Set(current.map(note => note && (note.text + '|' + note.at)));
-        for (const note of list) {
-          if (!note || typeof note.text !== 'string' || !note.text.trim() || typeof note.id !== 'string') continue;
-          if (seen.has(note.id) || texts.has(note.text + '|' + note.at)) continue;
-          current.push({id: note.id, text: note.text.slice(0, 2000), at: typeof note.at === 'string' ? note.at : ''});
-          seen.add(note.id);
-          addedNotes++;
-        }
-        current.sort((a, b) => String(b.at).localeCompare(String(a.at)));
-        if (current.length) nextNotes[symbol] = current;
-      }
-    }
-    const nextList = [...watchlist];
-    if (validList) for (const symbol of data.watchlist) if (typeof symbol === 'string' && bySymbol[symbol] && !nextList.includes(symbol)) { nextList.push(symbol); addedSaved++; }
-    notes = nextNotes;
-    watchlist = nextList;
+    const merged = CORE.mergeBackup(text, {notes, watchlist}, symbol => Boolean(bySymbol[symbol]));
+    notes = merged.notes;
+    watchlist = merged.watchlist;
     saveNotes();
     saveWatchlist();
+    const {addedNotes, addedSaved} = merged;
     if (!addedNotes && !addedSaved) return 'Nothing new in that file. Everything in it is already here.';
     return 'Restored ' + addedNotes + (addedNotes === 1 ? ' note' : ' notes') + ' and ' + addedSaved + (addedSaved === 1 ? ' saved ticker.' : ' saved tickers.');
   }
   function saveNotes() {
-    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); return true; }
+    catch { showStorageWarning(); return false; }
+  }
+  // Private windows and blocked storage: say so instead of losing notes silently.
+  function storageWorks() {
+    try { const key = 'market-forces-probe'; localStorage.setItem(key, '1'); localStorage.removeItem(key); return true; } catch { return false; }
+  }
+  function showStorageWarning() { const banner = $('storage-banner'); if (banner) banner.hidden = false; }
+  // Backup nudge: after BACKUP_NUDGE_AFTER new notes since the last download, the notes panel suggests one.
+  const BACKUP_META_KEY = 'market-forces-backup-meta';
+  const BACKUP_NUDGE_AFTER = 3;
+  function backupMeta() {
+    try { const meta = JSON.parse(localStorage.getItem(BACKUP_META_KEY) || '{}'); return {since: Number(meta.since) || 0, snoozeAt: Number(meta.snoozeAt) || BACKUP_NUDGE_AFTER, last: typeof meta.last === 'string' ? meta.last : ''}; }
+    catch { return {since: 0, snoozeAt: BACKUP_NUDGE_AFTER, last: ''}; }
+  }
+  function saveBackupMeta(meta) { try { localStorage.setItem(BACKUP_META_KEY, JSON.stringify(meta)); } catch {} }
+  function backupNudge() {
+    const meta = backupMeta();
+    if (meta.since < BACKUP_NUDGE_AFTER || meta.since < meta.snoozeAt) return '';
+    return '<div class="backup-nudge" role="note"><p><strong>Keep a copy of your notes.</strong> You have added ' + meta.since + ' notes since ' + (meta.last ? 'your last backup on ' + escapeHTML(formatNoteTime(meta.last)) : 'you started') + '. They live only in this browser; clearing site data or a private window deletes them.</p><div class="backup-nudge-actions"><button type="button" class="action-button" data-backup-now>Download backup</button><button type="button" class="action-button" data-backup-snooze>Not now</button></div></div>';
   }
   function notesFor(symbol) {
     const list = notes[symbol];
@@ -224,7 +242,7 @@ async function loadJSON(path) {
   function notesMarkup(item) {
     const list = notesFor(item.symbol);
     const items = list.map(note => '<li class="note-item"><p>' + escapeHTML(note.text) + '</p><time datetime="' + escapeHTML(note.at || '') + '">' + escapeHTML(formatNoteTime(note.at)) + '</time><button type="button" class="note-delete" data-delete-note="' + escapeHTML(note.id) + '">Delete</button></li>').join('');
-    return '<section class="notes-panel"><h3>Notes</h3><form id="note-form"><label for="note-text">Note for ' + item.symbol + '</label><textarea id="note-text" maxlength="2000" rows="3"></textarea><button type="submit" class="add-note">Add note</button></form>' + (items ? '<ul class="note-list">' + items + '</ul>' : '') + '<p class="resource-note">Notes stay in this browser.</p></section>';
+    return '<section class="notes-panel"><h3>Notes</h3><form id="note-form"><label for="note-text">Note for ' + item.symbol + '</label><textarea id="note-text" maxlength="2000" rows="3"></textarea><button type="submit" class="add-note">Add note</button></form>' + backupNudge() + (items ? '<ul class="note-list">' + items + '</ul>' : '') + '<p class="resource-note">Notes stay in this browser only. Use Download backup in the research guide to keep a copy.</p></section>';
   }
   function noteMatches(symbol, query) {
     const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
@@ -232,24 +250,12 @@ async function loadJSON(path) {
     const text = notesFor(symbol).map(note => note.text).join(' ').toLowerCase();
     return Boolean(text) && words.every(word => text.includes(word));
   }
-  function matchingThemes(query) {
-    const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-    return themes.filter(theme => {
-      const text = (theme.name+' '+theme.tags).toLowerCase();
-      return words.every(word => text.includes(word));
-    });
-  }
+  const matchingThemes = query => CORE.matchingThemes(themes, query);
   function visibleInstruments() {
     let pool;
     const query = state.query.trim().toLowerCase();
     if(query) {
-      const matchedSymbols = new Set(matchingThemes(query).flatMap(theme=>theme.symbols));
-      const words = query.split(/\s+/).filter(Boolean);
-      pool = instruments.filter(item => {
-        const text = (item.symbol+' '+item.name+' '+item.exposure+' '+item.description+' '+(item.issuer||'')).toLowerCase();
-        return matchedSymbols.has(item.symbol) || words.every(word => text.includes(word)) || noteMatches(item.symbol, query);
-      });
-      pool.sort((a,b) => Number(b.symbol.toLowerCase()===query)-Number(a.symbol.toLowerCase()===query));
+      pool = CORE.searchInstruments(instruments, themes, query, noteMatches);
     } else {
       pool = state.theme==='all'?instruments:state.theme==='saved'?watchlist.map(symbol=>bySymbol[symbol]).filter(Boolean):themes.find(theme=>theme.id===state.theme).symbols.map(symbol=>bySymbol[symbol]);
     }
@@ -277,10 +283,17 @@ async function loadJSON(path) {
     }
     $('theme-nav').innerHTML=html;
   }
+  // "Not covered here, and why" for crypto, leveraged funds, options, single bonds, and account types.
+  function notCoveredBox(query) {
+    const hit = CORE.notCovered(query);
+    if (!hit) return '';
+    const browse = hit.themes.map(id => themes.find(theme => theme.id === id)).filter(Boolean).map(theme => '<button type="button" data-theme="' + theme.id + '">Browse ' + escapeHTML(theme.name) + '</button>').join('');
+    return '<div class="not-covered" role="note" aria-labelledby="not-covered-title"><h3 id="not-covered-title">' + escapeHTML(hit.title) + '</h3><p>' + escapeHTML(hit.text) + '</p><p class="not-covered-links">' + hit.links.map(([title, url]) => '<a href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + '<span class="sr-only"> (opens in a new tab)</span></a>').join('') + browse + '</p></div>';
+  }
   function renderTopic() {
     if(state.query) {
       const matches=matchingThemes(state.query);
-      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, economic themes, and your notes.</p>'+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
+      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, economic themes, and your notes.</p>'+notCoveredBox(state.query)+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
       return;
     }
     if(state.theme==='saved') {
@@ -303,7 +316,7 @@ async function loadJSON(path) {
       return;
     }
     if(!pool.length) {
-      $('ticker-results').innerHTML='<div class="empty"><h3>No matching tickers</h3><p>Try a shorter term, a symbol like GLD, or switch to stocks &amp; funds.</p><button type="button" class="reset-button" id="reset-search">Reset search &amp; filter</button></div>';
+      $('ticker-results').innerHTML='<div class="empty"><h3>No matching tickers</h3><p>'+(CORE.notCovered(state.query)?'This directory leaves that out on purpose; the note above says why. ':'')+'Try a shorter term, a symbol like GLD, or switch to stocks &amp; funds.</p><button type="button" class="reset-button" id="reset-search">Reset search &amp; filter</button></div>';
       return;
     }
     $('ticker-results').innerHTML='<div class="ticker-list">'+pool.map(item => {
@@ -349,6 +362,8 @@ async function loadJSON(path) {
     $('research').setAttribute('aria-label','Index weights');
     if(!indexData) {$('research').innerHTML='<div class="research-placeholder">Index weights did not load.</div>';return;}
     const picks=state.indexPicks.map(symbol=>bySymbol[symbol]).filter(Boolean);
+    const quiet=indexData.indices.filter(index=>!Object.keys(index.weights).length);
+    const withWeights=indexData.indices.filter(index=>Object.keys(index.weights).length);
     const head='<div class="research-head"><p class="eyebrow">Index weights</p><h2>Where the weight sits</h2><p class="note">'+simRich('Each line is the share of that index, largest first.',simRefs('pageRefs','indexNote'))+' '+simRich('The date is the holdings snapshot.',simRefs('pageRefs','indexSnapshot'))+'</p></div>';
     const body=!picks.length
       ? '<div class="research-placeholder">Check one or more tickers. '+simRich('A fund is usually not a member of the index it tracks.',simRefs('pageRefs','indexEmpty'))+'</div>'
@@ -356,11 +371,12 @@ async function loadJSON(path) {
           const rows=memberships(item.symbol);
           const list=rows.length
             ? '<ol class="weight-list">'+rows.map(({index,weight})=>'<li class="weight-row"><div class="weight-top"><span class="weight-name">'+escapeHTML(index.name)+'</span><span class="weight-pct">'+formatWeight(weight)+'</span></div><div class="weight-meta"><span class="badge estimate">'+escapeHTML(index.qualityLabel)+'</span><span>'+escapeHTML(formatSnapshot(index.snapshotDate))+'</span></div><p class="weight-note">'+escapeHTML(index.note)+'</p><p class="weight-note"><a href="'+escapeHTML(index.sourceUrl)+'"'+externalAttrs+'>'+escapeHTML(index.sourceName)+'<span class="sr-only"> (opens in a new tab)</span></a></p></li>').join('')+'</ol>'
-            : '<p class="weight-note">No weight in the index snapshots stored here.</p>';
-          return '<section class="weight-ticker"><h3><span class="symbol">'+item.symbol+'</span> '+escapeHTML(item.name)+'</h3>'+list+'</section>';
+            : '<p class="weight-note">Not in any index snapshot stored here ('+escapeHTML(withWeights.map(index=>index.name).join(', '))+').'+(item.kind==='fund'?' A fund is usually not a member of an index itself.':'')+'</p>';
+          const tracks=quiet.filter(index=>index.sourceName.includes('('+item.symbol+')'));
+          const missing=quiet.length?'<p class="weight-note not-in-snapshot">Not in this snapshot: '+escapeHTML(quiet.map(index=>index.name).join(' and '))+'. '+(tracks.length?item.symbol+' is the fund this page used for the '+escapeHTML(tracks.map(index=>index.name).join(' and '))+' file, and no directory company was in it, so no weight is shown rather than a zero.':'No company in this directory was in those files, so no weight is shown rather than a zero.')+'</p>':'';
+          return '<section class="weight-ticker"><h3><span class="symbol">'+item.symbol+'</span> '+escapeHTML(item.name)+'</h3>'+list+missing+'</section>';
         }).join('')+'</div>';
-    const quiet=indexData.indices.filter(index=>!Object.keys(index.weights).length);
-    const limits='<section class="limits"><h3>Not available as an official file</h3><ul>'+indexData.limits.map(limit=>'<li><strong>'+escapeHTML(limit.name)+'.</strong> '+escapeHTML(limit.reason)+'</li>').join('')+'</ul>'+(quiet.length?'<h3>Checked, with no directory match</h3><ul>'+quiet.map(index=>'<li><strong>'+escapeHTML(index.name)+'.</strong> '+escapeHTML(index.note)+' Snapshot '+escapeHTML(formatSnapshot(index.snapshotDate))+'. No ticker in this directory was in that file.</li>').join('')+'</ul>':'')+'</section>';
+    const limits='<section class="limits"><h3>Not available as an official file</h3><ul>'+indexData.limits.map(limit=>'<li><strong>'+escapeHTML(limit.name)+'.</strong> '+escapeHTML(limit.reason)+'</li>').join('')+'</ul>'+(quiet.length?'<h3>Checked, with no directory match</h3><ul>'+quiet.map(index=>'<li><strong>'+escapeHTML(index.name)+'.</strong> '+escapeHTML(index.note)+' Snapshot '+escapeHTML(formatSnapshot(index.snapshotDate))+'. No company in this directory was in that file, so the page shows no weight for it, not a zero.</li>').join('')+'</ul>':'')+'</section>';
     $('research').innerHTML=head+body+limits;
   }
   function themeChips(item) {
@@ -442,6 +458,13 @@ async function loadJSON(path) {
     const risk=futures.length?'<div class="risk-note"><strong>Futures exposure:</strong> '+futures.map(item=>item.symbol).join(', ')+' '+(futures.length===1?'uses':'use')+' contracts '+simRich('rather than storing the commodity or currency',simRefs('pageRefs','compareFutures'))+'. Read the issuer’s current documents.</div>':'';
     $('research').innerHTML=head+table+risk;
   }
+  const dayLabel = iso => { const date = CORE.parseDay(iso); return date ? new Intl.DateTimeFormat('en-US', {month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC'}).format(date) : ''; };
+  // When this entry's name, type, issuer, and link were last checked by hand (catalog "reviewed").
+  function reviewedLine(item) {
+    if (!CORE.parseDay(item.reviewed)) return '';
+    const stale = CORE.isStale(item.reviewed, NOW);
+    return '<p class="reviewed' + (stale ? ' stale' : '') + '">' + (stale ? '<strong>May be out of date.</strong> ' : '') + 'Name, type, and ' + (item.kind === 'stock' ? 'company link' : 'issuer') + ' last checked <time datetime="' + escapeHTML(item.reviewed) + '">' + dayLabel(item.reviewed) + '</time>. Fees, holdings, and prices change; confirm on the ' + (item.kind === 'stock' ? 'company’s investor page' : 'issuer’s page') + '.</p>';
+  }
   function renderResearch() {
     if(state.indexMode) {renderIndexWeights();return;}
     if(state.compareMode) {renderCompare();return;}
@@ -449,7 +472,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p></div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(helpLink).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><button type="button" class="back-to-list" data-back-to-list>↑ Back to the ticker list</button><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p>'+reviewedLine(item)+'</div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(helpLink).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -475,23 +498,22 @@ async function loadJSON(path) {
   // `sim=<id>` opens a simulation on load or Back/Forward; closing removes it from the address bar.
   function syncSimFromHash() {
     if(!POP) return;
+    if(!SIMS&&hashSim) { loadSims().then(syncSimFromHash).catch(()=>{}); return; }
     const wanted=hashSim&&POP.has(hashSim)?hashSim:null;
     if(wanted&&POP.current()!==wanted) POP.open(wanted,document.querySelector('.sim-trigger[data-sim="'+wanted+'"]'));
     else if(!wanted&&POP.isOpen()) POP.close();
   }
-  function stateHash() {
-    const params=new URLSearchParams();
-    if(state.query) params.set('q',state.query); else params.set('theme',state.theme);
-    if(state.kind!=='all') params.set('kind',state.kind);
-    if(state.selected) params.set('ticker',state.selected);
-    if(state.compareMode) params.set('compare',state.comparePicks.join(','));
-    if(state.indexMode) params.set('weights',state.indexPicks.join(','));
-    const openSim=POP&&POP.current();
-    if(openSim) params.set('sim',openSim);
-    return '#'+params.toString().replace(/%2C/gi,',');
+  // Until the walks load, keep a &sim= from the address so it is not dropped on the first render.
+  const stateHash = () => CORE.buildHash(state, (POP && POP.current()) || (!SIMS ? hashSim : null));
+  function viewTitle() {
+    const theme = themes.find(item => item.id === state.theme);
+    const simId = POP && POP.current();
+    const sim = simId && SIMS ? SIMS.sims.find(item => item.id === simId) : null;
+    return CORE.pageTitle({query: state.query, themeName: state.theme === 'all' ? 'All tickers' : state.theme === 'saved' ? 'Saved tickers' : theme && theme.name, ticker: state.selected, tickerName: bySymbol[state.selected] && bySymbol[state.selected].name, compare: state.compareMode ? state.comparePicks : null, weights: state.indexMode ? state.indexPicks : null, sim: sim && sim.title});
   }
   function syncURL() {
     const hash=stateHash();
+    document.title=viewTitle();
     const push=pushNext;
     pushNext=false;
     if(hash===location.hash) {appliedHash=hash;return;}
@@ -499,27 +521,19 @@ async function loadJSON(path) {
     appliedHash=hash;
   }
   function applyHash() {
-    const raw=location.hash.slice(1);
-    if(!raw.includes('=')) return false;
-    const params=new URLSearchParams(raw);
-    const theme=params.get('theme');
-    const kind=params.get('kind');
-    const query=(params.get('q')||'').trim().slice(0,200);
-    const ticker=(params.get('ticker')||'').trim().toUpperCase();
-    state.query=query;
-    state.theme=theme==='all'||theme==='saved'||themes.some(item=>item.id===theme)?theme:(query?state.theme:'gold');
-    state.kind=['stock','fund'].includes(kind)?kind:'all';
-    if(bySymbol[ticker]) state.selected=ticker;
-    const compare=params.get('compare');
-    state.compareMode=compare!==null;
-    const weights=params.get('weights');
-    const symbolList=value=>[...new Set(value.toUpperCase().split(',').map(symbol=>symbol.trim()).filter(symbol=>bySymbol[symbol]))];
-    state.indexMode=weights!==null&&!state.compareMode;
-    if(state.indexMode) state.indexPicks=symbolList(weights);
-    if(state.compareMode) { state.indexMode=false; state.comparePicks=[...new Set(compare.toUpperCase().split(',').map(symbol=>symbol.trim()).filter(symbol=>bySymbol[symbol]))].slice(0,COMPARE_MAX); }
-    $('search').value=state.query;
-    $('kind-filter').value=state.kind;
-    hashSim=params.get('sim');
+    const parsed = CORE.parseHash(location.hash, {hasTheme: id => themes.some(item => item.id === id), hasSymbol: symbol => Boolean(bySymbol[symbol]), currentTheme: state.theme});
+    if (!parsed) return false;
+    state.query = parsed.query;
+    state.theme = parsed.theme;
+    state.kind = parsed.kind;
+    if (parsed.ticker) state.selected = parsed.ticker;
+    state.compareMode = parsed.compareMode;
+    if (parsed.comparePicks) state.comparePicks = parsed.comparePicks;
+    state.indexMode = parsed.indexMode;
+    if (parsed.indexPicks) state.indexPicks = parsed.indexPicks;
+    $('search').value = state.query;
+    $('kind-filter').value = state.kind;
+    hashSim = parsed.sim;
     return true;
   }
   function onHistoryMove() {
@@ -557,6 +571,57 @@ async function loadJSON(path) {
     return {symbol:item.symbol,name:item.name,kind:item.kind,exposure:item.exposure,links:researchLinks(item)};
   }
 
+  // Runs once js/simulations.js is in: walks, definitions, and the underlines in theme and research text.
+  function setupSims() {
+    if (!POP || !SIMS) return;
+    POP.init(SIMS.sims, SIMS.terms);
+    POP.prereqLabel = SIMS.PREREQ_LABEL;
+    POP.renderList($('sim-list'));
+    POP.renderStartHere($('start-list'), SIMS.startHere);
+    POP.onChange = () => { pushNext = false; syncURL(); };
+    renderGlossary();
+    renderTopic();
+    const active = document.activeElement;
+    if (!(active && active !== $('research') && $('research').contains(active))) renderResearch();
+  }
+  function openGuide() {
+    $('research-guide').open = true;
+    const start = $('start-here') || $('research-guide');
+    start.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+    start.focus({preventScroll: true});
+  }
+  // First visit: a short welcome card, and the research guide opens once. Dismissed is remembered.
+  const WELCOME_KEY = 'market-forces-welcome';
+  function setupWelcome() {
+    const card = $('welcome');
+    if (!card) return;
+    let seen = null;
+    try { seen = localStorage.getItem(WELCOME_KEY); } catch {}
+    if (seen === 'dismissed') return;
+    card.hidden = false;
+    if (!seen) { $('research-guide').open = true; try { localStorage.setItem(WELCOME_KEY, 'seen'); } catch {} }
+    $('welcome-start').addEventListener('click', openGuide);
+    $('welcome-dismiss').addEventListener('click', () => {
+      card.hidden = true;
+      try { localStorage.setItem(WELCOME_KEY, 'dismissed'); } catch {}
+      $('status').textContent = 'Welcome note closed. The Start here link above the search brings the guide back.';
+      $('guide-link').focus();
+    });
+  }
+  // Banner when catalog entries or the index-weights snapshot are older than 90 days.
+  function showStaleBanner() {
+    const banner = $('stale-banner');
+    if (!banner) return;
+    const fresh = CORE.freshness([...instruments, ...themes], NOW);
+    const oldIndex = (indexData ? indexData.indices : []).map(index => index.snapshotDate).filter(iso => CORE.isStale(iso, NOW)).sort()[0];
+    const parts = [];
+    if (fresh.staleCount) parts.push(fresh.staleCount + (fresh.staleCount === 1 ? ' directory entry was' : ' directory entries were') + ' last checked more than ' + CORE.STALE_DAYS + ' days ago (oldest ' + dayLabel(fresh.oldest) + ').');
+    if (oldIndex) parts.push('The index-weights snapshot is from ' + dayLabel(oldIndex) + '.');
+    if (!parts.length) { banner.hidden = true; return; }
+    banner.innerHTML = '<p><strong>Some details may be out of date.</strong> ' + escapeHTML(parts.join(' ')) + ' Names, issuers, and holdings can change; confirm on the issuer’s or company’s page.</p>';
+    banner.hidden = false;
+  }
+
 async function init() {
   try {
     const catalog = await loadJSON('data/catalog.json');
@@ -568,20 +633,21 @@ async function init() {
     loadNotes();
     loadWatchlist();
   } catch (error) {
-    $('ticker-results').innerHTML = '<div class="empty"><h3>The directory did not load</h3><p>' + escapeHTML(error.message) + '</p></div>';
+    // Friendly failed-load state: what happened, what to try, and somewhere useful to go meanwhile.
+    const offline = navigator.onLine === false;
+    $('topic').innerHTML = '';
+    $('research').innerHTML = '<div class="research-placeholder">Research links appear here once the directory loads.</div>';
+    $('ticker-results').innerHTML = '<div class="empty load-failed" role="alert"><h3>The directory did not load</h3><p>' + (offline ? 'This device seems to be offline. ' : 'The list of tickers could not be fetched. ') + 'Check your connection, then try again. If you have opened this page before, a saved copy may load.</p><button type="button" class="reset-button" id="retry-load">Try again</button><p class="resource-note">Meanwhile: <a href="https://www.investor.gov/introduction-investing"' + externalAttrs + '>Investor.gov beginner resources<span class="sr-only"> (opens in a new tab)</span></a> · <a href="about.html">About this page</a></p><p class="resource-note load-detail">Details: ' + escapeHTML(error.message) + '</p></div>';
     $('status').textContent = 'The directory did not load.';
+    $('retry-load').addEventListener('click', () => { $('ticker-results').innerHTML = '<p class="empty">Loading the directory…</p>'; $('status').textContent = 'Trying again.'; init(); }, {once: true});
     return;
   }
   $('catalog-count').textContent = instruments.length + ' tickers';
   $('catalog-date').textContent = directoryDate(catalogUpdated);
   renderGlossary();
-  if (POP && SIMS) {
-    POP.init(SIMS.sims, SIMS.terms);
-    POP.prereqLabel = SIMS.PREREQ_LABEL;
-    POP.renderList($('sim-list'));
-    POP.renderStartHere($('start-list'), SIMS.startHere);
-    POP.onChange = () => { pushNext = false; syncURL(); };
-  } else { $('sim-guide')?.setAttribute('hidden', ''); }
+  showStaleBanner();
+  if (!storageWorks()) showStorageWarning();
+  if (POP) POP.ensure = loadSims; else $('sim-guide')?.setAttribute('hidden', '');
   $('search-form').addEventListener('submit', event => event.preventDefault());
   $('search').addEventListener('input', event => { state.query = event.target.value.trim(); render(); });
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });
@@ -606,7 +672,7 @@ async function init() {
     if (!text || !state.selected) return;
     const entry = {id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())), text, at: new Date().toISOString()};
     notes[state.selected] = [entry, ...notesFor(state.selected)];
-    saveNotes();
+    if (saveNotes()) { const meta = backupMeta(); meta.since++; saveBackupMeta(meta); if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); }
     render();
     $('note-text')?.focus();
   });
@@ -646,6 +712,20 @@ async function init() {
       ($('research').querySelector('[data-save-ticker]') || $('research')).focus();
       return;
     }
+    if (event.target.closest('[data-back-to-list]')) {
+      const target = document.querySelector('.ticker-select[data-symbol="' + state.selected + '"]') || $('main-content');
+      target.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'center'});
+      target.focus({preventScroll: true});
+      return;
+    }
+    if (event.target.closest('[data-backup-now]')) {
+      try { $('status').textContent = downloadBackup(); } catch { $('status').textContent = 'The backup could not be created in this browser.'; }
+      render(false); $('research').focus(); return;
+    }
+    if (event.target.closest('[data-backup-snooze]')) {
+      const meta = backupMeta(); meta.snoozeAt = meta.since + BACKUP_NUDGE_AFTER; saveBackupMeta(meta);
+      render(false); $('status').textContent = 'Backup reminder hidden for now.'; $('note-text')?.focus(); return;
+    }
     const copyButton = event.target.closest('[data-copy-link]');
     if (copyButton) { copyLink(copyButton); return; }
     const deleteNote = event.target.closest('[data-delete-note]');
@@ -677,12 +757,15 @@ async function init() {
   });
   // In-page anchors would replace the deep-link hash, so scroll to them instead.
   // "New to researching a ticker?" opens the guide at its Start here panel.
-  $('guide-link').addEventListener('click', event => { event.preventDefault(); $('research-guide').open = true; const start = $('start-here') || $('research-guide'); start.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'}); start.focus({preventScroll: true}); });
+  $('guide-link').addEventListener('click', event => { event.preventDefault(); openGuide(); });
+  setupWelcome();
   document.querySelector('.skip')?.addEventListener('click', event => { event.preventDefault(); $('main-content').focus(); });
   window.addEventListener('popstate', onHistoryMove);
   window.addEventListener('hashchange', onHistoryMove);
   applyHash();
   render(false);
+  if (POP && SIMS) setupSims();
+  else if (POP && !hashSim) whenIdle(() => loadSims().catch(() => {}));
   syncSimFromHash();
   if (document.modelContext?.registerTool) {
     const lifecycle = new AbortController();

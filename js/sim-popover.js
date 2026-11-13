@@ -66,9 +66,9 @@
 
   const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
   // One underlined control. Native <button>, so Enter and Space open it.
-  const trigger = (sim, text) => '<button type="button" class="sim-trigger" data-sim="' + escapeHTML(sim) + '" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint" title="Opens a short simulation">' + escapeHTML(text) + '</button>';
+  const trigger = (sim, text) => '<button type="button" class="sim-trigger" data-sim="' + escapeHTML(sim) + '" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint">' + escapeHTML(text) + '</button>';
   // A grey-underlined word with a plain-language definition (a toggletip, not a walk).
-  const termTrigger = (term, text) => '<button type="button" class="term-tip" data-term="' + escapeHTML(term) + '" aria-expanded="false" title="Show a plain-language definition">' + escapeHTML(text) + '</button>';
+  const termTrigger = (term, text) => '<button type="button" class="term-tip" data-term="' + escapeHTML(term) + '" aria-expanded="false" aria-describedby="term-tip-hint">' + escapeHTML(text) + '</button>';
   // A ref id of 'term:<id>' is a definition; anything else is a simulation id.
   const refTrigger = (id, text) => String(id).startsWith('term:') ? termTrigger(String(id).slice(5), text) : trigger(id, text);
   // Lesson text: plain runs and {text, sim} or {text, term} triggers, as in Tool Training's ToolText.
@@ -309,7 +309,14 @@
   }
   document.addEventListener('click', event => {
     const el = event.target.closest('.term-tip[data-term]');
-    if (el) { event.preventDefault(); if (tipFrom === el && !tip.hidden) hideTip(false); else showTip(el.dataset.term, el); return; }
+    if (el) {
+      event.preventDefault();
+      if (tipFrom === el && tip && !tip.hidden) { hideTip(false); return; }
+      // Definitions arrive with js/simulations.js, which the page loads when idle; a click before then loads it first.
+      if (!terms[el.dataset.term] && api.ensure) { api.ensure().then(() => showTip(el.dataset.term, el)).catch(() => {}); return; }
+      showTip(el.dataset.term, el);
+      return;
+    }
     if (event.target.closest('[data-term-close]')) { hideTip(true); return; }
     if (tip && !tip.hidden && !event.target.closest('.term-pop')) hideTip(false);
   });
@@ -335,6 +342,7 @@
     const el = event.target.closest('.sim-trigger[data-sim]');
     if (!el) return;
     event.preventDefault();
+    if (!byId(el.dataset.sim) && api.ensure) { api.ensure().then(() => open(el.dataset.sim, el)).catch(() => {}); return; }
     open(el.dataset.sim, el);
   });
   Object.assign(api, {
@@ -346,7 +354,9 @@
     current: () => current ? current.id : null,
     isOpen: () => Boolean(current),
     state: () => state ? {...state} : null,
-    onChange: null
+    onChange: null,
+    // Set by js/app.js: returns a promise that resolves once the simulations and definitions are loaded.
+    ensure: null
   });
   root.MFSimPopover = api;
 })(typeof window !== 'undefined' ? window : globalThis);

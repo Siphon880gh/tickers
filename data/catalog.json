@@ -1643,7 +1643,7 @@
         "TIP",
         "BND"
       ],
-      "tags": "bonds fixed income treasury credit duration treasuries safe interest savings",
+      "tags": "bonds fixed income treasury credit duration treasuries safe interest savings t-bills tbills",
       "description": "U.S. Treasury funds from very short bills to long-term bonds.",
       "connection": "Bond prices generally move opposite to yields. Longer-term funds move more when yields change.",
       "links": [

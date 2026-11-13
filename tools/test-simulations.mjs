@@ -102,7 +102,9 @@ test('underlines in index.html resolve', () => {
   for (const id of found) use('index.html', id);
   for (const m of html.matchAll(/class="term-tip" data-term="([^"]+)"/g)) use('index.html', 'term:' + m[1]);
   assert.ok(html.includes('id="sim-trigger-hint"') && html.includes('id="sim-list"'));
-  assert.ok(html.indexOf('js/simulations.js') < html.indexOf("'js/app.js'"), 'simulations load before app.js');
+  // js/simulations.js loads lazily from js/app.js (when idle, or at once for a &sim= link), not from the page's loader.
+  assert.ok(!html.includes("'js/simulations.js'"), 'index.html should not load simulations.js up front');
+  assert.ok(read('js/app.js').includes("'js/simulations.js?v='"), 'app.js loads simulations.js');
 });
 test('every simulation has an underlined phrase in the page content', () => {
   for (const id of ids) assert.ok(used.has(id), id + ' is only in the list');
