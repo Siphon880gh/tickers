@@ -27,6 +27,7 @@ Beginner’s directory of common stocks and funds, grouped by economic theme, wi
 - **Step through why it matters.** Dotted purple phrases ▶ in theme text, the research panel, Compare, Index weights, and the research guide open a short simulation, copied from Tool Training in the stocks trainer: a SAMPLE chart or table you step through with Next, Previous, Replay, or the arrow keys. Each step says what it shows and why we are looking. `#…&sim=duration` opens one directly. The research guide lists all 42, Basic first, and every theme underlines at least one. Each walk is tagged Basic, Next step, or Advanced, and a walk that builds on another shows “New to …? ▶” at the top.
 - **Start here for beginners.** “New to researching a ticker? Start here” opens a three-step how-to and seven Basic walks in reading order: what a stock is, how to read a bar, what an index and market cap are, the bond seesaw, compounding, diversification, and defining your downside.
 - **Plain-language words.** Grey underlined words (ETF, Treasury, maturity, futures, spot, market cap, issuer, prospectus, and about 20 more) show a one-line definition; Esc or a click elsewhere closes it. Every research link has a short line saying what it opens.
+- **Dividend screeners & databases.** The research guide lists free sites that track how often companies pay and how consistently they have raised payouts. Searching for *dividend screener*, *monthly dividend*, *dividend aristocrats*, or *dividend champions* points you there, and `#dividend-screeners` opens the table directly. Educational, not buy or sell advice.
 - **Welcome and About.** A first visit shows a short welcome card (Got it hides it for good) and opens the research guide once. [About, FAQ, and disclaimer](about.html) covers where the data comes from, how current it is, and where notes are kept.
 - **Building blocks and bond funds.** Broad funds (VTI, VXUS, BND, BNDX, SGOV, and the all-in-one AOR) and Corporate & muni bonds (LQD, HYG, MUB). Search understands everyday words such as *index fund*, *retirement*, *junk bonds*, or *tax free*.
 - **Not covered, and why.** Searching for crypto, leveraged or inverse funds, options, single bonds or CDs, or an account type explains why this beginner directory leaves it out, with an Investor.gov link.
@@ -43,7 +44,7 @@ After editing `data/catalog.json` or `data/index-weights.json`, run `node tools/
 
 It also checks every `reviewed` date and warns when an entry or index snapshot is more than 90 days old, or when an index snapshot has no directory ticker.
 
-After changing `js/core.js` (deep links, search ranking, not-covered notes, backup merge, freshness, titles), run `node tools/test-app.mjs`.
+After changing `js/core.js` (deep links, search ranking, not-covered notes, resource hints, backup merge, freshness, titles), run `node tools/test-app.mjs`.
 
 When you change anything under `js/` or `data/`, bump `APP_VERSION` in `index.html` (the loader's `version`). Scripts, data, and the service worker cache all follow it. Accessibility checks and results are in [docs/accessibility.md](docs/accessibility.md).
 

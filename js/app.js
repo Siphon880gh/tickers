@@ -290,10 +290,15 @@ async function loadJSON(path) {
     const browse = hit.themes.map(id => themes.find(theme => theme.id === id)).filter(Boolean).map(theme => '<button type="button" data-theme="' + theme.id + '">Browse ' + escapeHTML(theme.name) + '</button>').join('');
     return '<div class="not-covered" role="note" aria-labelledby="not-covered-title"><h3 id="not-covered-title">' + escapeHTML(hit.title) + '</h3><p>' + escapeHTML(hit.text) + '</p><p class="not-covered-links">' + hit.links.map(([title, url]) => '<a href="' + escapeHTML(url) + '"' + externalAttrs + '>' + escapeHTML(title) + '<span class="sr-only"> (opens in a new tab)</span></a>').join('') + browse + '</p></div>';
   }
+  function resourceHintBox(query) {
+    const hit = CORE.resourceHint(query);
+    if (!hit) return '';
+    return '<div class="resource-hint" role="note" aria-labelledby="resource-hint-title"><h3 id="resource-hint-title">' + escapeHTML(hit.title) + '</h3><p>' + escapeHTML(hit.text) + '</p><p class="resource-hint-links"><a href="' + escapeHTML(hit.href) + '">' + escapeHTML(hit.linkLabel) + '</a></p></div>';
+  }
   function renderTopic() {
     if(state.query) {
       const matches=matchingThemes(state.query);
-      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, economic themes, and your notes.</p>'+notCoveredBox(state.query)+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
+      $('topic').innerHTML='<p class="eyebrow">Directory search</p><h2 id="topic-title">Results for “'+escapeHTML(state.query)+'”</h2><p>Matches from ticker symbols, company names, industries, markets, economic themes, and your notes.</p>'+notCoveredBox(state.query)+resourceHintBox(state.query)+(matches.length?'<div class="search-themes">'+matches.map(theme=>'<button type="button" data-theme="'+theme.id+'">Browse '+escapeHTML(theme.name)+'</button>').join('')+'</div>':'');
       return;
     }
     if(state.theme==='saved') {
@@ -306,7 +311,8 @@ async function loadJSON(path) {
     }
     const theme=themes.find(item=>item.id===state.theme);
     const eyebrow=theme.category?theme.group+' · '+theme.category:theme.group;
-    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(eyebrow)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+simRich(theme.description,(SIMS?.themeRefs[theme.id]||{}).description)+'</p><p class="connection"><strong>The connection: </strong>'+simRich(theme.connection,(SIMS?.themeRefs[theme.id]||{}).connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>';
+    const screeners = theme.id==='dividend' ? '<p class="connection"><a href="#dividend-screeners">Dividend screeners &amp; databases</a> lists free sites that track how often companies pay and how consistently they have raised payouts.</p>' : '';
+    $('topic').innerHTML='<p class="eyebrow">'+escapeHTML(eyebrow)+'</p><h2 id="topic-title">'+escapeHTML(theme.name)+'</h2><p>'+simRich(theme.description,(SIMS?.themeRefs[theme.id]||{}).description)+'</p><p class="connection"><strong>The connection: </strong>'+simRich(theme.connection,(SIMS?.themeRefs[theme.id]||{}).connection)+'</p><div class="macro-links">'+theme.links.map(([title,url])=>'<a href="'+escapeHTML(url)+'"'+externalAttrs+'>'+escapeHTML(title)+'<span class="sr-only"> (opens in a new tab)</span></a>').join('')+'</div>'+screeners;
   }
   function renderResults(pool) {
     $('result-count').textContent=pool.length+' '+(pool.length===1?'ticker':'tickers');
@@ -538,6 +544,7 @@ async function loadJSON(path) {
   }
   function onHistoryMove() {
     if(location.hash===appliedHash) return;
+    if(openHashSection()) { appliedHash=location.hash; return; }
     if(!applyHash()) return;
     appliedHash=location.hash;
     render();
@@ -584,11 +591,36 @@ async function loadJSON(path) {
     const active = document.activeElement;
     if (!(active && active !== $('research') && $('research').contains(active))) renderResearch();
   }
-  function openGuide() {
+  function openGuideSection(id) {
+    const el = $(id) || $('start-here') || $('research-guide');
     $('research-guide').open = true;
-    const start = $('start-here') || $('research-guide');
-    start.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'});
-    start.focus({preventScroll: true});
+    el.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+    el.focus({preventScroll: true});
+  }
+  function openGuide() { openGuideSection('start-here'); }
+  function hashSectionId() {
+    const id = (location.hash || '').replace(/^#/, '');
+    return (id === 'start-here' || id === 'dividend-screeners') ? id : null;
+  }
+  function openHashSection() {
+    const id = hashSectionId();
+    if (!id) return false;
+    openGuideSection(id);
+    return true;
+  }
+  // In-page anchors would replace a #theme=… deep link, so scroll without clobbering state hashes.
+  function onGuideAnchorClick(event) {
+    const link = event.target.closest('a[href="#start-here"], a[href="#dividend-screeners"]');
+    if (!link) return false;
+    event.preventDefault();
+    const id = link.getAttribute('href').slice(1);
+    openGuideSection(id);
+    if (!String(location.hash).includes('=')) {
+      try { history.replaceState(null, '', '#' + id); } catch {}
+      appliedHash = location.hash;
+    }
+    $('status').textContent = id === 'dividend-screeners' ? 'Opened Dividend screeners & databases.' : 'Opened the Start here guide.';
+    return true;
   }
   // First visit: a short welcome card, and the research guide opens once. Dismissed is remembered.
   const WELCOME_KEY = 'market-forces-welcome';
@@ -703,6 +735,7 @@ async function init() {
     if (event.key === 'Escape' && target === $('search') && $('search').value) { event.preventDefault(); $('search').value = ''; state.query = ''; render(); $('status').textContent = 'Search cleared.'; }
   });
   document.addEventListener('click', event => {
+    if (onGuideAnchorClick(event)) return;
     const saveButton = event.target.closest('[data-save-ticker]');
     if (saveButton && state.selected) {
       const symbol = state.selected;
@@ -764,6 +797,7 @@ async function init() {
   window.addEventListener('hashchange', onHistoryMove);
   applyHash();
   render(false);
+  openHashSection();
   if (POP && SIMS) setupSims();
   else if (POP && !hashSim) whenIdle(() => loadSims().catch(() => {}));
   syncSimFromHash();

@@ -273,6 +273,30 @@
     .start-list li{margin:0!important}
     .resource-help{display:block;font-size:.6875rem;line-height:1.35;font-weight:400;color:#3f5569;margin-top:.2rem}
     .resource-link.featured .resource-help{color:#e3eef3}
+
+    .resource-hint{margin-top:1rem;background:var(--accent-soft);border:1px solid #9ec9c6;border-radius:10px;padding:.85rem 1rem}
+    .resource-hint h3{margin:0 0 .3rem;font-size:1rem;color:var(--navy)}
+    .topic .resource-hint p{color:var(--ink);margin:.3rem 0 0;font-size:.9375rem}
+    .resource-hint-links{display:flex;gap:.5rem .9rem;flex-wrap:wrap;align-items:center}
+    .screeners{margin:1rem 0 0;padding:.85rem 1rem;border:1px solid var(--border);background:#fafcfe;border-radius:10px;scroll-margin-top:1rem;color:var(--ink)}
+    .screeners:focus{outline:3px solid var(--focus);outline-offset:2px}
+    .screeners .glossary-title{margin-top:0}
+    .screeners .screeners-intro,.screeners .screeners-disclaimer{margin:.5rem 0 0;font-size:.875rem;color:#3f5569}
+    .screeners .screeners-disclaimer{font-weight:650;color:var(--ink)}
+    .screener-table-wrap{margin:.75rem 0 0}
+    .screener-table{width:100%;border-collapse:collapse;font-size:.8125rem;background:#fff}
+    .screener-table th,.screener-table td{border-top:1px solid var(--border);padding:.55rem .5rem;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+    .screener-table thead th{border-top:0;font-size:.7rem;font-weight:750;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:#f7fafc}
+    .screener-table tbody tr:first-child th,.screener-table tbody tr:first-child td{border-top:1px solid var(--border)}
+    .screener-table a{font-weight:650}
+    @media(max-width:700px){
+      .screener-table thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+      .screener-table,.screener-table tbody,.screener-table tr,.screener-table th,.screener-table td{display:block;width:100%}
+      .screener-table tr{border:1px solid var(--border);border-radius:8px;margin:0 0 .65rem;padding:.45rem .7rem .55rem;background:#fff}
+      .screener-table th,.screener-table td{border:0;padding:.28rem 0;display:grid;grid-template-columns:8.2rem 1fr;gap:.45rem;align-items:start}
+      .screener-table th::before,.screener-table td::before{content:attr(data-label);font-size:.7rem;font-weight:750;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:.15rem}
+      .screener-table tr:last-child{margin-bottom:0}
+    }
     .notice{border-radius:10px;padding:.85rem 1rem;margin:0 0 1rem;font-size:.9rem;line-height:1.5}
     .notice p{margin:0}
     .notice.stale{background:#fff6e0;border:1px solid #e3c27a;color:#5c4200}
@@ -378,7 +402,56 @@
               <li><strong><button type="button" class="sim-trigger" data-sim="sentiment" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint">Cross-check the conversation.</button></strong> Social sentiment reflects the people posting, not every investor. Compare claims with <button type="button" class="term-tip" data-term="filings" aria-expanded="false" aria-describedby="term-tip-hint">filings</button> and primary sources.</li>
               <li><strong><button type="button" class="sim-trigger" data-sim="downside" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint">Define your downside.</button></strong> Decide how much loss you can tolerate before choosing a <button type="button" class="term-tip" data-term="position-size" aria-expanded="false" aria-describedby="term-tip-hint">position size</button>. <button type="button" class="sim-trigger" data-sim="stop-loss" aria-haspopup="dialog" aria-expanded="false" aria-describedby="sim-trigger-hint">Understand your order type</button> and any tax consequences.</li>
             </ol>
-            <h3 class="glossary-title">What you would own, by type</h3>
+            <section class="screeners" id="dividend-screeners" tabindex="-1" aria-labelledby="dividend-screeners-title">
+              <h3 class="glossary-title" id="dividend-screeners-title">Dividend screeners &amp; databases</h3>
+              <p class="screeners-intro">Frequency is how often a company pays (monthly, quarterly, and so on). Consistency is how reliably it has kept or raised that payout, for example consecutive years of dividend growth.</p>
+              <p class="screeners-disclaimer">Educational, not buy or sell advice.</p>
+              <div class="screener-table-wrap">
+                <table class="screener-table">
+                  <caption class="sr-only">Dividend screeners and databases: what each is best for, whether it tracks payout frequency and consistency, and cost</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Platform</th>
+                      <th scope="col">Best for</th>
+                      <th scope="col">Tracks frequency?</th>
+                      <th scope="col">Tracks consistency?</th>
+                      <th scope="col">Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row" data-label="Platform"><a href="https://stockanalysis.com/list/monthly-dividend-stocks/" target="_blank" rel="noopener noreferrer">Stock Analysis<span class="sr-only"> (opens in a new tab)</span></a></th>
+                      <td data-label="Best for">Free, clean lists of all dividend payers, monthly payers, and Aristocrats</td>
+                      <td data-label="Tracks frequency?">Yes (monthly, quarterly, and so on)</td>
+                      <td data-label="Tracks consistency?">Yes (consecutive years of dividend growth)</td>
+                      <td data-label="Cost">Free (Pro tier optional)</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" data-label="Platform"><a href="https://www.dividend.com/dividend-stock-screener/" target="_blank" rel="noopener noreferrer">Dividend.com<span class="sr-only"> (opens in a new tab)</span></a></th>
+                      <td data-label="Best for">Filtering by payout schedule and ex-dividend dates</td>
+                      <td data-label="Tracks frequency?">Yes (monthly, quarterly, semi-annual, annual)</td>
+                      <td data-label="Tracks consistency?">Yes (10-year and 25-year increaser filters, plus 40+ year history)</td>
+                      <td data-label="Cost">Freemium (deep filters need Premium)</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" data-label="Platform"><a href="https://www.ireitinvestor.com/dividend-champions/" target="_blank" rel="noopener noreferrer">The CCC List (Dividend Champions)<span class="sr-only"> (opens in a new tab)</span></a></th>
+                      <td data-label="Best for">Downloadable spreadsheet of U.S. stocks with 5+ years of raises</td>
+                      <td data-label="Tracks frequency?">Yes (payouts per year column)</td>
+                      <td data-label="Tracks consistency?">Yes (exact streak of consecutive annual increases)</td>
+                      <td data-label="Cost">Free (updated monthly)</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" data-label="Platform"><a href="https://finviz.com/screener.ashx" target="_blank" rel="noopener noreferrer">Finviz<span class="sr-only"> (opens in a new tab)</span></a></th>
+                      <td data-label="Best for">Screening dividend stocks alongside valuation and technical indicators</td>
+                      <td data-label="Tracks frequency?">No (shows annualized yield only)</td>
+                      <td data-label="Tracks consistency?">Limited (pair with payout ratio and EPS growth)</td>
+                      <td data-label="Cost">Free (Elite tier optional)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+                        <h3 class="glossary-title">What you would own, by type</h3>
             <dl class="glossary" id="exposure-glossary"></dl>
             <section class="sim-guide" id="sim-guide" aria-labelledby="sim-guide-title">
               <h3 class="glossary-title" id="sim-guide-title">Simulations: why each check matters</h3>
@@ -407,7 +480,7 @@
   <script>
     (function () {
       // Bump APP_VERSION when you change any file under js/ or data/ (and sw.js caches follow it).
-      var version = window.MF_VERSION = '2026-11-13.2';
+      var version = window.MF_VERSION = '2026-11-26.1';
       ['js/sim-popover.js', 'js/core.js', 'js/app.js'].forEach(function (src) {
         var script = document.createElement('script');
         script.src = src + '?v=' + version;

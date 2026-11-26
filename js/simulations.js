@@ -488,7 +488,8 @@
         bar('W4', [47.8, 48, 41, 42], 'Week 4: earnings (E). The company cuts the dividend to $0.50 to save cash, and shares fall to 42.', 'A dividend can be cut when cash flow weakens. The Cash flow and Dividend history links show whether past payouts were covered.', {mark: 'earnings', readout: '$0.50 a quarter'}),
         bar('W5', [42, 43, 41.5, 42.6], 'Week 5: shares steady near 42.60.', 'Over five weeks an investor received $1 in dividends and lost about $7.60 in price. Look at total return, not the yield alone.')
       ],
-      takeaway: 'A dividend is part of total return, not a bonus on top. Check whether cash flow covers the payout and how the price has done.'
+      takeaway: 'A dividend is part of total return, not a bonus on top. Check whether cash flow covers the payout and how the price has done.',
+      resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'}
     },
     {
       kind: 'columns', id: 'downside',
@@ -985,7 +986,7 @@
     emerging: {term: 'Emerging market', def: 'A country whose economy and stock market are still developing, often with faster growth and more political and currency risk.', sim: 'country-mix'},
     developed: {term: 'Developed market', def: 'A country with a mature economy and established stock market, such as Japan, the UK, or Germany.', sim: 'country-mix'},
     style: {term: 'Growth vs value', def: 'Index labels. Growth companies are expected to grow profits fast and usually cost more per dollar of earnings; value companies look cheaper on ratios. Each fund’s index sets its own rules.', sim: 'value-trap'},
-    dividend: {term: 'Dividend', def: 'Cash a company pays its shareholders out of profits, often every quarter. It can be raised, cut, or stopped.', sim: 'dividend'},
+    dividend: {term: 'Dividend', def: 'Cash a company pays its shareholders out of profits, often every quarter. It can be raised, cut, or stopped.', sim: 'dividend', resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'}},
     earnings: {term: 'Earnings', def: 'A company’s profit after costs. Earnings per share (EPS) is that profit divided by the number of shares.', sim: 'stock-basics'},
     valuation: {term: 'Valuation', def: 'What investors pay for a business compared with what it earns or owns, for example the P/E ratio: share price ÷ yearly earnings per share.', sim: 'value-trap'},
     'risk-appetite': {term: 'Risk appetite', def: 'How willing investors feel to take chances. When it is high they buy riskier assets; when it drops they move toward safer ones.'},

@@ -115,6 +115,22 @@
     return hit ? {id: hit.id, title: hit.title, text: hit.text, links: hit.links, themes: hit.themes || []} : null;
   }
 
+  // In-page resource hints for searches that point at a guide section, not a missing ticker.
+  const RESOURCE_HINTS = [
+    {id: 'dividend-screeners',
+      test: /\b(dividend\s+screeners?|monthly\s+dividends?|dividend\s+aristocrats?|dividend\s+champions?|ccc\s+list)\b/,
+      title: 'Dividend screeners & databases',
+      text: 'This directory is a starting set, not a complete list of dividend payers. Open Dividend screeners & databases for free sites that track how often companies pay and how consistently they have raised payouts.',
+      href: '#dividend-screeners',
+      linkLabel: 'Open Dividend screeners & databases'}
+  ];
+  function resourceHint(query) {
+    const q = ' ' + String(query || '').toLowerCase().trim() + ' ';
+    if (q.trim().length < 2) return null;
+    const hit = RESOURCE_HINTS.find(entry => entry.test.test(q));
+    return hit ? {id: hit.id, title: hit.title, text: hit.text, href: hit.href, linkLabel: hit.linkLabel} : null;
+  }
+
   // ---- Backup merge: {app:'market-forces', version:1, exportedAt, notes, watchlist}. Merges, never deletes. ----
   function mergeBackup(text, current, hasSymbol) {
     let data;
@@ -182,7 +198,7 @@
     return parts.join(' · ');
   }
 
-  const api = {COMPARE_MAX, STALE_DAYS, parseHash, buildHash, matchingThemes, scoreInstrument, searchInstruments, notCovered, NOT_COVERED, mergeBackup, parseDay, daysSince, isStale, freshness, pageTitle};
+  const api = {COMPARE_MAX, STALE_DAYS, parseHash, buildHash, matchingThemes, scoreInstrument, searchInstruments, notCovered, NOT_COVERED, resourceHint, RESOURCE_HINTS, mergeBackup, parseDay, daysSince, isStale, freshness, pageTitle};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.MFCore = api;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -167,7 +167,7 @@
       '<p class="sim-progress"><strong>' + walkProgress(sim, s) + '</strong>' + (copy.label ? ' · ' + escapeHTML(copy.label) : '') + (b ? ' · O ' + fmt(b.open) + ' H ' + fmt(b.high) + ' L ' + fmt(b.low) + ' C ' + fmt(b.close) : '') + (b && b.readout ? ' · ' + escapeHTML(b.readout) : '') + '</p>' +
       '<div class="sim-what"><p class="sim-kicker">What this ' + unit + ' shows</p><p>' + escapeHTML(copy.what) + '</p></div>' +
       '<div class="sim-why"><p class="sim-kicker">Why we are doing this</p><p>' + escapeHTML(copy.why) + '</p></div>' +
-      (atEnd(s) ? '<p class="sim-takeaway" data-sim-takeaway><strong>Takeaway: </strong>' + escapeHTML(sim.takeaway) + '</p>' : '');
+      (atEnd(s) ? '<p class="sim-takeaway" data-sim-takeaway><strong>Takeaway: </strong>' + escapeHTML(sim.takeaway) + (sim.resource ? ' To look up how often companies pay and how consistently they have raised payouts, see <a href="' + escapeHTML(sim.resource.href) + '">' + escapeHTML(sim.resource.label) + '</a>.' : '') + '</p>' : '');
     const prev = layer.querySelector('[data-sim-prev]');
     const next = layer.querySelector('[data-sim-next]');
     prev.disabled = atStart(s);
@@ -296,7 +296,7 @@
     from.setAttribute('aria-controls', 'term-pop');
     tip.hidden = false;
     tip.dataset.term = id;
-    tip.querySelector('[data-term-body]').innerHTML = '<p><strong>' + escapeHTML(t.term) + ':</strong> ' + escapeHTML(t.def) + '</p>' + (t.sim && byId(t.sim) ? '<p class="term-walk">Walk: ' + trigger(t.sim, byId(t.sim).title) + '</p>' : '') + '<button type="button" class="term-close" data-term-close aria-label="Close definition">Close ✕</button>';
+    tip.querySelector('[data-term-body]').innerHTML = '<p><strong>' + escapeHTML(t.term) + ':</strong> ' + escapeHTML(t.def) + '</p>' + (t.sim && byId(t.sim) ? '<p class="term-walk">Walk: ' + trigger(t.sim, byId(t.sim).title) + '</p>' : '') + (t.resource ? '<p class="term-resource">Lists: <a href="' + escapeHTML(t.resource.href) + '">' + escapeHTML(t.resource.label) + '</a></p>' : '') + '<button type="button" class="term-close" data-term-close aria-label="Close definition">Close ✕</button>';
     placeTip(from);
     return true;
   }

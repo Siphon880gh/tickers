@@ -28,6 +28,7 @@ const search = (query, notes = () => false) => core.searchInstruments(instrument
 check('hash: a state-free hash is ignored', () => {
   eq(core.parseHash('', ctx), null);
   eq(core.parseHash('#start-here', ctx), null);
+  eq(core.parseHash('#dividend-screeners', ctx), null);
 });
 check('hash: theme, ticker, kind, and sim round-trip', () => {
   const parsed = core.parseHash('#theme=gold&kind=fund&ticker=gld&sim=duration', ctx);
@@ -70,6 +71,15 @@ check('search: matches keep the old rules (theme words, ticker text, notes)', ()
   eq(search('zzzz-nothing'), []);
   eq(search('my secret word', symbol => symbol === 'XOM'), ['XOM'], 'note text');
   ok(core.matchingThemes(themes, 'safe haven').some(theme => theme.id === 'gold'));
+});
+check('resource hint: dividend screener phrases point at the guide section', () => {
+  for (const q of ['dividend screener', 'dividend screeners', 'monthly dividend', 'monthly dividends', 'dividend aristocrats', 'Dividend Aristocrat', 'dividend champions', 'ccc list']) {
+    const hit = core.resourceHint(q);
+    eq(hit && hit.id, 'dividend-screeners', q);
+    eq(hit.href, '#dividend-screeners', q + ' href');
+  }
+  for (const q of ['dividend', 'dividends', 'gold', 'GLD', 'screener', '']) eq(core.resourceHint(q), null, q);
+  eq(core.RESOURCE_HINTS[0].href, '#dividend-screeners');
 });
 check('not covered: crypto, leveraged, options, single bonds, accounts', () => {
   eq(core.notCovered('bitcoin').id, 'crypto');
@@ -123,8 +133,17 @@ check('titles: one per view', () => {
 check('app.js uses js/core.js and index.html loads it before app.js', () => {
   const app = readFileSync(join(root, 'js/app.js'), 'utf8');
   const html = readFileSync(join(root, 'index.html'), 'utf8');
-  for (const name of ['parseHash', 'buildHash', 'searchInstruments', 'mergeBackup', 'notCovered', 'pageTitle', 'freshness']) ok(app.includes('CORE.' + name), 'app.js should call CORE.' + name);
+  for (const name of ['parseHash', 'buildHash', 'searchInstruments', 'mergeBackup', 'notCovered', 'resourceHint', 'pageTitle', 'freshness']) ok(app.includes('CORE.' + name), 'app.js should call CORE.' + name);
   ok(html.indexOf('js/core.js') > -1 && html.indexOf('js/core.js') < html.indexOf("'js/app.js'"), 'core.js loads before app.js');
+  ok(html.includes('id="dividend-screeners"') && html.includes('Dividend screeners &amp; databases'), 'research guide should include the screeners section');
+  for (const url of [
+    'https://stockanalysis.com/list/monthly-dividend-stocks/',
+    'https://www.dividend.com/dividend-stock-screener/',
+    'https://www.ireitinvestor.com/dividend-champions/',
+    'https://finviz.com/screener.ashx'
+  ]) ok(html.includes(url) && html.includes('rel="noopener noreferrer"'), url);
+  ok(html.includes('Educational, not buy or sell advice.'), 'screeners section should include the advice line');
+  ok(search('dividend aristocrats').includes('SCHD'), 'aristocrats search should still find the Dividend theme tickers');
 });
 
 for (const failure of failures) console.error('FAIL ' + failure);
