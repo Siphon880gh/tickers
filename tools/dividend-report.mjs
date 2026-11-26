@@ -19,6 +19,7 @@ const payerNoFreq = [];
 const payerNoStreak = [];
 const nonPayers = [];
 const payers = [];
+const weekly = [];
 
 for (const item of catalog.instruments || []) {
   const d = item.dividend;
@@ -30,6 +31,7 @@ for (const item of catalog.instruments || []) {
   if (!Array.isArray(d.sources) || !d.sources.length) noSource.push(where);
   if (!isDate(d.checked) || ageDays(d.checked) > STALE_DAYS) stale.push(where + ' (' + (d.checked || 'no date') + ')');
   if (d.pays === true && d.frequency == null) payerNoFreq.push(where);
+  if (d.pays === true && d.frequency === 'weekly') weekly.push(where);
   if (d.pays === true && d.consecutiveYearsRaised == null) payerNoStreak.push(where);
 }
 
@@ -43,6 +45,7 @@ line('pays is null (unknown)', unknownPays);
 line('Checked date missing or older than ' + STALE_DAYS + ' days', stale);
 line('No source URL', noSource);
 line('Pays, but frequency is unknown', payerNoFreq);
+line('Weekly payers (confirm weekly on the issuer page and Stock Analysis; most are option-income funds)', weekly);
 line('Pays, but no raise streak is recorded (common for funds)', payerNoStreak);
 console.log('Current payers: ' + payers.length + '. Confirmed non-payers: ' + nonPayers.length + '.');
 if (!missing.length && !unknownPays.length && !stale.length && !noSource.length) {

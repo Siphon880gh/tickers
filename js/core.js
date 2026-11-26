@@ -11,7 +11,7 @@
   }
   // Returns null when the hash holds no state (for example #start-here); otherwise the state it names.
   // ctx: {hasTheme(id), hasSymbol(symbol), currentTheme}. indexPicks is null when weights is absent, so the caller keeps its picks.
-  const DIV_FREQUENCIES = ['monthly', 'quarterly', 'semi-annual', 'annual', 'irregular'];
+  const DIV_FREQUENCIES = ['weekly', 'monthly', 'quarterly', 'semi-annual', 'annual', 'irregular'];
   const DIV_STREAKS = [1, 5, 10, 25]; // 1 means any recorded raise streak
   function parseDiv(params) {
     const freqRaw = (params.get('freq') || '').toLowerCase();
@@ -77,7 +77,7 @@
     }
     return true;
   }
-  const FREQ_LABEL = {monthly: 'Monthly', quarterly: 'Quarterly', 'semi-annual': 'Semi-annual', annual: 'Annual', irregular: 'Irregular'};
+  const FREQ_LABEL = {weekly: 'Weekly', monthly: 'Monthly', quarterly: 'Quarterly', 'semi-annual': 'Semi-annual', annual: 'Annual', irregular: 'Irregular'};
   // Short badge copy for a row or research panel. Null when there is no dividend record.
   function dividendBadge(dividend) {
     if (!dividend) return null;
@@ -131,19 +131,22 @@
 
   // ---- "Not covered here, and why" for searches this beginner directory leaves out on purpose ----
   const INVESTOR_GOV = 'https://www.investor.gov/introduction-investing';
+  // Searches for option-income funds (covered calls, 0DTE) match a theme here, so they skip the "options trading" note.
+  const OPTION_INCOME = /\b(covered\s+calls?|option\s+income|options\s+income|0dte)\b/;
   const NOT_COVERED = [
     {id: 'crypto', test: /\b(crypto\w*|bitcoin|btc|ethereum|ether|eth|solana|dogecoin|doge|stablecoins?|ibit|fbtc|gbtc|blockchain|nfts?)\b/,
       title: 'Crypto is not covered here',
       text: 'Bitcoin and other crypto funds follow a digital asset with no earnings, interest, or dividends, and prices can swing by large amounts in days. This beginner directory leaves them out on purpose.',
       links: [['Crypto assets · Investor.gov', 'https://www.investor.gov/additional-resources/spotlight/crypto-assets']]},
-    {id: 'leveraged', test: /\b(leverag\w*|inverse|[23]x|ultra\w*|triple|bull\s+3x|bear\s+3x|tqqq|sqqq|soxl|soxs|upro|spxu|spxs|tna|tza|short\s+etf|short\s+fund)\b/,
+    {id: 'leveraged', skip: /\bultra\s+option\s+income\b/, test: /\b(leverag\w*|inverse|[23]x|ultra\w*|triple|bull\s+3x|bear\s+3x|tqqq|sqqq|soxl|soxs|upro|spxu|spxs|tna|tza|short\s+etf|short\s+fund)\b/,
       title: 'Leveraged and inverse funds are not covered here',
       text: 'These funds reset every day, so over weeks or months they can end up far from 2× or −1× the index, even losing money when the index rises. They are built for short-term trading, not for beginners.',
       links: [['Leveraged and inverse ETFs · Investor.gov', 'https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-alerts/sec']]},
-    {id: 'options', test: /\b(options?|calls?|puts?|covered\s+calls?|0dte|strike|expiration|leaps)\b/,
-      title: 'Options are not covered here',
-      text: 'An option is a contract that can expire worthless, and your broker has to approve you to trade them. Learn how the underlying stock or fund works first; this page covers those.',
-      links: [['Options · Investor.gov', 'https://www.investor.gov/introduction-investing/investing-basics/glossary/options']]},
+    {id: 'options', skip: OPTION_INCOME, test: /\b(options?|calls?|puts?|strike|expiration|leaps)\b/,
+      title: 'Options trading is not covered here',
+      text: 'An option is a contract that can expire worthless, and your broker has to approve you to trade them. Learn how the underlying stock or fund works first; this page covers those. Funds that sell options for income are listed under Option-income (weekly payers).',
+      links: [['Options · Investor.gov', 'https://www.investor.gov/introduction-investing/investing-basics/glossary/options']],
+      themes: ['option-income']},
     {id: 'single-bonds', test: /\b(individual\s+bonds?|single\s+bonds?|cusip|cds?|certificates?\s+of\s+deposit|savings\s+bonds?|i\s?bonds?|treasury\s?direct)\b/,
       title: 'Single bonds and CDs are not listed by ticker',
       text: 'Individual bonds trade by CUSIP number through a broker, CDs come from banks, and U.S. savings bonds come from TreasuryDirect, so none of them has a ticker here. For a fund of Treasury bills, see SGOV; for bond funds, see Building blocks and Corporate & muni bonds.',
@@ -158,7 +161,7 @@
   function notCovered(query) {
     const q = ' ' + String(query || '').toLowerCase().trim() + ' ';
     if (q.trim().length < 2) return null;
-    const hit = NOT_COVERED.find(entry => entry.test.test(q));
+    const hit = NOT_COVERED.find(entry => entry.test.test(q) && !(entry.skip && entry.skip.test(q)));
     return hit ? {id: hit.id, title: hit.title, text: hit.text, links: hit.links, themes: hit.themes || []} : null;
   }
 
@@ -168,6 +171,12 @@
       test: /\b(dividend\s+screeners?|monthly\s+dividends?|dividend\s+aristocrats?|dividend\s+champions?|ccc\s+list)\b/,
       title: 'Dividend screeners & databases',
       text: 'This directory is a starting set, not a complete list of dividend payers. Open Dividend screeners & databases for free sites that track how often companies pay and how consistently they have raised payouts.',
+      href: '#dividend-screeners',
+      linkLabel: 'Open Dividend screeners & databases'},
+    {id: 'weekly-payers',
+      test: /\b(weekly\s+(dividends?|pay\w*|income|distributions?)|pays?\s+weekly|option\s+income|options\s+income|covered\s+calls?|0dte)\b/,
+      title: 'Weekly payers and option-income funds',
+      text: 'A few ETFs pay every week, and most of them earn that income by selling options. This directory lists a small set under Option-income (weekly payers). For the full market, open Dividend screeners & databases, which includes a weekly dividend ETF list.',
       href: '#dividend-screeners',
       linkLabel: 'Open Dividend screeners & databases'}
   ];

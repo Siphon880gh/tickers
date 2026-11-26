@@ -224,6 +224,39 @@ test('SAMPLE arithmetic: roll, swings, size funds, spreads, and the other tables
     near(num(nim[3][c]) - num(nim[4][c]), num(nim[5][c]), 0.001, 'nim margin col ' + c);
   }
 });
+test('Big payouts vs total return: SAMPLE arithmetic, level, and links from the dividend walk and term', () => {
+  const bp = sim('big-payouts');
+  assert.equal(bp.kind, 'columns');
+  assert.equal(bp.level, 'next');
+  assert.ok(bp.steps.length >= 5 && bp.steps.length <= 6 && /SAMPLE/.test(bp.tape) && /SAMPLE/.test(bp.goal));
+  const rows = Object.fromEntries(bp.rows.map(row => [row[0], row]));
+  const weekly = rows['Weekly payout per share'], paid = rows['Payouts received in the year'], roc = rows['Share of payouts that is return of capital'];
+  const price = rows['Share price at year end'], value = rows['Value of 500 shares'], market = rows['Market change that year'];
+  const total = rows['Shares + all payouts so far'], hold = rows['Holding the market instead'];
+  let paidSoFar = 0, held = 10000;
+  for (let c = 1; c < bp.columns.length; c++) {
+    near(52 * num(weekly[c]) * 500, num(paid[c]), 0.001, 'big-payouts payouts col ' + c);
+    near(500 * num(price[c]), num(value[c]), 0.001, 'big-payouts value col ' + c);
+    paidSoFar += num(paid[c]);
+    near(num(value[c]) + paidSoFar, num(total[c]), 0.001, 'big-payouts total col ' + c);
+    held *= 1 + num(market[c]) / 100;
+    near(held, num(hold[c]), 0.6, 'big-payouts market col ' + c);
+    assert.ok(num(roc[c]) >= 0 && num(roc[c]) <= 100);
+  }
+  near(num(paid[1]) * num(roc[1]) / 100, 520, 0.001, 'step text says $520 is return of capital');
+  near(100 * 52 * num(weekly[1]) / 20, 21, 0.3, 'step text says about 21%');
+  assert.equal(sim('dividend').also, 'big-payouts');
+  assert.equal(data.terms.dividend.also, 'big-payouts');
+  const popJS = read('js/sim-popover.js');
+  assert.ok(popJS.includes('sim.also') && popJS.includes('t.also'));
+  assert.ok(pop.richText('x big y', [['big', 'big-payouts']]).includes('data-sim="big-payouts"'));
+  const theme = catalog.themes.find(item => item.id === 'option-income');
+  assert.ok(theme, 'option-income theme');
+  const refs = Object.values(data.themeRefs['option-income']).flat().map(ref => ref[1]);
+  assert.ok(refs.includes('big-payouts') && refs.includes('term:covered-call') && refs.includes('term:return-of-capital'));
+  assert.ok(data.exposureRefs.optionIncome.some(ref => ref[1] === 'big-payouts'));
+  assert.ok(/optionIncome:\{label:/.test(appJS) && appJS.includes("return 'optionIncome'"));
+});
 test('every new simulation is underlined in at least one page text, not only index.html', () => {
   const inData = new Set();
   for (const fields of Object.values(data.themeRefs)) for (const refs of Object.values(fields)) for (const [, id] of refs) inData.add(id);

@@ -69,6 +69,7 @@ async function loadJSON(path) {
     stockFund:{label:'A stock fund',text:'A basket of company stocks in one fund. Owning many companies lowers single-company risk, but the fund still rises and falls with the stock market and its sector. Check the holdings, the index it follows, and the expense ratio.'},
     bondFund:{label:'A bond fund',text:'A fund of bonds, which are loans to a government or company. Bond prices usually fall when interest rates rise, and longer-term bonds tend to move more. Check the maturity range and the expense ratio.'},
     allocation:{label:'An all-in-one fund',text:'A fund that holds other funds: a set mix of stock funds and bond funds, such as about 60% stocks and 40% bonds. It rebalances back to that mix, so one ticker spreads money across thousands of companies and bonds. More stocks in the mix means bigger swings.'},
+    optionIncome:{label:'An option-income fund',text:'A fund that sells call options to earn extra income and often pays it out every week. The sold options give up part of any rise in the market, the fund can still fall with the market, and part of a payout can be a return of capital, which is your own money handed back. Compare total return, not the payout alone, and read the fund page for how it works.'},
     bills:{label:'A Treasury bill fund',text:'A fund of short-term U.S. Treasury bills. Its price usually moves little, while its income changes with short-term interest rates. It is not a bank account and is not FDIC insured.'},
     bullion:{label:'A bullion trust',text:'A trust that holds the physical metal in a vault. Its price follows the metal, minus expenses. It pays no dividends or interest, and U.S. tax rules can treat gains as collectibles.'},
     futures:{label:'A futures fund',text:'A fund that holds futures contracts instead of the commodity or currency itself. Rolling from one contract to the next can make results drift from the spot price over time, and some of these funds send a K-1 tax form.'},
@@ -79,6 +80,7 @@ async function loadJSON(path) {
     if(item.exposure==='Bullion') return 'bullion';
     if(fundUsesFutures(item)) return 'futures';
     if(item.exposure==='Currency trust') return 'currency';
+    if(/option income/i.test(item.exposure)) return 'optionIncome';
     if(/treasury bills/i.test(item.exposure)) return 'bills';
     if(/allocation/i.test(item.exposure)) return 'allocation';
     if(/bond/i.test(item.exposure)) return 'bondFund';

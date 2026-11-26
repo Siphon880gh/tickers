@@ -476,6 +476,34 @@
       takeaway: 'A theme is a reason to research, not proof of profit. Check growth, margins, guidance, and how much you are paying (P/E), for the company and for the basket.'
     },
     {
+      kind: 'columns', id: 'big-payouts',
+      title: 'Big payouts vs total return',
+      goal: 'Some funds sell options to pay a large income, often every week. A big payout is not the same as a big return. Step through three SAMPLE years of a $10,000 purchase (500 shares at $20.00) to see what weekly payouts, return of capital, and capped upside do to total return.',
+      tape: 'SAMPLE option-income fund · 500 shares · simulated',
+      start: 1,
+      columns: ['', 'Year 1', 'Year 2', 'Year 3'],
+      rows: [
+        ['Weekly payout per share', '$0.08', '$0.07', '$0.06'],
+        ['Payouts received in the year', '$2,080', '$1,820', '$1,560'],
+        ['Share of payouts that is return of capital', '25%', '50%', '75%'],
+        ['Share price at year end', '$17.00', '$12.50', '$11.00'],
+        ['Value of 500 shares', '$8,500', '$6,250', '$5,500'],
+        ['Market change that year', '+12%', '−8%', '+10%'],
+        ['Shares + all payouts so far', '$10,580', '$10,150', '$10,960'],
+        ['Holding the market instead', '$11,200', '$10,304', '$11,334']
+      ],
+      steps: [
+        step(1, 0, 'Year 1: you buy 500 SAMPLE shares at $20.00 for $10,000. The fund pays $0.08 a share every week.', 'Weekly payouts feel like a paycheck. $0.08 a week is $4.16 a share a year, about 21% of the $20.00 price, so a very high rate is a prompt to ask where the cash comes from.'),
+        step(1, 1, 'Year 1: 52 weekly payouts of $0.08 on 500 shares add up to $2,080.', 'The cash is real and arrives often. Frequency changes how soon you get paid, not how much the fund earned.'),
+        step(1, 2, 'Year 1: 25% of the payouts, $520, is return of capital.', 'Return of capital means part of a payout is your own money handed back, not profit. Funds report the split after year end, and tax treatment differs, so check the fund’s notices.'),
+        step(2, 3, 'Year 2: the share price falls to $12.50 and the 500 shares are worth $6,250, even though $1,820 was paid out.', 'Payouts leave the fund, and if it earns less than it pays, its share price (NAV) can erode. Payouts do not replace lost value.'),
+        step(3, 5, 'Year 3: the market rises 10%, yet the share price still falls to $11.00.', 'Selling call options earns income now but gives up part of any rise, so gains are capped while losses in a falling market are not. A rising market does not guarantee a rising fund.'),
+        step(3, 6, 'Year 3: shares plus all payouts are worth $10,960, against $11,334 for simply holding the market.', 'Total return is the price change plus the payouts. Compare it with a plain alternative before judging a fund by its payout. SAMPLE numbers: real funds can come out ahead or behind.')
+      ],
+      takeaway: 'Judge a big payout by total return: price change plus payouts, compared with a simple alternative. The payout alone does not say if you came out ahead.',
+      resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'}
+    },
+    {
       kind: 'bars', id: 'dividend',
       title: 'Ex-dividend day, then a dividend cut',
       goal: 'A dividend moves cash from the company to you; on its own it does not add value. Step through five SAMPLE weekly bars around an ex-dividend date and a later cut.',
@@ -489,7 +517,8 @@
         bar('W5', [42, 43, 41.5, 42.6], 'Week 5: shares steady near 42.60.', 'Over five weeks an investor received $1 in dividends and lost about $7.60 in price. Look at total return, not the yield alone.')
       ],
       takeaway: 'A dividend is part of total return, not a bonus on top. Check whether cash flow covers the payout and how the price has done.',
-      resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'}
+      resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'},
+      also: 'big-payouts'
     },
     {
       kind: 'columns', id: 'downside',
@@ -949,7 +978,7 @@
     wrapper: 'basic', fees: 'basic', downside: 'basic', dividend: 'basic', correlation: 'basic', spread: 'basic', swings: 'basic', sentiment: 'basic', concentration: 'basic',
     producer: 'next', margin: 'next', duration: 'next', yields: 'next', 'gold-rates': 'next', dollar: 'next', inflation: 'next', earnings: 'next', financials: 'next',
     holdings: 'next', defensive: 'next', ai: 'next', 'value-trap': 'next', 'size-beta': 'next', breadth: 'next', rotation: 'next', 'country-mix': 'next',
-    'stop-loss': 'next', tracking: 'next', 'ad-cycle': 'next', 'patent-cliff': 'next',
+    'stop-loss': 'next', 'big-payouts': 'next', tracking: 'next', 'ad-cycle': 'next', 'patent-cliff': 'next',
     'futures-roll': 'advanced', backwardation: 'advanced', refinance: 'advanced', 'cap-rate': 'advanced', ffo: 'advanced', nim: 'advanced', 'policy-capex': 'advanced'
   };
   const LEVEL_NAMES = {basic: 'Basic', next: 'Next step', advanced: 'Advanced'};
@@ -986,7 +1015,9 @@
     emerging: {term: 'Emerging market', def: 'A country whose economy and stock market are still developing, often with faster growth and more political and currency risk.', sim: 'country-mix'},
     developed: {term: 'Developed market', def: 'A country with a mature economy and established stock market, such as Japan, the UK, or Germany.', sim: 'country-mix'},
     style: {term: 'Growth vs value', def: 'Index labels. Growth companies are expected to grow profits fast and usually cost more per dollar of earnings; value companies look cheaper on ratios. Each fund’s index sets its own rules.', sim: 'value-trap'},
-    dividend: {term: 'Dividend', def: 'Cash a company pays its shareholders out of profits, often every quarter. It can be raised, cut, or stopped.', sim: 'dividend', resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'}},
+    dividend: {term: 'Dividend', def: 'Cash a company pays its shareholders out of profits, often every quarter. It can be raised, cut, or stopped.', sim: 'dividend', also: 'big-payouts', resource: {href: '#dividend-screeners', label: 'Dividend screeners & databases'}},
+    'covered-call': {term: 'Covered call', def: 'Selling a call option on a stock or index you hold, or track. You collect a payment now and give up gains above a set price. Funds that do this often pay it out as income.', sim: 'big-payouts'},
+    'return-of-capital': {term: 'Return of capital', def: 'Part of a payout that is your own invested money handed back, not profit. It is not extra return, and it can lower what U.S. tax rules count as your cost.', sim: 'big-payouts'},
     earnings: {term: 'Earnings', def: 'A company’s profit after costs. Earnings per share (EPS) is that profit divided by the number of shares.', sim: 'stock-basics'},
     valuation: {term: 'Valuation', def: 'What investors pay for a business compared with what it earns or owns, for example the P/E ratio: share price ÷ yearly earnings per share.', sim: 'value-trap'},
     'risk-appetite': {term: 'Risk appetite', def: 'How willing investors feel to take chances. When it is high they buy riskier assets; when it drops they move toward safer ones.'},
@@ -1071,6 +1102,7 @@
     'growth-style': {description: [['classify as growth', 'term:style']], connection: [['The fund can fall hard when investors pay less for future profits.', 'ai']]},
     value: {description: [['classifies as value', 'term:style']], connection: [['A value label is a classification, not proof of a bargain.', 'value-trap']]},
     dividend: {description: [['dividend income', 'term:dividend']], connection: [['The share price can fall by more than the payout, and the payout can be cut.', 'dividend']]},
+    'option-income': {description: [['covered-call', 'term:covered-call']], connection: [['A big weekly payout is not extra return.', 'big-payouts'], ['a return of capital', 'term:return-of-capital'], ['the share price can drift down while payouts keep coming', 'big-payouts']]},
     'bond-market': {description: [['U.S. Treasury funds', 'term:treasury']], connection: [['Bond prices generally move opposite to yields.', 'yields'], ['Longer-term funds move more when yields change.', 'duration']]},
     'credit-bonds': {description: [['Bond funds', 'term:bond'], ['investment-grade', 'term:investment-grade']], connection: [['the borrower might not pay back', 'term:default'], ['High-yield funds', 'term:high-yield'], ['can fall with stocks in a recession', 'correlation'], ['Muni interest', 'term:muni']]},
     'commodity-market': {connection: [['Others hold futures', 'term:futures'], ['futures returns can differ from the spot price', 'futures-roll']]},
@@ -1091,6 +1123,7 @@
     stockFund: [['Owning many companies lowers single-company risk', 'correlation'], ['Check the holdings', 'holdings'], ['the index it follows', 'tracking'], ['the expense ratio', 'fees']],
     bondFund: [['which are loans to a government or company', 'term:bond'], ['Bond prices usually fall when interest rates rise', 'bond-seesaw'], ['longer-term bonds tend to move more', 'duration'], ['the maturity range', 'term:maturity']],
     allocation: [['a set mix of stock funds and bond funds', 'term:allocation'], ['It rebalances back to that mix', 'term:rebalance'], ['More stocks in the mix means bigger swings.', 'correlation']],
+    optionIncome: [['sells call options', 'term:covered-call'], ['return of capital', 'term:return-of-capital'], ['Compare total return, not the payout alone', 'big-payouts']],
     bills: [['short-term U.S. Treasury bills', 'term:treasury'], ['its income changes with short-term interest rates', 'duration'], ['FDIC insured', 'term:fdic']],
     bullion: [['Its price follows the metal, minus expenses.', 'wrapper'], ['collectibles', 'term:collectibles']],
     futures: [['futures contracts', 'term:futures'], ['Rolling from one contract to the next', 'futures-roll'], ['the spot price', 'term:spot'], ['K-1 tax form', 'term:k1']],

@@ -78,7 +78,11 @@ check('hash: dividend filters round-trip and freq/streak imply pays', () => {
   eq(core.buildHash({query: '', theme: 'all', kind: 'all', selected: null, compareMode: false, indexMode: false, divPays: true, divFrequency: 'monthly', divStreak: 10}), '#theme=all&div=1&freq=monthly&streak=10');
   eq(core.parseHash('#theme=gold&freq=quarterly', ctx).divPays, true, 'freq alone turns the filter on');
   eq(core.parseHash('#theme=gold&streak=any', ctx).divStreak, 1);
-  eq(core.parseHash('#theme=gold&freq=weekly&streak=3', ctx).divPays, false, 'unknown freq/streak ignored');
+  eq(core.parseHash('#theme=gold&freq=daily&streak=3', ctx).divPays, false, 'unknown freq/streak ignored');
+  const weekly = core.parseHash('#theme=all&freq=weekly', ctx);
+  eq([weekly.divPays, weekly.divFrequency], [true, 'weekly'], 'freq=weekly is a known frequency and turns the filter on');
+  eq(core.buildHash({query: '', theme: 'all', kind: 'all', selected: null, compareMode: false, indexMode: false, divPays: true, divFrequency: 'weekly', divStreak: null}), '#theme=all&div=1&freq=weekly');
+  ok(core.DIV_FREQUENCIES.includes('weekly'));
   eq(core.parseHash('#theme=gold&div=1', ctx).divFrequency, null);
   eq(core.buildHash({query: '', theme: 'gold', kind: 'all', selected: 'GDX', compareMode: false, indexMode: false, divPays: false, divFrequency: 'monthly', divStreak: 10}), '#theme=gold&ticker=GDX', 'unchecked drops freq/streak from the hash');
 });
@@ -97,6 +101,12 @@ check('dividend filter: pays, frequency, and raise streak', () => {
   eq(core.dividendMatches(pg, {divPays: true, divStreak: 1}), true);
   ok(bnd && bnd.dividend && bnd.dividend.pays === true && bnd.dividend.frequency === 'monthly', 'BND monthly');
   eq(core.dividendMatches(bnd, {divPays: true, divFrequency: 'monthly'}), true);
+  const weeklyFunds = instruments.filter(item => item.dividend && item.dividend.frequency === 'weekly').map(item => item.symbol);
+  eq(weeklyFunds.sort(), ['QDTE', 'RDTE', 'ULTY', 'XDTE', 'YMAG', 'YMAX']);
+  const xdte = instruments.find(item => item.symbol === 'XDTE');
+  eq(core.dividendMatches(xdte, {divPays: true, divFrequency: 'weekly'}), true);
+  eq(core.dividendMatches(bnd, {divPays: true, divFrequency: 'weekly'}), false);
+  eq(core.dividendBadge(xdte.dividend).text.startsWith('Weekly'), true, 'weekly badge');
   eq(core.dividendMatches(bnd, {divPays: true, divStreak: 5}), false, 'null streak fails a 5+ filter');
   ok(ura && ura.dividend && ura.dividend.pays === true && ura.dividend.frequency === null, 'URA pays with unknown frequency');
   eq(core.dividendMatches(ura, {divPays: true, divFrequency: 'annual'}), false);
@@ -112,14 +122,41 @@ check('resource hint: dividend screener phrases point at the guide section', () 
     eq(hit.href, '#dividend-screeners', q + ' href');
   }
   for (const q of ['dividend', 'dividends', 'gold', 'GLD', 'screener', '']) eq(core.resourceHint(q), null, q);
+  for (const q of ['weekly dividend', 'weekly dividends', 'weekly pay', 'weekly payers', 'Weekly Payer', 'option income', 'covered call', 'covered calls', '0dte']) {
+    const hit = core.resourceHint(q);
+    eq(hit && hit.id, 'weekly-payers', q);
+    eq(hit.href, '#dividend-screeners', q + ' href');
+  }
   eq(core.RESOURCE_HINTS[0].href, '#dividend-screeners');
+});
+check('search words find the option-income theme and its funds', () => {
+  for (const q of ['weekly dividend', 'weekly pay', 'weekly payers', 'option income', 'covered call', 'covered calls', 'weekly income', '0dte']) {
+    eq(core.matchingThemes(themes, q).map(theme => theme.id).includes('option-income'), true, q + ' finds the theme');
+  }
+  for (const q of ['covered call', 'option income']) eq(core.notCovered(q), null, q + ' is not a not-covered note');
+  const theme = themes.find(item => item.id === 'option-income');
+  eq([theme.group, theme.category], ['Markets', 'Style']);
+  eq(theme.symbols.length >= 4 && theme.symbols.length <= 6, true);
+  for (const symbol of theme.symbols) {
+    const item = bySymbol[symbol];
+    ok(item.dividend.pays === true && item.dividend.frequency === 'weekly' && item.dividend.sources.length >= 2, symbol + ' weekly with two sources');
+    ok(item.dividend.sources.some(url => url.includes('stockanalysis.com/etf/' + symbol.toLowerCase() + '/dividend/')), symbol + ' has its Stock Analysis dividend page');
+    ok(item.dividend.sources.some(url => url === item.official), symbol + ' has its issuer page');
+    ok(!/\byield\b|\d\s?%/i.test(item.description), symbol + ' stores no yield');
+  }
 });
 check('not covered: crypto, leveraged, options, single bonds, accounts', () => {
   eq(core.notCovered('bitcoin').id, 'crypto');
   eq(core.notCovered('ETH etf').id, 'crypto');
   eq(core.notCovered('3x leveraged').id, 'leveraged');
   eq(core.notCovered('TQQQ').id, 'leveraged');
-  eq(core.notCovered('covered calls').id, 'options');
+  eq(core.notCovered('covered calls'), null, 'covered calls have a theme now');
+  eq(core.notCovered('option income'), null);
+  eq(core.notCovered('0dte'), null);
+  eq(core.notCovered('ultra option income'), null);
+  eq(core.notCovered('options').id, 'options');
+  eq(core.notCovered('buy calls').id, 'options');
+  ok(core.notCovered('options').themes.includes('option-income'), 'the options note offers the option-income theme');
   eq(core.notCovered('CDs').id, 'single-bonds');
   eq(core.notCovered('roth ira').id, 'accounts');
   for (const q of ['gold', 'GLD', 'muni bonds', 'high yield', 'bonds', 'ethics', 'treasury bills', 't-bills', '']) eq(core.notCovered(q), null, q);

@@ -1766,6 +1766,126 @@
         ],
         "checked": "2026-11-26"
       }
+    },
+    {
+      "symbol": "XDTE",
+      "name": "Roundhill S&P 500 0DTE Covered Call Strategy ETF",
+      "kind": "fund",
+      "exposure": "Option income (S&P 500 index)",
+      "description": "Uses options to follow the S&P 500 and sells same-day (0DTE) calls on it, aiming to pay every week. The sold calls limit gains in a rising market; a falling market can still lower the price.",
+      "issuer": "Roundhill",
+      "official": "https://www.roundhillinvestments.com/etf/xdte/",
+      "reviewed": "2026-11-26",
+      "dividend": {
+        "pays": true,
+        "frequency": "weekly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://www.roundhillinvestments.com/etf/xdte/",
+          "https://stockanalysis.com/etf/xdte/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
+    },
+    {
+      "symbol": "QDTE",
+      "name": "Roundhill Nasdaq-100 0DTE Covered Call Strategy ETF",
+      "kind": "fund",
+      "exposure": "Option income (Nasdaq-100 index)",
+      "description": "Seeks overnight exposure to the Nasdaq-100 and sells same-day (0DTE) calls on it, aiming to pay every week. The sold calls limit gains in a rising market; a falling market can still lower the price.",
+      "issuer": "Roundhill",
+      "official": "https://www.roundhillinvestments.com/etf/qdte/",
+      "reviewed": "2026-11-26",
+      "dividend": {
+        "pays": true,
+        "frequency": "weekly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://www.roundhillinvestments.com/etf/qdte/",
+          "https://stockanalysis.com/etf/qdte/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
+    },
+    {
+      "symbol": "RDTE",
+      "name": "Roundhill Russell 2000 0DTE Covered Call Strategy ETF",
+      "kind": "fund",
+      "exposure": "Option income (Russell 2000 index)",
+      "description": "Seeks overnight exposure to the Russell 2000 (small companies) and sells same-day (0DTE) calls on it, aiming to pay every week. The sold calls limit gains in a rising market; a falling market can still lower the price.",
+      "issuer": "Roundhill",
+      "official": "https://www.roundhillinvestments.com/etf/rdte/",
+      "reviewed": "2026-11-26",
+      "dividend": {
+        "pays": true,
+        "frequency": "weekly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://www.roundhillinvestments.com/etf/rdte/",
+          "https://stockanalysis.com/etf/rdte/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
+    },
+    {
+      "symbol": "YMAX",
+      "name": "YieldMax Universe Fund of Option Income ETFs",
+      "kind": "fund",
+      "exposure": "Option income (fund of funds)",
+      "description": "An actively managed fund of funds that holds other YieldMax option-income ETFs, each tied to a company or ETF, and aims to pay every week. Payouts are not guaranteed, and the underlying funds sell options that limit gains.",
+      "issuer": "YieldMax",
+      "official": "https://www.yieldmaxetfs.com/our-etfs/ymax/",
+      "reviewed": "2026-11-26",
+      "dividend": {
+        "pays": true,
+        "frequency": "weekly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://www.yieldmaxetfs.com/our-etfs/ymax/",
+          "https://stockanalysis.com/etf/ymax/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
+    },
+    {
+      "symbol": "YMAG",
+      "name": "YieldMax Magnificent 7 Fund of Option Income ETFs",
+      "kind": "fund",
+      "exposure": "Option income (fund of funds, Magnificent 7)",
+      "description": "An actively managed fund of funds that holds YieldMax option-income ETFs tied to seven large companies (AAPL, MSFT, GOOGL, AMZN, META, TSLA, NVDA), and aims to pay every week. Concentrated, and payouts are not guaranteed.",
+      "issuer": "YieldMax",
+      "official": "https://www.yieldmaxetfs.com/our-etfs/ymag/",
+      "reviewed": "2026-11-26",
+      "dividend": {
+        "pays": true,
+        "frequency": "weekly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://www.yieldmaxetfs.com/our-etfs/ymag/",
+          "https://stockanalysis.com/etf/ymag/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
+    },
+    {
+      "symbol": "ULTY",
+      "name": "YieldMax Ultra Option Income Strategy ETF",
+      "kind": "fund",
+      "exposure": "Option income (call spreads)",
+      "description": "Writes call spreads across 15 to 30 underlying securities picked mainly by how volatile their options are, and aims to pay every week. Payouts are not guaranteed, and the share price can still fall.",
+      "issuer": "YieldMax",
+      "official": "https://www.yieldmaxetfs.com/our-etfs/ulty/",
+      "reviewed": "2026-11-26",
+      "dividend": {
+        "pays": true,
+        "frequency": "weekly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://www.yieldmaxetfs.com/our-etfs/ulty/",
+          "https://stockanalysis.com/etf/ulty/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     }
   ],
   "themes": [
@@ -2490,6 +2610,35 @@
         ]
       ],
       "reviewed": "2026-10-09"
+    },
+    {
+      "id": "option-income",
+      "name": "Option-income (weekly payers)",
+      "mark": "Opt",
+      "group": "Markets",
+      "category": "Style",
+      "symbols": [
+        "XDTE",
+        "QDTE",
+        "RDTE",
+        "YMAX",
+        "YMAG",
+        "ULTY"
+      ],
+      "tags": "weekly dividend weekly dividends weekly pay weekly payers weekly income option income options income covered call covered calls 0dte high income payout distribution",
+      "description": "Funds that sell call options in a covered-call style strategy and aim to pay out every week. XDTE, QDTE, and RDTE sell same-day calls on an index; YMAX and YMAG hold other option-income funds; ULTY sells call spreads on many stocks.",
+      "connection": "A big weekly payout is not extra return. The sold options give up part of any rise, the fund can still fall with the market, and part of a payout can be a return of capital, so the share price can drift down while payouts keep coming.",
+      "links": [
+        [
+          "0DTE covered-call fund",
+          "https://www.roundhillinvestments.com/etf/xdte/"
+        ],
+        [
+          "Option-income fund of funds",
+          "https://www.yieldmaxetfs.com/our-etfs/ymax/"
+        ]
+      ],
+      "reviewed": "2026-11-26"
     },
     {
       "id": "bond-market",

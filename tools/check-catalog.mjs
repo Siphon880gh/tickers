@@ -31,7 +31,7 @@ function checkReviewed(where, value) {
 const isText = value => typeof value === 'string' && value.trim().length > 0;
 const isHttps = value => { try { return new URL(value).protocol === 'https:'; } catch { return false; } };
 
-const DIV_FREQUENCIES = ['monthly', 'quarterly', 'semi-annual', 'annual', 'irregular'];
+const DIV_FREQUENCIES = ['weekly', 'monthly', 'quarterly', 'semi-annual', 'annual', 'irregular'];
 const DIV_KEYS = ['pays', 'frequency', 'consecutiveYearsRaised', 'status', 'sources', 'checked'];
 function checkDividend(where, d) {
   const loc = where + ' dividend';

@@ -389,7 +389,7 @@
         <div class="div-filters-body">
         <label class="notes-filter" for="div-filter"><input id="div-filter" type="checkbox" aria-controls="div-sub" aria-expanded="false"> Pays dividends</label>
         <div class="div-sub" id="div-sub" hidden>
-          <div class="filter-field"><label for="freq-filter">Frequency</label><select id="freq-filter" aria-controls="ticker-results" disabled><option value="">Any frequency</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="semi-annual">Semi-annual</option><option value="annual">Annual</option><option value="irregular">Irregular</option></select></div>
+          <div class="filter-field"><label for="freq-filter">Frequency</label><select id="freq-filter" aria-controls="ticker-results" disabled><option value="">Any frequency</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="semi-annual">Semi-annual</option><option value="annual">Annual</option><option value="irregular">Irregular</option></select></div>
           <div class="filter-field"><label for="streak-filter">Consistency</label><select id="streak-filter" aria-controls="ticker-results" disabled><option value="">Any streak</option><option value="1">Any raises</option><option value="5">5+ years</option><option value="10">10+ years</option><option value="25">25+ years</option></select></div>
         </div>
         </div>
@@ -427,7 +427,8 @@
             </ol>
             <section class="screeners" id="dividend-screeners" tabindex="-1" aria-labelledby="dividend-screeners-title">
               <h3 class="glossary-title" id="dividend-screeners-title">Dividend screeners &amp; databases</h3>
-              <p class="screeners-intro">Frequency is how often a company pays (monthly, quarterly, and so on). Consistency is how reliably it has kept or raised that payout, for example consecutive years of dividend growth.</p>
+              <p class="screeners-intro">Frequency is how often a company pays (weekly, monthly, quarterly, and so on). Consistency is how reliably it has kept or raised that payout, for example consecutive years of dividend growth.</p>
+              <p class="screeners-intro">Weekly payers are mostly option-income funds. Stock Analysis keeps a <a href="https://stockanalysis.com/list/weekly-dividend-etfs/" target="_blank" rel="noopener noreferrer">weekly dividend ETF list<span class="sr-only"> (opens in a new tab)</span></a>; this directory lists a few under Option-income (weekly payers).</p>
               <p class="screeners-disclaimer">Educational, not buy or sell advice.</p>
               <div class="screener-table-wrap">
                 <table class="screener-table">
@@ -444,8 +445,8 @@
                   <tbody>
                     <tr>
                       <th scope="row" data-label="Platform"><a href="https://stockanalysis.com/list/monthly-dividend-stocks/" target="_blank" rel="noopener noreferrer">Stock Analysis<span class="sr-only"> (opens in a new tab)</span></a></th>
-                      <td data-label="Best for">Free, clean lists of all dividend payers, monthly payers, and Aristocrats</td>
-                      <td data-label="Tracks frequency?">Yes (monthly, quarterly, and so on)</td>
+                      <td data-label="Best for">Free, clean lists of all dividend payers, monthly and weekly payers, and Aristocrats</td>
+                      <td data-label="Tracks frequency?">Yes (weekly, monthly, quarterly, and so on)</td>
                       <td data-label="Tracks consistency?">Yes (consecutive years of dividend growth)</td>
                       <td data-label="Cost">Free (Pro tier optional)</td>
                     </tr>
@@ -503,7 +504,7 @@
   <script>
     (function () {
       // Bump APP_VERSION when you change any file under js/ or data/ (and sw.js caches follow it).
-      var version = window.MF_VERSION = '2026-11-26.3';
+      var version = window.MF_VERSION = '2026-11-26.4';
       ['js/sim-popover.js', 'js/core.js', 'js/app.js'].forEach(function (src) {
         var script = document.createElement('script');
         script.src = src + '?v=' + version;

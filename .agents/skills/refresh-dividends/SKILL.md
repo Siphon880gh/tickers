@@ -19,7 +19,7 @@ Each instrument may have a `dividend` object:
 ```
 {
   "pays": true | false | null,
-  "frequency": "monthly" | "quarterly" | "semi-annual" | "annual" | "irregular" | null,
+  "frequency": "weekly" | "monthly" | "quarterly" | "semi-annual" | "annual" | "irregular" | null,
   "consecutiveYearsRaised": 70 | null,
   "status": "Dividend King" | "Dividend Aristocrat",
   "sources": ["https://…"],
@@ -50,7 +50,8 @@ Skip paid lockers. A 403 or block is not a 404: do not treat a blocked page as �
 
 - Unknown = null. Do not invent a frequency or a streak, and do not copy last year’s numbers from memory.
 - `pays: false` only when a source confirms there is no current dividend or distribution.
-- Keep `frequency` in the lowercase set the catalog uses: `monthly`, `quarterly`, `semi-annual`, `annual`, `irregular`. If the source uses another word, leave frequency null and note it in your report.
+- Keep `frequency` in the lowercase set the catalog uses: `weekly`, `monthly`, `quarterly`, `semi-annual`, `annual`, `irregular`. If the source uses another word, leave frequency null and note it in your report.
+- `weekly` needs two live confirmations: the Stock Analysis dividend page shows frequency “Weekly” with recent payment dates about a week apart, and the issuer’s own fund page says it pays weekly. Keep both URLs in `sources`. If only one says so, leave frequency null. Weekly payers are mostly option-income funds, so keep them to the Option-income (weekly payers) theme’s honest exposure wording (they sell options, gains are capped, payouts are not guaranteed, part can be return of capital); store no yields. [Stock Analysis weekly dividend ETFs](https://stockanalysis.com/list/weekly-dividend-etfs/) is a discovery list only, and most funds on it are single-stock or leveraged, which this directory leaves out.
 - One or more `https://` source URLs, and a `checked` date of today (`YYYY-MM-DD`).
 - Do not add tickers, rename instruments, or change `reviewed` unless you also re-checked the name, type, and issuer (that is the `audit-tickers` skill).
 - After editing, bump `APP_VERSION` in `index.html` (the loader’s `version`; scripts and the service worker cache follow it). Run `node tools/check-catalog.mjs`, `node tools/test-app.mjs`, and `node tools/dividend-report.mjs`. Fix every check-catalog error before reporting back.
