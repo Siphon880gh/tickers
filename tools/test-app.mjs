@@ -80,6 +80,7 @@ check('hash: dividend filters round-trip and freq/streak imply pays', () => {
   eq(core.parseHash('#theme=gold&streak=any', ctx).divStreak, 1);
   eq(core.parseHash('#theme=gold&freq=weekly&streak=3', ctx).divPays, false, 'unknown freq/streak ignored');
   eq(core.parseHash('#theme=gold&div=1', ctx).divFrequency, null);
+  eq(core.buildHash({query: '', theme: 'gold', kind: 'all', selected: 'GDX', compareMode: false, indexMode: false, divPays: false, divFrequency: 'monthly', divStreak: 10}), '#theme=gold&ticker=GDX', 'unchecked drops freq/streak from the hash');
 });
 check('dividend filter: pays, frequency, and raise streak', () => {
   const pg = instruments.find(item => item.symbol === 'PG');
@@ -176,6 +177,7 @@ check('app.js uses js/core.js and index.html loads it before app.js', () => {
   ]) ok(html.includes(url) && html.includes('rel="noopener noreferrer"'), url);
   ok(html.includes('Educational, not buy or sell advice.'), 'screeners section should include the advice line');
   ok(html.includes('id="div-filter"') && html.includes('Pays dividends') && html.includes('id="freq-filter"') && html.includes('id="streak-filter"'), 'dividend filters should be in the search bar');
+  ok(html.includes('<fieldset class="div-filters"') && html.includes('<legend>Dividends</legend>') && html.includes('aria-controls="div-sub"') && html.includes('aria-expanded="false"'), 'dividend filters should be a fieldset with aria-expanded');
   ok(search('dividend aristocrats').includes('SCHD'), 'aristocrats search should still find the Dividend theme tickers');
 });
 

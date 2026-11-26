@@ -543,8 +543,12 @@ async function loadJSON(path) {
   }
   function syncDivFilters() {
     const on = state.divPays;
-    $('div-filter').checked = on;
-    $('div-sub').hidden = !on;
+    const box = $('div-filter');
+    const sub = $('div-sub');
+    box.checked = on;
+    box.setAttribute('aria-expanded', String(on));
+    $('div-filters').classList.toggle('is-on', on);
+    sub.hidden = !on;
     $('freq-filter').disabled = !on;
     $('streak-filter').disabled = !on;
     $('freq-filter').value = on && state.divFrequency ? state.divFrequency : '';
@@ -715,8 +719,10 @@ async function init() {
   $('div-filter').addEventListener('change', event => {
     state.divPays = event.target.checked;
     if (!state.divPays) { state.divFrequency = null; state.divStreak = null; }
+    const refocus = !state.divPays && $('div-sub').contains(document.activeElement);
     syncDivFilters();
     render();
+    if (refocus) $('div-filter').focus();
   });
   $('freq-filter').addEventListener('change', event => { state.divFrequency = event.target.value || null; render(); });
   $('streak-filter').addEventListener('change', event => { state.divStreak = event.target.value ? Number(event.target.value) : null; render(); });

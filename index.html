@@ -48,8 +48,9 @@
     h1{font-size:1.7rem;line-height:1.25;letter-spacing:-.035em;margin:0}
     .topline p{color:var(--muted);margin:.4rem 0 0}
     .guide-link{font-size:.875rem;white-space:nowrap;font-weight:650}
-    .searchbar{display:flex;align-items:end;gap:.75rem;margin-bottom:1.5rem}
-    .search-field{flex:1;min-width:0}
+    .searchbar{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem;margin-bottom:1.5rem}
+    .search-field{flex:1 1 20rem;min-width:min(100%,16rem)}
+    .searchbar label{white-space:nowrap}
     label{display:block;font-size:.875rem;font-weight:650;margin-bottom:.4rem}
     .inputwrap{position:relative}
     .search-icon{position:absolute;left:1rem;top:.95rem;color:var(--muted);pointer-events:none}
@@ -75,8 +76,12 @@
     .theme-button[aria-pressed=true] .notes-badge{background:#e7c27a;color:var(--navy)}
     .nav-label .sr-only,.nav-sublabel .sr-only{text-transform:none}
 
-    .div-filters{display:contents}
-    .div-sub{display:flex;align-items:end;gap:.75rem;flex-basis:100%;flex-wrap:wrap}
+    .div-filters{flex:1 1 100%;order:1;margin:0;min-width:0;min-inline-size:0;border:1px solid var(--border);background:#fff;border-radius:10px;padding:.4rem .8rem .65rem;color:var(--ink)}
+    .div-filters legend{font-size:.75rem;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 .35rem}
+    .div-filters.is-on{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+    .div-filters.is-on legend{color:var(--navy)}
+    .div-filters-body{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem}
+    .div-sub{display:flex;flex-wrap:wrap;align-items:end;gap:.75rem}
     .div-sub[hidden]{display:none!important}
     .badge.dividend{background:#e8f5f4;color:#0d5a60}
     .badge.no-div{background:#eef2f6;color:#455e73}
@@ -338,7 +343,7 @@
     @media(max-width:640px){.sim-layer{align-items:flex-end;padding:0}.sim-panel{max-width:none;max-height:88vh;border-radius:14px 14px 0 0;border-bottom:0}}
     @media(min-width:1181px){.sidebar{max-height:calc(100vh - 2rem);overflow:auto}.research{max-height:calc(100vh - 2rem);overflow-y:auto}}
     @media(max-width:1180px){.workspace{grid-template-columns:202px minmax(0,1fr)}.research{grid-column:2;position:static}.resource-links{grid-template-columns:repeat(3,minmax(0,1fr))}.sidebar{grid-column:1;grid-row:1 / span 2}.content{grid-column:2}.shell{padding:1.5rem}.masthead-inner{padding:1.1rem 1.5rem}}
-    @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex-basis:100%}.filter-field,.div-sub{width:100%}.div-sub{flex-basis:100%}.filter-field label{display:inline;margin-right:.5rem}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.mode-toggle{min-height:44px}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
+    @media(max-width:760px){.masthead-inner{padding:.9rem 1rem}.masthead-meta{display:none}.brand-name{font-size:1.15rem}.brand-sub{font-size:.8125rem}.shell{padding:1.2rem 1rem}.topline{display:block}h1{font-size:1.45rem}.topline p{font-size:.875rem}.guide-link{display:inline-block;margin-top:.65rem}.searchbar{gap:.6rem;flex-wrap:wrap}.search-field{flex:1 1 100%;min-width:0}.div-filters{flex-basis:100%}.filter-field{width:100%}.div-sub{width:100%}.div-sub .filter-field{width:100%}.filter-field label{display:inline;margin-right:.5rem;white-space:nowrap}.filter-field select{min-height:44px;padding:.5rem 2rem .5rem .7rem}.mode-toggle{min-height:44px}.workspace{display:flex;flex-direction:column;gap:1rem}.sidebar,.content,.research{width:100%;position:static}.theme-nav{flex-direction:row;overflow-x:auto;padding:.2rem .1rem .7rem;gap:.45rem}.theme-button{width:auto;flex-shrink:0;white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--border);background:#fff}.theme-mark,.theme-count,.nav-label,.nav-sublabel,.sidebar-foot{display:none}.topic{padding:1.2rem}.topic h2{font-size:1.45rem}.ticker-row{padding:.9rem;gap:.5rem}.quick-link{padding:.4rem .45rem}.ticker-title{gap:.35rem .6rem}.ticker-name{font-size:.875rem}.resource-links{grid-template-columns:1fr 1fr}.research-head{padding:1.15rem}.research-groups{padding:.3rem 1.15rem 1rem}.research-title h2{font-size:1.8rem}.results-head{margin-top:1rem}footer{padding:0 1rem 1.5rem;display:block}footer p+p{margin-top:.5rem}}
     @media(max-width:480px){.ticker-row{flex-direction:column;align-items:stretch;gap:.75rem}.quick-link{align-self:flex-start}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sim-panel{animation:none}}
     @media print{.sim-layer,.term-pop{display:none!important}.term-tip{text-decoration:none}.resource-help{display:none}.sim-trigger{color:inherit;font-weight:inherit;text-decoration:none}.sim-trigger::after{content:none}.masthead{color:#000;background:#fff}.searchbar,.sidebar,.quick-link,.guide-link,.research-actions,.notes-panel form{display:none}.workspace{display:block}.research{position:static;max-height:none}.shell{padding:1rem}.content,.research{margin-bottom:1rem}.resource-link{border:1px solid #bbb}.resource-link.featured{color:#000;background:#fff}}
@@ -379,13 +384,16 @@
         </div>
       </div>
       <div class="filter-field"><label for="kind-filter">Show</label><select id="kind-filter" aria-controls="ticker-results"><option value="all">Stocks &amp; funds</option><option value="stock">Stocks only</option><option value="fund">Funds only</option></select></div>
-      <div class="div-filters" role="group" aria-label="Dividend filters">
-        <label class="notes-filter" for="div-filter"><input id="div-filter" type="checkbox"> Pays dividends</label>
+      <fieldset class="div-filters" id="div-filters">
+        <legend>Dividends</legend>
+        <div class="div-filters-body">
+        <label class="notes-filter" for="div-filter"><input id="div-filter" type="checkbox" aria-controls="div-sub" aria-expanded="false"> Pays dividends</label>
         <div class="div-sub" id="div-sub" hidden>
           <div class="filter-field"><label for="freq-filter">Frequency</label><select id="freq-filter" aria-controls="ticker-results" disabled><option value="">Any frequency</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="semi-annual">Semi-annual</option><option value="annual">Annual</option><option value="irregular">Irregular</option></select></div>
           <div class="filter-field"><label for="streak-filter">Consistency</label><select id="streak-filter" aria-controls="ticker-results" disabled><option value="">Any streak</option><option value="1">Any raises</option><option value="5">5+ years</option><option value="10">10+ years</option><option value="25">25+ years</option></select></div>
         </div>
-      </div>
+        </div>
+      </fieldset>
       <button type="button" id="compare-mode" class="mode-toggle" aria-pressed="false" aria-controls="research">Compare</button>
       <button type="button" id="index-mode" class="mode-toggle" aria-pressed="false" aria-controls="research">Index weights</button>
       <label class="notes-filter" for="notes-only"><input id="notes-only" type="checkbox"> Has notes</label>
@@ -495,7 +503,7 @@
   <script>
     (function () {
       // Bump APP_VERSION when you change any file under js/ or data/ (and sw.js caches follow it).
-      var version = window.MF_VERSION = '2026-11-26.2';
+      var version = window.MF_VERSION = '2026-11-26.3';
       ['js/sim-popover.js', 'js/core.js', 'js/app.js'].forEach(function (src) {
         var script = document.createElement('script');
         script.src = src + '?v=' + version;
