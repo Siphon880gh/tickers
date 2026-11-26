@@ -37,6 +37,8 @@ For each existing theme, name common U.S.-listed stocks or funds a beginner woul
 
 A missing ticker is a proposal, not an automatic edit.
 
+Dividend fields (`pays`, frequency, raise streak, Aristocrat or King labels) are refreshed separately with the `refresh-dividends` skill (`.agents/skills/refresh-dividends/`). Run `node tools/dividend-report.mjs` to list stale or missing dividend records before that pass.
+
 ## Report, then edit
 
 Lead with the findings:

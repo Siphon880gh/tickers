@@ -32,7 +32,7 @@ check('hash: a state-free hash is ignored', () => {
 });
 check('hash: theme, ticker, kind, and sim round-trip', () => {
   const parsed = core.parseHash('#theme=gold&kind=fund&ticker=gld&sim=duration', ctx);
-  eq([parsed.theme, parsed.kind, parsed.ticker, parsed.sim, parsed.compareMode, parsed.indexMode], ['gold', 'fund', 'GLD', 'duration', false, false]);
+  eq([parsed.theme, parsed.kind, parsed.ticker, parsed.sim, parsed.compareMode, parsed.indexMode, parsed.divPays], ['gold', 'fund', 'GLD', 'duration', false, false, false]);
   eq(core.buildHash({query: '', theme: 'gold', kind: 'fund', selected: 'GLD', compareMode: false, indexMode: false}, 'duration'), '#theme=gold&kind=fund&ticker=GLD&sim=duration');
 });
 check('hash: unknown theme, kind, and ticker fall back safely', () => {
@@ -71,6 +71,38 @@ check('search: matches keep the old rules (theme words, ticker text, notes)', ()
   eq(search('zzzz-nothing'), []);
   eq(search('my secret word', symbol => symbol === 'XOM'), ['XOM'], 'note text');
   ok(core.matchingThemes(themes, 'safe haven').some(theme => theme.id === 'gold'));
+});
+check('hash: dividend filters round-trip and freq/streak imply pays', () => {
+  const parsed = core.parseHash('#theme=all&div=1&freq=monthly&streak=10', ctx);
+  eq([parsed.divPays, parsed.divFrequency, parsed.divStreak, parsed.theme], [true, 'monthly', 10, 'all']);
+  eq(core.buildHash({query: '', theme: 'all', kind: 'all', selected: null, compareMode: false, indexMode: false, divPays: true, divFrequency: 'monthly', divStreak: 10}), '#theme=all&div=1&freq=monthly&streak=10');
+  eq(core.parseHash('#theme=gold&freq=quarterly', ctx).divPays, true, 'freq alone turns the filter on');
+  eq(core.parseHash('#theme=gold&streak=any', ctx).divStreak, 1);
+  eq(core.parseHash('#theme=gold&freq=weekly&streak=3', ctx).divPays, false, 'unknown freq/streak ignored');
+  eq(core.parseHash('#theme=gold&div=1', ctx).divFrequency, null);
+});
+check('dividend filter: pays, frequency, and raise streak', () => {
+  const pg = instruments.find(item => item.symbol === 'PG');
+  const gld = instruments.find(item => item.symbol === 'GLD');
+  const bnd = instruments.find(item => item.symbol === 'BND');
+  const ura = instruments.find(item => item.symbol === 'URA');
+  ok(pg && pg.dividend && pg.dividend.pays === true && pg.dividend.frequency === 'quarterly' && pg.dividend.consecutiveYearsRaised >= 25, 'PG dividend record');
+  ok(gld && gld.dividend && gld.dividend.pays === false, 'GLD does not pay');
+  eq(core.dividendMatches(pg, {divPays: false}), true);
+  eq(core.dividendMatches(gld, {divPays: true}), false);
+  eq(core.dividendMatches(pg, {divPays: true}), true);
+  eq(core.dividendMatches(pg, {divPays: true, divFrequency: 'monthly'}), false);
+  eq(core.dividendMatches(pg, {divPays: true, divFrequency: 'quarterly', divStreak: 25}), true);
+  eq(core.dividendMatches(pg, {divPays: true, divStreak: 1}), true);
+  ok(bnd && bnd.dividend && bnd.dividend.pays === true && bnd.dividend.frequency === 'monthly', 'BND monthly');
+  eq(core.dividendMatches(bnd, {divPays: true, divFrequency: 'monthly'}), true);
+  eq(core.dividendMatches(bnd, {divPays: true, divStreak: 5}), false, 'null streak fails a 5+ filter');
+  ok(ura && ura.dividend && ura.dividend.pays === true && ura.dividend.frequency === null, 'URA pays with unknown frequency');
+  eq(core.dividendMatches(ura, {divPays: true, divFrequency: 'annual'}), false);
+  const badge = core.dividendBadge(pg.dividend);
+  ok(badge && badge.pays && /Quarterly/.test(badge.text) && /70 yr/.test(badge.text), badge && badge.text);
+  eq(core.dividendBadge(gld.dividend).text, 'No dividend');
+  eq(core.dividendBadge(null), null);
 });
 check('resource hint: dividend screener phrases point at the guide section', () => {
   for (const q of ['dividend screener', 'dividend screeners', 'monthly dividend', 'monthly dividends', 'dividend aristocrats', 'Dividend Aristocrat', 'dividend champions', 'ccc list']) {
@@ -133,7 +165,7 @@ check('titles: one per view', () => {
 check('app.js uses js/core.js and index.html loads it before app.js', () => {
   const app = readFileSync(join(root, 'js/app.js'), 'utf8');
   const html = readFileSync(join(root, 'index.html'), 'utf8');
-  for (const name of ['parseHash', 'buildHash', 'searchInstruments', 'mergeBackup', 'notCovered', 'resourceHint', 'pageTitle', 'freshness']) ok(app.includes('CORE.' + name), 'app.js should call CORE.' + name);
+  for (const name of ['parseHash', 'buildHash', 'searchInstruments', 'mergeBackup', 'notCovered', 'resourceHint', 'dividendMatches', 'dividendBadge', 'pageTitle', 'freshness']) ok(app.includes('CORE.' + name), 'app.js should call CORE.' + name);
   ok(html.indexOf('js/core.js') > -1 && html.indexOf('js/core.js') < html.indexOf("'js/app.js'"), 'core.js loads before app.js');
   ok(html.includes('id="dividend-screeners"') && html.includes('Dividend screeners &amp; databases'), 'research guide should include the screeners section');
   for (const url of [
@@ -143,6 +175,7 @@ check('app.js uses js/core.js and index.html loads it before app.js', () => {
     'https://finviz.com/screener.ashx'
   ]) ok(html.includes(url) && html.includes('rel="noopener noreferrer"'), url);
   ok(html.includes('Educational, not buy or sell advice.'), 'screeners section should include the advice line');
+  ok(html.includes('id="div-filter"') && html.includes('Pays dividends') && html.includes('id="freq-filter"') && html.includes('id="streak-filter"'), 'dividend filters should be in the search bar');
   ok(search('dividend aristocrats').includes('SCHD'), 'aristocrats search should still find the Dividend theme tickers');
 });
 

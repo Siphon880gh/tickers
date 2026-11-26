@@ -146,7 +146,7 @@ async function loadJSON(path) {
     ]});
     return groups;
   }
-  let state = {theme:'gold',query:'',kind:'all',notesOnly:false,selected:'GLD',indexMode:false,indexPicks:[],compareMode:false,comparePicks:[]};
+  let state = {theme:'gold',query:'',kind:'all',notesOnly:false,divPays:false,divFrequency:null,divStreak:null,selected:'GLD',indexMode:false,indexPicks:[],compareMode:false,comparePicks:[]};
   let notes = {};
   const NOTES_KEY = 'market-forces-notes';
   function loadNotes() {
@@ -259,7 +259,7 @@ async function loadJSON(path) {
     } else {
       pool = state.theme==='all'?instruments:state.theme==='saved'?watchlist.map(symbol=>bySymbol[symbol]).filter(Boolean):themes.find(theme=>theme.id===state.theme).symbols.map(symbol=>bySymbol[symbol]);
     }
-    return pool.filter(item=>(state.kind==='all'||item.kind===state.kind)&&(!state.notesOnly||notesFor(item.symbol).length));
+    return pool.filter(item=>(state.kind==='all'||item.kind===state.kind)&&(!state.notesOnly||notesFor(item.symbol).length)&&CORE.dividendMatches(item, state));
   }
   function renderNav() {
     const button = (id,name,mark,count,noteTotal) => '<button type="button" class="theme-button" data-theme="' + id + '" aria-pressed="' + (!state.query && state.theme===id) + '"><span class="theme-mark" aria-hidden="true">' + escapeHTML(mark) + '</span><span>' + escapeHTML(name) + '</span><span class="theme-count" aria-hidden="true">' + count + '</span>' + noteBadge(noteTotal) + '</button>';
@@ -322,7 +322,11 @@ async function loadJSON(path) {
       return;
     }
     if(!pool.length) {
-      $('ticker-results').innerHTML='<div class="empty"><h3>No matching tickers</h3><p>'+(CORE.notCovered(state.query)?'This directory leaves that out on purpose; the note above says why. ':'')+'Try a shorter term, a symbol like GLD, or switch to stocks &amp; funds.</p><button type="button" class="reset-button" id="reset-search">Reset search &amp; filter</button></div>';
+      const divEmpty=state.divPays;
+      const why=divEmpty
+        ?'No tickers in this view pay a dividend that matches these filters. This directory is a starting set, not a complete list. See <a href="#dividend-screeners">Dividend screeners &amp; databases</a> for sites that cover the full market.'
+        :(CORE.notCovered(state.query)?'This directory leaves that out on purpose; the note above says why. ':'')+'Try a shorter term, a symbol like GLD, or switch to stocks &amp; funds.';
+      $('ticker-results').innerHTML='<div class="empty"><h3>No matching tickers</h3><p>'+why+'</p><button type="button" class="reset-button" id="reset-search">Reset search &amp; filter</button></div>';
       return;
     }
     $('ticker-results').innerHTML='<div class="ticker-list">'+pool.map(item => {
@@ -334,8 +338,10 @@ async function loadJSON(path) {
       const noteHit=state.query&&noteMatches(item.symbol,state.query)?'<span class="badge notes">Matches your note</span>':'';
       const savedChip=noteHit+(isSaved(item.symbol)?'<span class="badge saved">Saved</span>':'');
       const noteChip=savedChip+(noteTotal?'<span class="badge notes">'+noteTotal+(noteTotal===1?' note':' notes')+'</span>':'');
+      const divBadge=CORE.dividendBadge(item.dividend);
+      const divChip=(divBadge&&divBadge.pays)?'<span class="badge dividend">'+escapeHTML(divBadge.text)+'</span>':'';
       const action=state.indexMode?'Include or remove '+item.symbol+' from index weights':state.compareMode?'Add or remove '+item.symbol+' in the comparison':'Select '+item.symbol+' for research links';
-      return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
+      return '<div class="ticker-row'+(selected?' selected':'')+'">'+check+'<button type="button" class="ticker-select" data-symbol="'+item.symbol+'" aria-pressed="'+selected+'" aria-controls="research"><span class="ticker-title"><span class="symbol">'+item.symbol+'</span><span class="ticker-name">'+escapeHTML(item.name)+'</span></span><span class="ticker-desc">'+escapeHTML(item.description)+'</span><span class="row-meta"><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span><span class="badge '+(fundUsesFutures(item)?'futures':'')+'">'+escapeHTML(item.exposure)+'</span>'+divChip+noteChip+'</span><span class="sr-only">'+action+'</span></button><a class="quick-link" href="'+stockAnalysisURL(item)+'"'+externalAttrs+' aria-label="Open '+item.symbol+' on Stock Analysis (opens in a new tab)">Stock Analysis</a></div>';
     }).join('')+'</div>';
   }
   function directoryDate(iso) {
@@ -471,6 +477,15 @@ async function loadJSON(path) {
     const stale = CORE.isStale(item.reviewed, NOW);
     return '<p class="reviewed' + (stale ? ' stale' : '') + '">' + (stale ? '<strong>May be out of date.</strong> ' : '') + 'Name, type, and ' + (item.kind === 'stock' ? 'company link' : 'issuer') + ' last checked <time datetime="' + escapeHTML(item.reviewed) + '">' + dayLabel(item.reviewed) + '</time>. Fees, holdings, and prices change; confirm on the ' + (item.kind === 'stock' ? 'company’s investor page' : 'issuer’s page') + '.</p>';
   }
+  function dividendLine(item) {
+    const badge = CORE.dividendBadge(item.dividend);
+    if (!badge) return '';
+    const cls = badge.pays ? 'dividend' : 'no-div';
+    const checked = CORE.parseDay(badge.checked) ? ' Dividend data checked <time datetime="' + escapeHTML(badge.checked) + '">' + dayLabel(badge.checked) + '</time>.' : '';
+    const sources = (badge.sources || []).filter(url => /^https:/i.test(url));
+    const source = sources.length ? ' Source: <a href="' + escapeHTML(sources[0]) + '"' + externalAttrs + '>' + escapeHTML(sources[0].replace(/^https:\/\//, '').split('/')[0]) + '<span class="sr-only"> (opens in a new tab)</span></a>.' : '';
+    return '<p class="div-detail"><span class="badge ' + cls + '">' + escapeHTML(badge.text) + '</span>' + checked + source + ' Yields change; confirm on the source.</p>';
+  }
   function renderResearch() {
     if(state.indexMode) {renderIndexWeights();return;}
     if(state.compareMode) {renderCompare();return;}
@@ -478,7 +493,7 @@ async function loadJSON(path) {
     const item=bySymbol[state.selected];
     if(!item) {$('research').innerHTML='<div class="research-placeholder">Select a ticker to see its research links.</div>';return;}
     const groups=researchLinks(item);
-    $('research').innerHTML='<div class="research-head"><button type="button" class="back-to-list" data-back-to-list>↑ Back to the ticker list</button><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p>'+reviewedLine(item)+'</div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(helpLink).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
+    $('research').innerHTML='<div class="research-head"><button type="button" class="back-to-list" data-back-to-list>↑ Back to the ticker list</button><p class="eyebrow">Selected ticker · research links</p><div class="research-title"><h2>'+item.symbol+'</h2><span class="badge '+(item.kind==='stock'?'stock':'')+'">'+(item.kind==='stock'?'Stock':'Fund')+'</span></div><p class="research-name">'+escapeHTML(item.name)+'</p>'+researchActions(item)+'<p class="note">'+escapeHTML(item.description)+'</p>'+reviewedLine(item)+dividendLine(item)+'</div>'+exposureNote(item)+themeChips(item)+'<div class="research-groups">'+groups.map(group=>'<section class="resource-group"><h3>'+escapeHTML(group.title)+'</h3><div class="resource-links">'+group.links.map(helpLink).join('')+'</div>'+(SIMS?.groupWhy[group.title]?'<p class="resource-note sim-note">'+simText(SIMS.groupWhy[group.title])+'</p>':'')+(group.title==='Sentiment & investor discussions'?'<p class="resource-note">Posts and sentiment are opinions from participating users. Coverage varies by ticker; some sources have limited data.'+(SIMS?' '+simText(SIMS.sentimentWhy):'')+'</p>':'')+'</section>').join('')+'</div>'+(fundUsesFutures(item)?'<div class="risk-note"><strong>Futures exposure:</strong> This fund uses contracts rather than storing the commodity. '+simRich('Rolling contracts',simRefs('pageRefs','researchFutures'))+', expenses, and possible K-1 tax reporting can affect the result. Read the issuer’s current documents.</div>':'')+notesMarkup(item);
   }
   function render(announce=true) {
     const focusedTheme=document.activeElement?.dataset?.theme;
@@ -526,6 +541,15 @@ async function loadJSON(path) {
     try { history[push&&appliedHash!==null?'pushState':'replaceState'](null,'',hash); } catch {}
     appliedHash=hash;
   }
+  function syncDivFilters() {
+    const on = state.divPays;
+    $('div-filter').checked = on;
+    $('div-sub').hidden = !on;
+    $('freq-filter').disabled = !on;
+    $('streak-filter').disabled = !on;
+    $('freq-filter').value = on && state.divFrequency ? state.divFrequency : '';
+    $('streak-filter').value = on && state.divStreak ? String(state.divStreak) : '';
+  }
   function applyHash() {
     const parsed = CORE.parseHash(location.hash, {hasTheme: id => themes.some(item => item.id === id), hasSymbol: symbol => Boolean(bySymbol[symbol]), currentTheme: state.theme});
     if (!parsed) return false;
@@ -539,6 +563,10 @@ async function loadJSON(path) {
     if (parsed.indexPicks) state.indexPicks = parsed.indexPicks;
     $('search').value = state.query;
     $('kind-filter').value = state.kind;
+    state.divPays = parsed.divPays;
+    state.divFrequency = parsed.divFrequency;
+    state.divStreak = parsed.divStreak;
+    syncDivFilters();
     hashSim = parsed.sim;
     return true;
   }
@@ -554,7 +582,8 @@ async function loadJSON(path) {
     const item=bySymbol[symbol];
     if(!item) throw new Error('Unknown ticker.');
     if(!visibleInstruments().some(current=>current.symbol===symbol)) {
-      state.query=symbol;state.kind='all';$('search').value=symbol;$('kind-filter').value='all';
+      state.query=symbol;state.kind='all';state.divPays=false;state.divFrequency=null;state.divStreak=null;
+      $('search').value=symbol;$('kind-filter').value='all';syncDivFilters();
     }
     state.selected=symbol;
     const pool=visibleInstruments();
@@ -683,6 +712,15 @@ async function init() {
   $('search-form').addEventListener('submit', event => event.preventDefault());
   $('search').addEventListener('input', event => { state.query = event.target.value.trim(); render(); });
   $('kind-filter').addEventListener('change', event => { state.kind = event.target.value; render(); });
+  $('div-filter').addEventListener('change', event => {
+    state.divPays = event.target.checked;
+    if (!state.divPays) { state.divFrequency = null; state.divStreak = null; }
+    syncDivFilters();
+    render();
+  });
+  $('freq-filter').addEventListener('change', event => { state.divFrequency = event.target.value || null; render(); });
+  $('streak-filter').addEventListener('change', event => { state.divStreak = event.target.value ? Number(event.target.value) : null; render(); });
+
   $('index-mode').addEventListener('click', () => setMode('index'));
   $('compare-mode').addEventListener('click', () => setMode('compare'));
   const backupMessage = message => { $('backup-message').textContent = message; };
@@ -786,7 +824,7 @@ async function init() {
       chooseSymbol(tickerButton.dataset.symbol, true);
       return;
     }
-    if (event.target.closest('#reset-search')) { state.query = ''; state.kind = 'all'; state.notesOnly = false; $('search').value = ''; $('kind-filter').value = 'all'; $('notes-only').checked = false; render(); $('search').focus(); }
+    if (event.target.closest('#reset-search')) { state.query = ''; state.kind = 'all'; state.notesOnly = false; state.divPays = false; state.divFrequency = null; state.divStreak = null; $('search').value = ''; $('kind-filter').value = 'all'; $('notes-only').checked = false; syncDivFilters(); render(); $('search').focus(); }
   });
   // In-page anchors would replace the deep-link hash, so scroll to them instead.
   // "New to researching a ticker?" opens the guide at its Start here panel.

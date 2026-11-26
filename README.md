@@ -28,6 +28,7 @@ Beginner’s directory of common stocks and funds, grouped by economic theme, wi
 - **Start here for beginners.** “New to researching a ticker? Start here” opens a three-step how-to and seven Basic walks in reading order: what a stock is, how to read a bar, what an index and market cap are, the bond seesaw, compounding, diversification, and defining your downside.
 - **Plain-language words.** Grey underlined words (ETF, Treasury, maturity, futures, spot, market cap, issuer, prospectus, and about 20 more) show a one-line definition; Esc or a click elsewhere closes it. Every research link has a short line saying what it opens.
 - **Dividend screeners & databases.** The research guide lists free sites that track how often companies pay and how consistently they have raised payouts. Searching for *dividend screener*, *monthly dividend*, *dividend aristocrats*, or *dividend champions* points you there, and `#dividend-screeners` opens the table directly. Educational, not buy or sell advice.
+- **Pays dividends.** A filter above the list shows tickers that currently pay, with optional frequency (monthly, quarterly, semi-annual, annual) and consistency (any raises, or 5+, 10+, or 25+ years of raises). The address keeps the filter, for example `#theme=all&div=1&freq=monthly&streak=10`. Each paying ticker shows a short badge; the research panel adds the date and a source link. Empty results point to the screeners list, because this directory is a starting set, not a complete list of payers.
 - **Welcome and About.** A first visit shows a short welcome card (Got it hides it for good) and opens the research guide once. [About, FAQ, and disclaimer](about.html) covers where the data comes from, how current it is, and where notes are kept.
 - **Building blocks and bond funds.** Broad funds (VTI, VXUS, BND, BNDX, SGOV, and the all-in-one AOR) and Corporate & muni bonds (LQD, HYG, MUB). Search understands everyday words such as *index fund*, *retirement*, *junk bonds*, or *tax free*.
 - **Not covered, and why.** Searching for crypto, leveraged or inverse funds, options, single bonds or CDs, or an account type explains why this beginner directory leaves it out, with an Investor.gov link.
@@ -44,7 +45,7 @@ After editing `data/catalog.json` or `data/index-weights.json`, run `node tools/
 
 It also checks every `reviewed` date and warns when an entry or index snapshot is more than 90 days old, or when an index snapshot has no directory ticker.
 
-After changing `js/core.js` (deep links, search ranking, not-covered notes, resource hints, backup merge, freshness, titles), run `node tools/test-app.mjs`.
+After changing `js/core.js` (deep links, search ranking, not-covered notes, resource hints, dividend filters, backup merge, freshness, titles), run `node tools/test-app.mjs`. After changing dividend fields in the catalog, run `node tools/check-catalog.mjs` and `node tools/dividend-report.mjs`. The `refresh-dividends` skill (`.agents/skills/refresh-dividends/`) describes how to re-check frequency, streaks, and labels from live free sources; `audit-tickers` links to it.
 
 When you change anything under `js/` or `data/`, bump `APP_VERSION` in `index.html` (the loader's `version`). Scripts, data, and the service worker cache all follow it. Accessibility checks and results are in [docs/accessibility.md](docs/accessibility.md).
 

@@ -31,6 +31,28 @@ function checkReviewed(where, value) {
 const isText = value => typeof value === 'string' && value.trim().length > 0;
 const isHttps = value => { try { return new URL(value).protocol === 'https:'; } catch { return false; } };
 
+const DIV_FREQUENCIES = ['monthly', 'quarterly', 'semi-annual', 'annual', 'irregular'];
+const DIV_KEYS = ['pays', 'frequency', 'consecutiveYearsRaised', 'status', 'sources', 'checked'];
+function checkDividend(where, d) {
+  const loc = where + ' dividend';
+  if (!d || typeof d !== 'object' || Array.isArray(d)) { fail(loc + ' should be an object.'); return; }
+  for (const key of Object.keys(d)) if (!DIV_KEYS.includes(key)) fail(loc + ' has unexpected field ' + key + ' (do not store yields or other figures that go stale).');
+  if (![true, false, null].includes(d.pays)) fail(loc + ' pays should be true, false, or null.');
+  if (d.frequency != null && !DIV_FREQUENCIES.includes(d.frequency)) fail(loc + ' frequency should be ' + DIV_FREQUENCIES.join(', ') + ', or null.');
+  if (d.consecutiveYearsRaised != null && !(Number.isInteger(d.consecutiveYearsRaised) && d.consecutiveYearsRaised >= 0)) fail(loc + ' consecutiveYearsRaised should be a whole number or null.');
+  if (d.pays === false && (d.frequency != null || d.consecutiveYearsRaised != null || d.status)) fail(loc + ' should not set frequency, streak, or status when pays is false.');
+  if (d.status != null) {
+    if (d.pays !== true) fail(loc + ' status is only for current payers.');
+    else if (!isText(d.status)) fail(loc + ' status should be a sourced label or omitted.');
+  }
+  if (!Array.isArray(d.sources) || !d.sources.length) fail(loc + ' needs at least one source URL.');
+  else d.sources.forEach(url => { if (!isHttps(url)) fail(loc + ' source is not https: ' + url); });
+  if (!isDate(d.checked)) fail(loc + ' checked should be YYYY-MM-DD.');
+  else if (ageDays(d.checked) < -1) fail(loc + ' checked date ' + d.checked + ' is in the future.');
+  else if (ageDays(d.checked) > STALE_DAYS) staleList.push(loc + ' (' + d.checked + ')');
+}
+
+
 const catalog = read('data/catalog.json');
 if (catalog) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(catalog.updated || '')) fail('catalog.updated should be YYYY-MM-DD.');
@@ -47,6 +69,7 @@ if (catalog) {
     if (item?.kind === 'fund' && !isText(item.issuer)) fail(where + ' is a fund without an issuer.');
     if (item?.official && !isHttps(item.official)) fail(where + ' official link is not https: ' + item.official);
     checkReviewed(where, item?.reviewed);
+    if (item && 'dividend' in item) checkDividend(where, item.dividend);
   });
   const themeIds = new Set();
   const listed = new Set();

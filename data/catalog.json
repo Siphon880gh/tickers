@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-13",
+  "updated": "2026-11-26",
   "instruments": [
     {
       "symbol": "GLD",
@@ -9,7 +9,16 @@
       "description": "A trust holding physical gold; exposure to gold prices after expenses.",
       "issuer": "State Street",
       "official": "https://www.spdrgoldshares.com/usa/gld/",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/gld/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "IAU",
@@ -19,7 +28,16 @@
       "description": "A physically backed gold trust. Compare expenses and trading costs with other gold funds.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/iau/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "GDX",
@@ -29,7 +47,16 @@
       "description": "A basket of gold-mining companies, with business risks as well as gold exposure.",
       "issuer": "VanEck",
       "official": "https://www.vaneck.com/us/en/investments/gold-miners-etf-gdx/",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/gdx/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "NEM",
@@ -38,7 +65,16 @@
       "exposure": "Gold miner",
       "description": "A gold-producing business. Costs, output, and execution affect its shares.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/nem/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "B",
@@ -47,7 +83,16 @@
       "exposure": "Gold & copper miner",
       "description": "A gold and copper producer. Its former NYSE ticker was GOLD.",
       "official": "https://www.barrick.com/English/investors/default.aspx",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 1,
+        "sources": [
+          "https://stockanalysis.com/stocks/b/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SLV",
@@ -57,7 +102,16 @@
       "description": "A trust holding physical silver, less expenses.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/slv/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SIVR",
@@ -67,7 +121,16 @@
       "description": "Physically backed silver exposure; compare fees and liquidity.",
       "issuer": "Aberdeen",
       "official": "https://www.aberdeeninvestments.com/en-us/investor/funds/view-all-funds/abrdn-physical-silver-shares-etf-us0032641088",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/sivr/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SIL",
@@ -77,7 +140,16 @@
       "description": "A basket of silver-mining businesses rather than physical silver.",
       "issuer": "Global X",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "semi-annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/sil/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "PAAS",
@@ -86,7 +158,16 @@
       "exposure": "Silver & gold miner",
       "description": "A precious-metals producer exposed to silver, gold, operating costs, and local conditions.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 1,
+        "sources": [
+          "https://stockanalysis.com/stocks/paas/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "USO",
@@ -96,7 +177,16 @@
       "description": "An oil-futures commodity pool; its returns can differ materially from spot crude oil.",
       "issuer": "USCF",
       "official": "https://www.uscfinvestments.com/uso",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/uso/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "BNO",
@@ -106,7 +196,16 @@
       "description": "Brent crude oil futures exposure. Contract rolls and fund costs affect returns.",
       "issuer": "USCF",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/bno/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLE",
@@ -116,7 +215,16 @@
       "description": "U.S. large-cap energy businesses. Its holdings can be concentrated in major producers.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xle/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XOM",
@@ -125,7 +233,18 @@
       "exposure": "Integrated energy",
       "description": "Oil and gas production, refining, and other energy operations.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 45,
+        "sources": [
+          "https://stockanalysis.com/stocks/xom/dividend/",
+          "https://stockanalysis.com/list/dividend-aristocrats/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend Aristocrat"
+      }
     },
     {
       "symbol": "CVX",
@@ -134,7 +253,18 @@
       "exposure": "Integrated energy",
       "description": "Oil and gas production and refining; profits depend on more than crude prices.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 39,
+        "sources": [
+          "https://stockanalysis.com/stocks/cvx/dividend/",
+          "https://stockanalysis.com/list/dividend-aristocrats/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend Aristocrat"
+      }
     },
     {
       "symbol": "UNG",
@@ -144,7 +274,16 @@
       "description": "Natural-gas futures exposure; weather and contract rolls can create large price swings.",
       "issuer": "USCF",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/ung/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "FCG",
@@ -154,7 +293,16 @@
       "description": "A basket of natural-gas-related companies; it does not hold physical gas.",
       "issuer": "First Trust",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/fcg/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "EQT",
@@ -163,7 +311,16 @@
       "exposure": "Natural-gas producer",
       "description": "A U.S. natural-gas producer exposed to gas prices, output, and production costs.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 4,
+        "sources": [
+          "https://stockanalysis.com/stocks/eqt/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "LNG",
@@ -172,7 +329,16 @@
       "exposure": "LNG export business",
       "description": "Liquefied natural gas infrastructure and exports. Contract terms shape its exposure.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 4,
+        "sources": [
+          "https://stockanalysis.com/stocks/lng/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "NTR",
@@ -181,7 +347,16 @@
       "exposure": "Fertilizer producer",
       "description": "Potash, nitrogen, and agricultural retail. Crop economics and input prices affect demand.",
       "official": "https://www.nutrien.com/investors",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 7,
+        "sources": [
+          "https://stockanalysis.com/stocks/ntr/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "MOS",
@@ -190,7 +365,16 @@
       "exposure": "Fertilizer producer",
       "description": "A producer of phosphate and potash fertilizers.",
       "official": "https://investors.mosaicco.com/home/",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 7,
+        "sources": [
+          "https://stockanalysis.com/stocks/mos/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "CF",
@@ -199,7 +383,16 @@
       "exposure": "Nitrogen fertilizer",
       "description": "A nitrogen and ammonia producer. Natural gas is an important production input.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/cf/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "DOW",
@@ -208,7 +401,16 @@
       "exposure": "Polyethylene & plastics",
       "description": "A materials company that produces polyethylene and other plastics for packaging and industrial uses. Resin prices and feedstock costs affect results.",
       "official": "https://investors.dow.com/",
-      "reviewed": "2026-11-12"
+      "reviewed": "2026-11-12",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/dow/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "LYB",
@@ -217,7 +419,16 @@
       "exposure": "Polyethylene & polypropylene",
       "description": "A large producer of polyethylene and polypropylene, with related chemicals and polymer technologies.",
       "official": "https://investors.lyondellbasell.com/",
-      "reviewed": "2026-11-12"
+      "reviewed": "2026-11-12",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 12,
+        "sources": [
+          "https://stockanalysis.com/stocks/lyb/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "WLK",
@@ -226,7 +437,16 @@
       "exposure": "Polyethylene & PVC",
       "description": "Produces polyethylene and PVC resins, and also sells PVC building products used in construction.",
       "official": "https://www.westlake.com/investor-relations",
-      "reviewed": "2026-11-12"
+      "reviewed": "2026-11-12",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 12,
+        "sources": [
+          "https://stockanalysis.com/stocks/wlk/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "CPER",
@@ -236,7 +456,16 @@
       "description": "Copper futures exposure, with contract-roll and fund-cost effects.",
       "issuer": "USCF",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/cper/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "COPX",
@@ -246,7 +475,16 @@
       "description": "A basket of copper miners. Shares also reflect operating and country risks.",
       "issuer": "Global X",
       "official": "https://www.globalxetfs.com/funds/COPX",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "semi-annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/copx/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "FCX",
@@ -255,7 +493,16 @@
       "exposure": "Copper & gold miner",
       "description": "A copper-focused miner with additional gold exposure.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/fcx/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SCCO",
@@ -264,7 +511,16 @@
       "exposure": "Copper miner",
       "description": "A copper producer with significant Latin American operations.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 1,
+        "sources": [
+          "https://stockanalysis.com/stocks/scco/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "URA",
@@ -274,7 +530,16 @@
       "description": "Uranium and nuclear-component companies; a basket of businesses, not a spot uranium fund.",
       "issuer": "Global X",
       "official": "https://www.globalxetfs.com/funds/ura",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/ura/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "URNM",
@@ -284,7 +549,16 @@
       "description": "Uranium-related equities and physical-uranium vehicles. Check current holdings.",
       "issuer": "Sprott",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/urnm/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "CCJ",
@@ -293,7 +567,16 @@
       "exposure": "Uranium & nuclear fuel",
       "description": "A uranium and nuclear-fuel business affected by contracting, supply, and production.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "annual",
+        "consecutiveYearsRaised": 2,
+        "sources": [
+          "https://stockanalysis.com/stocks/ccj/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "DBA",
@@ -303,7 +586,16 @@
       "description": "A basket of agricultural futures; its results differ from owning food businesses.",
       "issuer": "Invesco",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/dba/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "CORN",
@@ -313,7 +605,16 @@
       "description": "Corn futures across contract maturities, with roll and expense effects.",
       "issuer": "Teucrium",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/corn/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "WEAT",
@@ -323,7 +624,16 @@
       "description": "Wheat futures exposure. Weather, supply, and trade policy can matter.",
       "issuer": "Teucrium",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/weat/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "DE",
@@ -332,7 +642,16 @@
       "exposure": "Farm equipment",
       "description": "Agricultural and construction equipment. Farm income affects buying decisions.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 5,
+        "sources": [
+          "https://stockanalysis.com/stocks/de/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "TIP",
@@ -342,7 +661,16 @@
       "description": "U.S. inflation-protected Treasury bonds. Market prices also react to real interest rates.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/tip/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "BND",
@@ -352,7 +680,16 @@
       "description": "U.S. investment-grade bonds: Treasuries, mortgage-backed bonds, and corporate bonds in one fund.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/bnd",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/bnd/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "BNDX",
@@ -362,7 +699,16 @@
       "description": "Investment-grade government and corporate bonds from outside the United States, hedged back to U.S. dollars.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/bndx",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/bndx/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "AOR",
@@ -372,7 +718,16 @@
       "description": "An all-in-one fund of iShares stock and bond funds, aiming for about 60% stocks and 40% bonds.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239756/ishares-core-60-40-balanced-allocation-etf",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/aor/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "LQD",
@@ -382,7 +737,16 @@
       "description": "U.S. dollar bonds issued by companies with investment-grade credit ratings.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239566/ishares-iboxx-investment-grade-corporate-bond-etf",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/lqd/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "HYG",
@@ -392,7 +756,16 @@
       "description": "U.S. dollar bonds from companies rated below investment grade; more income and more default risk.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239565/ishares-iboxx-high-yield-corporate-bond-etf",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/hyg/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "MUB",
@@ -402,7 +775,16 @@
       "description": "Investment-grade bonds from U.S. states, cities, and agencies; interest is generally exempt from federal income tax.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239766/ishares-national-muni-bond-etf",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/mub/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "TLT",
@@ -412,7 +794,16 @@
       "description": "Long-duration U.S. Treasury bonds; prices are sensitive to changing yields.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/tlt/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "IEF",
@@ -422,7 +813,16 @@
       "description": "Intermediate-term U.S. Treasury bonds with interest-rate exposure.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/ief/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SHY",
@@ -432,7 +832,16 @@
       "description": "Shorter-term U.S. Treasuries; generally less rate-sensitive than long-duration bonds.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/shy/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SGOV",
@@ -442,7 +851,16 @@
       "description": "Very short-term U.S. Treasury bills. Distributions change as short-term rates change.",
       "issuer": "iShares",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/sgov/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "UUP",
@@ -452,7 +870,16 @@
       "description": "Long U.S. dollar exposure versus a specified currency basket, using futures.",
       "issuer": "Invesco",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/uup/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "FXE",
@@ -462,7 +889,16 @@
       "description": "Euro exposure relative to the U.S. dollar, less expenses.",
       "issuer": "Invesco",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "monthly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/fxe/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "FXY",
@@ -472,7 +908,16 @@
       "description": "Japanese yen exposure relative to the U.S. dollar, less expenses.",
       "issuer": "Invesco",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/fxy/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SPY",
@@ -482,7 +927,16 @@
       "description": "A basket tracking the S&P 500, focused on large U.S. companies.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/spy/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "VTI",
@@ -492,7 +946,16 @@
       "description": "Broad U.S. stock exposure across large, mid-sized, and smaller companies.",
       "issuer": "Vanguard",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vti/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "QQQ",
@@ -502,7 +965,16 @@
       "description": "Large non-financial Nasdaq companies; significant technology and growth exposure.",
       "issuer": "Invesco",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/qqq/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLY",
@@ -512,7 +984,16 @@
       "description": "Businesses tied to discretionary spending, with concentration in major holdings.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xly/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SMH",
@@ -522,7 +1003,16 @@
       "description": "A basket of semiconductor businesses. Check its concentration and geographic exposure.",
       "issuer": "VanEck",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/smh/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "NVDA",
@@ -531,7 +1021,16 @@
       "exposure": "Semiconductors",
       "description": "GPUs, accelerated computing, and related technology; valuation and competition also matter.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 2,
+        "sources": [
+          "https://stockanalysis.com/stocks/nvda/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "AMD",
@@ -540,7 +1039,16 @@
       "exposure": "Semiconductors",
       "description": "Processors and graphics chips for computing and data centers.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/amd/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "AVGO",
@@ -549,7 +1057,16 @@
       "exposure": "Chips & software",
       "description": "Semiconductors and infrastructure software; business lines have different drivers.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 15,
+        "sources": [
+          "https://stockanalysis.com/stocks/avgo/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLI",
@@ -559,7 +1076,16 @@
       "description": "Large U.S. industrial businesses across several industries.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xli/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "PAVE",
@@ -569,7 +1095,16 @@
       "description": "Businesses connected to U.S. infrastructure spending, including materials and equipment.",
       "issuer": "Global X",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "semi-annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/pave/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "CAT",
@@ -578,7 +1113,18 @@
       "exposure": "Industrial equipment",
       "description": "Construction and mining equipment exposed to spending and economic cycles.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 33,
+        "sources": [
+          "https://stockanalysis.com/stocks/cat/dividend/",
+          "https://stockanalysis.com/list/dividend-aristocrats/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend Aristocrat"
+      }
     },
     {
       "symbol": "NUE",
@@ -587,7 +1133,18 @@
       "exposure": "Steel producer",
       "description": "A U.S. steel producer affected by demand, input costs, capacity, and trade policy.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 53,
+        "sources": [
+          "https://stockanalysis.com/stocks/nue/dividend/",
+          "https://stockanalysis.com/list/dividend-kings/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend King"
+      }
     },
     {
       "symbol": "VNQ",
@@ -597,7 +1154,16 @@
       "description": "U.S. real-estate businesses and REITs. Property income and financing conditions matter.",
       "issuer": "Vanguard",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vnq/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLRE",
@@ -607,7 +1173,16 @@
       "description": "Large U.S. real-estate businesses and REITs, with sector concentration.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlre/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLP",
@@ -617,7 +1192,16 @@
       "description": "Businesses selling everyday essentials. Defensive demand does not eliminate market risk.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlp/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLU",
@@ -627,7 +1211,16 @@
       "description": "U.S. utility businesses; rates, regulation, and infrastructure spending can matter.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlu/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLV",
@@ -637,7 +1230,16 @@
       "description": "U.S. health-care businesses with regulatory, product, and company risks.",
       "issuer": "State Street",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlv/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "PG",
@@ -646,7 +1248,18 @@
       "exposure": "Consumer staples",
       "description": "Everyday consumer products. Margins depend on pricing, costs, and demand.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 70,
+        "sources": [
+          "https://stockanalysis.com/stocks/pg/dividend/",
+          "https://stockanalysis.com/list/dividend-kings/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend King"
+      }
     },
     {
       "symbol": "JNJ",
@@ -655,7 +1268,18 @@
       "exposure": "Health care",
       "description": "Pharmaceuticals and medical technology, with product and regulatory exposure.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 64,
+        "sources": [
+          "https://stockanalysis.com/stocks/jnj/dividend/",
+          "https://stockanalysis.com/list/dividend-kings/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend King"
+      }
     },
     {
       "symbol": "ICLN",
@@ -665,7 +1289,16 @@
       "description": "Global clean-energy businesses; check the current index and holdings.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239738/ishares-global-clean-energy-etf",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "semi-annual",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/icln/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "TAN",
@@ -675,7 +1308,16 @@
       "description": "Solar-related businesses. Policy, financing, and competition affect returns.",
       "issuer": "Invesco",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/tan/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "FSLR",
@@ -684,7 +1326,16 @@
       "exposure": "Solar manufacturing",
       "description": "A solar-module manufacturer exposed to project demand, policy, and execution.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/fslr/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLK",
@@ -694,7 +1345,16 @@
       "description": "Large U.S. technology businesses. Holdings can be concentrated in the biggest companies.",
       "issuer": "State Street",
       "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-technology-select-sector-spdr-etf-xlk",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlk/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "AAPL",
@@ -703,7 +1363,16 @@
       "exposure": "Technology",
       "description": "Consumer devices, software, and services. Product cycles and the price investors pay both matter.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 14,
+        "sources": [
+          "https://stockanalysis.com/stocks/aapl/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "MSFT",
@@ -712,7 +1381,16 @@
       "exposure": "Software",
       "description": "Software, cloud computing, and business subscriptions.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 20,
+        "sources": [
+          "https://stockanalysis.com/stocks/msft/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLC",
@@ -722,7 +1400,16 @@
       "description": "Media, entertainment, and interactive-media businesses from the S&P 500.",
       "issuer": "State Street",
       "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-communication-services-select-sector-spdr-etf-xlc",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlc/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "GOOGL",
@@ -731,7 +1418,16 @@
       "exposure": "Internet platforms",
       "description": "Search, advertising, cloud, and other internet businesses. Class A shares.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 1,
+        "sources": [
+          "https://stockanalysis.com/stocks/googl/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "META",
@@ -740,7 +1436,16 @@
       "exposure": "Social platforms",
       "description": "Social apps and advertising. Spending on new products can move the shares.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 1,
+        "sources": [
+          "https://stockanalysis.com/stocks/meta/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "XLF",
@@ -750,7 +1455,16 @@
       "description": "Large U.S. banks, insurers, and other financial businesses.",
       "issuer": "State Street",
       "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-financial-select-sector-spdr-etf-xlf",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlf/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "JPM",
@@ -759,7 +1473,16 @@
       "exposure": "Bank",
       "description": "A large bank. Credit, rates, and markets businesses do not all move together.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 15,
+        "sources": [
+          "https://stockanalysis.com/stocks/jpm/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "V",
@@ -768,7 +1491,16 @@
       "exposure": "Payments",
       "description": "A payments network. It earns fees on activity; it is not a bank lender.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 17,
+        "sources": [
+          "https://stockanalysis.com/stocks/v/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "LLY",
@@ -777,7 +1509,16 @@
       "exposure": "Pharmaceuticals",
       "description": "A drug company. Product demand, patents, and trial results matter.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 11,
+        "sources": [
+          "https://stockanalysis.com/stocks/lly/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "UNH",
@@ -786,7 +1527,16 @@
       "exposure": "Health insurance",
       "description": "Health insurance and health services. Enrollment and medical costs affect results.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 16,
+        "sources": [
+          "https://stockanalysis.com/stocks/unh/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "AMZN",
@@ -795,7 +1545,16 @@
       "exposure": "Online retail",
       "description": "Online retail, cloud computing, and advertising. The businesses have different drivers.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": false,
+        "frequency": null,
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/stocks/amzn/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "WMT",
@@ -804,7 +1563,18 @@
       "exposure": "Retail",
       "description": "A large retailer of everyday goods. Costs, traffic, and pricing affect margins.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 53,
+        "sources": [
+          "https://stockanalysis.com/stocks/wmt/dividend/",
+          "https://stockanalysis.com/list/dividend-kings/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend King"
+      }
     },
     {
       "symbol": "NEE",
@@ -813,7 +1583,18 @@
       "exposure": "Electric utility",
       "description": "An electric utility with a large renewable-generation business. Regulation and rates matter.",
       "official": "",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": 30,
+        "sources": [
+          "https://stockanalysis.com/stocks/nee/dividend/",
+          "https://stockanalysis.com/list/dividend-aristocrats/"
+        ],
+        "checked": "2026-11-26",
+        "status": "Dividend Aristocrat"
+      }
     },
     {
       "symbol": "XLB",
@@ -823,7 +1604,16 @@
       "description": "Chemicals, metals, and other materials businesses from the S&P 500.",
       "issuer": "State Street",
       "official": "https://www.ssga.com/us/en/intermediary/etfs/state-street-materials-select-sector-spdr-etf-xlb",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/xlb/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "IJH",
@@ -833,7 +1623,16 @@
       "description": "A basket of medium-sized U.S. companies in the S&P MidCap 400.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239763/ishares-core-sp-mid-cap-etf",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/ijh/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "IWM",
@@ -843,7 +1642,16 @@
       "description": "A basket of smaller U.S. companies tracking the Russell 2000.",
       "issuer": "iShares",
       "official": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/iwm/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "VUG",
@@ -853,7 +1661,16 @@
       "description": "U.S. companies classified as growth. Technology is often a large part of the fund.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/vug",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vug/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "VTV",
@@ -863,7 +1680,16 @@
       "description": "U.S. companies classified as value under the fund’s index rules.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/vtv",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vtv/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "VEA",
@@ -873,7 +1699,16 @@
       "description": "Stocks in developed markets outside the United States.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/vea",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vea/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "VXUS",
@@ -883,7 +1718,16 @@
       "description": "Stocks of companies outside the United States, in both developed and emerging markets.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/vxus",
-      "reviewed": "2026-11-13"
+      "reviewed": "2026-11-13",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vxus/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "VWO",
@@ -893,7 +1737,16 @@
       "description": "Stocks in emerging-market countries. Country and currency weights change.",
       "issuer": "Vanguard",
       "official": "https://investor.vanguard.com/investment-products/etfs/profile/vwo",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/vwo/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     },
     {
       "symbol": "SCHD",
@@ -903,7 +1756,16 @@
       "description": "About 100 U.S. companies screened for dividends and financial strength.",
       "issuer": "Schwab",
       "official": "https://www.schwab.com/research/etfs/quotes/summary/schd",
-      "reviewed": "2026-10-09"
+      "reviewed": "2026-10-09",
+      "dividend": {
+        "pays": true,
+        "frequency": "quarterly",
+        "consecutiveYearsRaised": null,
+        "sources": [
+          "https://stockanalysis.com/etf/schd/dividend/"
+        ],
+        "checked": "2026-11-26"
+      }
     }
   ],
   "themes": [

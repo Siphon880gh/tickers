@@ -5,12 +5,23 @@
   const COMPARE_MAX = 3;
   const STALE_DAYS = 90;
 
-  // ---- Deep links: #theme=gold&ticker=GLD, #q=copper&kind=fund, &compare=A,B, &weights=A,B, &sim=id ----
+  // ---- Deep links: #theme=gold&ticker=GLD, #q=copper&kind=fund, &compare=A,B, &weights=A,B, &sim=id, &div=1&freq=monthly&streak=10 ----
   function symbolList(value, has) {
     return [...new Set(String(value || '').toUpperCase().split(',').map(symbol => symbol.trim()).filter(symbol => symbol && has(symbol)))];
   }
   // Returns null when the hash holds no state (for example #start-here); otherwise the state it names.
   // ctx: {hasTheme(id), hasSymbol(symbol), currentTheme}. indexPicks is null when weights is absent, so the caller keeps its picks.
+  const DIV_FREQUENCIES = ['monthly', 'quarterly', 'semi-annual', 'annual', 'irregular'];
+  const DIV_STREAKS = [1, 5, 10, 25]; // 1 means any recorded raise streak
+  function parseDiv(params) {
+    const freqRaw = (params.get('freq') || '').toLowerCase();
+    const frequency = DIV_FREQUENCIES.includes(freqRaw) ? freqRaw : null;
+    const streakRaw = (params.get('streak') || '').toLowerCase();
+    const streakNum = streakRaw === 'any' ? 1 : Number(streakRaw);
+    const streak = DIV_STREAKS.includes(streakNum) ? streakNum : null;
+    const pays = params.get('div') === '1' || frequency !== null || streak !== null;
+    return {divPays: pays, divFrequency: pays ? frequency : null, divStreak: pays ? streak : null};
+  }
   function parseHash(raw, ctx) {
     raw = String(raw || '').replace(/^#/, '');
     if (!raw.includes('=')) return null;
@@ -23,6 +34,7 @@
     const weights = params.get('weights');
     const compareMode = compare !== null;
     const indexMode = weights !== null && !compareMode;
+    const div = parseDiv(params);
     return {
       query,
       theme: theme === 'all' || theme === 'saved' || (theme && ctx.hasTheme(theme)) ? theme : (query ? ctx.currentTheme : 'gold'),
@@ -32,7 +44,10 @@
       comparePicks: compareMode ? symbolList(compare, ctx.hasSymbol).slice(0, COMPARE_MAX) : null,
       indexMode,
       indexPicks: indexMode ? symbolList(weights, ctx.hasSymbol) : null,
-      sim: params.get('sim')
+      sim: params.get('sim'),
+      divPays: div.divPays,
+      divFrequency: div.divFrequency,
+      divStreak: div.divStreak
     };
   }
   function buildHash(state, openSim) {
@@ -42,8 +57,40 @@
     if (state.selected) params.set('ticker', state.selected);
     if (state.compareMode) params.set('compare', state.comparePicks.join(','));
     if (state.indexMode) params.set('weights', state.indexPicks.join(','));
+    if (state.divPays) {
+      params.set('div', '1');
+      if (state.divFrequency) params.set('freq', state.divFrequency);
+      if (state.divStreak) params.set('streak', String(state.divStreak));
+    }
     if (openSim) params.set('sim', openSim);
     return '#' + params.toString().replace(/%2C/gi, ',');
+  }
+  // A ticker matches the Pays dividends filter (and optional frequency / raise-streak subfilters).
+  function dividendMatches(item, filter) {
+    if (!filter || !filter.divPays) return true;
+    const d = item && item.dividend;
+    if (!d || d.pays !== true) return false;
+    if (filter.divFrequency && d.frequency !== filter.divFrequency) return false;
+    if (filter.divStreak) {
+      const years = d.consecutiveYearsRaised;
+      if (typeof years !== 'number' || years < filter.divStreak) return false;
+    }
+    return true;
+  }
+  const FREQ_LABEL = {monthly: 'Monthly', quarterly: 'Quarterly', 'semi-annual': 'Semi-annual', annual: 'Annual', irregular: 'Irregular'};
+  // Short badge copy for a row or research panel. Null when there is no dividend record.
+  function dividendBadge(dividend) {
+    if (!dividend) return null;
+    if (dividend.pays === true) {
+      const parts = [];
+      if (dividend.frequency && FREQ_LABEL[dividend.frequency]) parts.push(FREQ_LABEL[dividend.frequency]);
+      if (dividend.status) parts.push(dividend.status);
+      if (typeof dividend.consecutiveYearsRaised === 'number') parts.push('raised ' + dividend.consecutiveYearsRaised + ' yr' + (dividend.consecutiveYearsRaised === 1 ? '' : 's'));
+      if (!parts.length) parts.push('Pays dividends');
+      return {text: parts.join(' · '), pays: true, checked: dividend.checked || null, sources: Array.isArray(dividend.sources) ? dividend.sources : []};
+    }
+    if (dividend.pays === false) return {text: 'No dividend', pays: false, checked: dividend.checked || null, sources: Array.isArray(dividend.sources) ? dividend.sources : []};
+    return null;
   }
 
   // ---- Search ----
@@ -198,7 +245,7 @@
     return parts.join(' · ');
   }
 
-  const api = {COMPARE_MAX, STALE_DAYS, parseHash, buildHash, matchingThemes, scoreInstrument, searchInstruments, notCovered, NOT_COVERED, resourceHint, RESOURCE_HINTS, mergeBackup, parseDay, daysSince, isStale, freshness, pageTitle};
+  const api = {COMPARE_MAX, STALE_DAYS, DIV_FREQUENCIES, DIV_STREAKS, parseHash, buildHash, matchingThemes, scoreInstrument, searchInstruments, notCovered, NOT_COVERED, resourceHint, RESOURCE_HINTS, dividendMatches, dividendBadge, mergeBackup, parseDay, daysSince, isStale, freshness, pageTitle};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.MFCore = api;
 })(typeof window !== 'undefined' ? window : globalThis);
